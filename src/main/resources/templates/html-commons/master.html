@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head runat="server">
+
+</head>
+<body>
+
+<!-- END NAVIGATION -->
+
+<!-- MAIN PANEL -->
+<div id="main" role="main">
+
+
+
+    <!-- MAIN CONTENT -->
+    <div id="content">
+        <div class="row">
+            <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+                <%--<h1 class="page-title txt-color-blueDark"><i class="fa-fw fa fa-home"></i>Dashboard <span>> My Dashboard</span></h1>--%>
+            </div>
+
+        </div>
+
+
+        <div>
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+    </div>
+
+</div>
+
+<!-- END MAIN PANEL -->
+
+<!-- PAGE FOOTER -->
+
+<!-- END PAGE FOOTER -->
+
+
+
+<!--================================================== -->
+
+<%--<script src="/js/libs/jquery-3.2.1.min.js"></script>--%>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/libs/jquery-ui.min.js"></script>
+
+<!-- IMPORTANT: APP CONFIG -->
+<script src="/js/smart/app.config.js"></script>
+
+<!-- JS TOUCH : include this plugin for mobile drag / drop touch events-->
+<script src="/js/plugin/jquery-touch/jquery.ui.touch-punch.min.js"></script>
+
+<!-- BOOTSTRAP JS -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- CUSTOM NOTIFICATION -->
+<script src="/js/notification/SmartNotification.min.js"></script>
+
+<!-- JARVIS WIDGETS -->
+<script src="/js/smartwidgets/jarvis.widget.min.js"></script>
+
+
+<!-- JQUERY VALIDATE -->
+<script src="/js/plugin/jquery-validate/jquery.validate.min.js"></script>
+
+<!-- JQUERY MASKED INPUT -->
+<script src="/js/plugin/masked-input/jquery.maskedinput.min.js"></script>
+
+<!-- JQUERY SELECT2 INPUT -->
+<script src="/js/plugin/select2/select2.min.js"></script>
+
+<!-- JQUERY UI + Bootstrap Slider -->
+<script src="/js/plugin/bootstrap-slider/bootstrap-slider.min.js"></script>
+
+<!-- browser msie issue fix -->
+<script src="/js/plugin/msie-fix/jquery.mb.browser.min.js"></script>
+
+<link href="../css/tooltipster/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-borderless.min.css" rel="stylesheet" />
+<link href="../css/tooltipster/tooltipster.bundle.min.css" rel="stylesheet" />
+<script src="../js/tooltipster/tooltipster.bundle.min.js"></script>
+<!-- MAIN APP JS FILE -->
+<script src="/js/smart/app.js"></script>
+<script src="/js/bootstrap-table.min.js"></script>
+<script src="/js/icheck.min.js"></script>
+<script src="/js/Chart.min.js"></script>
+<script src="/js/bootbox.min.js"></script>
+<script src="/js/bundle.js"></script>
+<script src="/js/util.js"></script>
+<script src="/js/moment.min.js"></script>
+<script src="/js/moment-with-locales.js"></script>
+<script src="/js/bootstrap-datetimepicker.js"></script>
+<script src="../js/locales/bootstrap-table-es-SP.min.js"></script>
+<script src="../js/moment.locale.js"></script>
+<script src="/js/bpopup.js"></script>
+
+
+<script type="text/javascript">
+    $(document)
+        .ajaxStart(function () {
+            $('#loading').bPopup({
+                modalClose: false,
+            });
+        })
+        .ajaxStop(function () {
+            $('#loading').bPopup().close();
+        });
+</script>
+<script src="/app/master.js"></script>
+</body>
+</html>

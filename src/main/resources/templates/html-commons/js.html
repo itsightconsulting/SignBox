@@ -1,0 +1,76 @@
+<div th:fragment="fg-js">
+    <!-- PACE LOADER - turn this on if you want ajax loading to show (caution: uses lots of memory on iDevices)-->
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/libs/jquery-ui.min.js}"></script>
+
+    <!-- IMPORTANT: APP CONFIG -->
+    <script th:src="@{/js/smart/app.config.js}"></script>
+
+
+
+
+    <!-- JS TOUCH : include this plugin for mobile drag / drop touch events-->
+    <script th:src="@{/js/plugin/jquery-touch/jquery.ui.touch-punch.min.js}"></script>
+
+    <!-- BOOTSTRAP JS -->
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+
+    <!-- CUSTOM NOTIFICATION -->
+    <script th:src="@{/js/notification/SmartNotification.min.js}"></script>
+
+    <!-- JARVIS WIDGETS -->
+    <script th:src="@{/js/smartwidgets/jarvis.widget.min.js}"></script>
+
+
+    <!-- JQUERY VALIDATE -->
+    <script th:src="@{/js/plugin/jquery-validate/jquery.validate.min.js}"></script>
+
+    <!-- JQUERY MASKED INPUT -->
+    <script th:src="@{/js/plugin/masked-input/jquery.maskedinput.min.js}"></script>
+
+    <!-- JQUERY SELECT2 INPUT -->
+    <script th:src="@{/js/plugin/select2/select2.min.js}"></script>
+
+
+    <!-- JQUERY UI + Bootstrap Slider -->
+    <script th:src="@{/js/plugin/bootstrap-slider/bootstrap-slider.min.js}"></script>
+
+    <!-- browser msie issue fix -->
+    <script th:src="@{/js/plugin/msie-fix/jquery.mb.browser.min.js}"></script>
+
+    <link href="../css/tooltipster/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-borderless.min.css" rel="stylesheet" />
+    <link href="../css/tooltipster/tooltipster.bundle.min.css" rel="stylesheet" />
+    <script th:src="@{../js/tooltipster/tooltipster.bundle.min.js}"></script>
+    <!-- MAIN APP JS FILE -->
+
+    <script th:src="@{/js/smart/app.js}"></script>
+    <script th:src="@{/js/bootstrap-table.min.js}"></script>
+    <script th:src="@{/js/icheck.min.js}"></script>
+    <script th:src="@{/js/Chart.min.js}"></script>
+    <script th:src="@{/js/bootbox.min.js}"></script>
+    <script th:src="@{/js/bundle.js}"></script>
+    <script th:src="@{/js/util.js}"></script>
+    <script th:src="@{/js/moment.min.js}"></script>
+    <script th:src="@{/js/moment-with-locales.js}"></script>
+    <script th:src="@{/js/bootstrap-datetimepicker.js}"></script>
+    <script th:src="@{../js/locales/bootstrap-table-es-SP.min.js}"></script>
+    <script th:src="@{../js/moment.locale.js}"></script>
+    <script th:src="@{/js/bpopup.js}"></script>
+
+
+    <script th:inline="javascript">
+
+        console.log("sss",$.root_);
+        $(document)
+            .ajaxStart(function () {
+                $('#loading').bPopup({
+                    modalClose: false,
+                });
+            })
+            .ajaxStop(function () {
+                $('#loading').bPopup().close();
+            });
+    </script>
+    <script th:src="@{/app/master.js}"></script>
+
+</div>

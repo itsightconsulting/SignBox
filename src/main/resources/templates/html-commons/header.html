@@ -1,0 +1,54 @@
+<header id="header" th:fragment="fg-header">
+    <div id="logo-group">
+
+        <!-- PLACE YOUR LOGO HERE -->
+        <span id="logo">
+                <a href="javascript:void(0)" class="logo">
+                    <span class="logo-lg"><b>SignBox</b></span>
+                </a>
+            </span>
+        <!-- END LOGO PLACEHOLDER -->
+    </div>
+
+
+
+    <!-- pulled right: nav area -->
+    <div class="pull-right">
+        <!-- projects dropdown -->
+        <div class="project-context hidden-xs">
+
+            <span class="label">Bienvenido(a):</span>
+            <span class="label" style="font-size: 14px;" id="lblNavUsername"><i class="fa fa-angle-down"></i></span>
+
+
+        </div>
+        <!-- end projects dropdown -->
+
+        <!-- collapse menu button -->
+        <div id="hide-menu" class="btn-header pull-right">
+            <span><a href="javascript:void(0);" data-action="toggleMenu" title="Collapse Menu"><i class="fa fa-reorder"></i></a></span>
+        </div>
+        <!-- end collapse menu -->
+
+        <!-- #MOBILE -->
+        <!-- Top menu profile link : this shows only when top menu is active -->
+        <ul id="mobile-profile-img" class="header-dropdown-list hidden-xs padding-5">
+            <li class="">
+                <a href="#" class="dropdown-toggle no-margin userdropdown" data-toggle="dropdown">
+                    <img src="/img/avatar.jpg" alt="John Doe" class="online" />
+                </a>
+                <ul class="dropdown-menu pull-right">
+                </ul>
+            </li>
+        </ul>
+
+        <!-- logout button -->
+        <div id="logout" class="btn-header transparent pull-right">
+            <span><a href="login.html" title="Sign Out" data-action="userLogout" data-logout-msg="You can improve your security further after logging out by closing this opened browser"><i class="fa fa-sign-out"></i></a></span>
+        </div>
+
+
+    </div>
+    <!-- end pulled right: nav area -->
+
+</header>
