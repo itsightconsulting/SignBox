@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin/tipoarchivos")
+@RequestMapping("/admin/tipo-archivos")
 public class TipoArchivoController {
 
     private TipoArchivoService tipoArchivoService;
@@ -29,9 +29,9 @@ public class TipoArchivoController {
         this.tipoArchivoProcedureInvoker = tipoArchivoProcedureInvoker;
     }
 
-    @GetMapping(value = "tipoarchivos")
+    @GetMapping(value = "/gestion")
     public ModelAndView principal(Model model) {
-        return new ModelAndView(ViewConstant.MAIN_PARAMETROS);
+        return new ModelAndView(ViewConstant.MAIN_TIPO_ARCHIVOS);
     }
 
     @GetMapping("/{id}")

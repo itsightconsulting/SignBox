@@ -5,5 +5,6 @@ public class ViewConstant {
  //MAIN CONFIGURACION
 
  public static final String MAIN_PARAMETROS = "configuracion/parametros";
+ public static final String MAIN_TIPO_ARCHIVOS = "configuracion/tipoarchivos";
 
 }
