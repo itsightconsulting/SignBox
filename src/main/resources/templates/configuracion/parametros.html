@@ -22,7 +22,7 @@
  <div id="content">
    <div>
      <section class="content-header">
-    <h1>Gestión de parámetros jijijijujuu
+    <h1>Gestión de parámetros
         <small>Permite configurar los parámetros en la plataforma.</small>
     </h1>
    </section>
@@ -66,14 +66,14 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="txtDescription">Descripción: <span>(*)</span></label>
-                        <textarea id="txtDescription" name="txtDescription" class="form-control" rows="5"></textarea>
+                        <textarea id="txtDescription" name="description" class="form-control" rows="5"></textarea>
                     </div>
                 </div>
                 <div class="clearfix"></div>
                 <div class="col-md-12">
                     <div class="form-group">
                         <label for="txtValue">Valor: <span>(*)</span></label>
-                        <textarea id="txtValue" name="txtValue" class="form-control" rows="5"></textarea>
+                        <textarea id="txtValue" name="value" class="form-control" rows="5"></textarea>
                     </div>
                 </div>
                 <div class="clearfix"></div>
@@ -92,6 +92,10 @@
 </div>
 <!-- PAGE FOOTER -->
 <div th:replace="html-commons/footer :: fg-footer"></div>
+
+<div th:replace="html-commons/loading :: fg-loading"></div>
+
+
 <!-- END PAGE FOOTER -->
 <!-- IMPORTS JAVASCRIPT -->
 <script th:replace="html-commons/js :: fg-js"/>

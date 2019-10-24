@@ -57,7 +57,6 @@ function MostrarAlerta(divName, nomClass, msg) {
     $("#" + divName).empty();
     $("#" + divName).append(msg);
 
-
     window.setTimeout(function () {
         hideAlert(divName);
     }, 5000);

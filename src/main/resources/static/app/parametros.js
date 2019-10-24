@@ -1,6 +1,5 @@
-var $table = $('#tblRegistros');
-var _ctx = $('meta[name="_ctx"]').attr('content');
-var controlador = _ctx + 'admin/parametros/';
+const $table = $('#tblRegistros');
+const controlador = _ctx + 'admin/parametros/';
 
 $(function () {
     $("#btnGuardar").click(function () {
@@ -11,10 +10,9 @@ $(function () {
         limpiarRegistro();
     });
 
+    validarRegistros();
    listarRegistros();
 })
-
-
 
 function limpiarRegistro() {
     $("#hId").val(0);
@@ -25,20 +23,13 @@ function limpiarRegistro() {
 function irModificarRegistro(id) {
     limpiarRegistro();
 
-
-    var params = {
-        id: id,
-    };
     //$("#load_pace").show();
     $.ajax({
         type: 'get',
         contentType: "application/json; charset=utf-8",
-        url: controlador + 'obtener/',
-        dataType: "json",
-        data: params,
+        url: controlador + id,
         success: function (dataObject, textStatus) {
             if (textStatus == "success") {
-
 
                 const registro = dataObject;
                 $("#hId").val(registro.id);
@@ -68,13 +59,21 @@ function validarRegistros() {
         errorClass: "my-error-class",
         validClass: "my-valid-class",
         rules: {
-            valor: {
+            value: {
+                required: true,
+                maxlength: 300
+            },
+            description: {
                 required: true,
                 maxlength: 300
             }
         },
         messages: {
-            valor: {
+            value: {
+                required: "Debes de ingresar un valor",
+                maxlength: $.validator.format("Debes ingresar como máximo {0} caracteres"),
+            },
+            description: {
                 required: "Debes de ingresar un valor",
                 maxlength: $.validator.format("Debes ingresar como máximo {0} caracteres"),
             }
@@ -85,73 +84,56 @@ function validarRegistros() {
 function listarRegistros() {
 
     $table.bootstrapTable('destroy');
-    var dataRpta;
-
     $table.bootstrapTable({
-        url:  'parametros/obtener/todo',
+        url:  controlador,
         method: 'get',
-        queryParamsType: 'Else',
-        pagination: false,
-        //
-        //  pagination: true,
-      //
-     //   pageSize: 20,
-
-     /*   queryParams: function (p) {
-            var pageNumber = p.pageNumber;
-            var pageSize = p.pageSize;
-            return {
-                pageNumber: p.pageNumber,
-                pageSize: p.pageSize
-            };
-        }*/
+        pagination: true,
+        sidePagination: 'server',
+        pageSize: 10,
+        onLoadSuccess: function (data) {
+        },
+        onLoadError: function (xhr) {
+            exception(xhr);
+        },
         responseHandler: function (res) {
-            var data = res.d;
-
-            console.log(res);
-            return res;
-         //    return { rows: data.ListConfiguracion, total: data.Total }
+             return { rows: res, total: res.length > 0 ?  res[0].rows : 0 };
         }
     });
 }
 
 function actualizar() {
 
-  //  if ($("#form_registro").valid()) {
-        var $btn = $("#btnGuardar");
-      //  $btn.button('loading');
+  if ($("#form_registro").valid()) {
+        const $btn = $("#btnGuardar");
+        $btn.button('loading');
 
-        var params = {};
-    const id = $("#hId").val();
-    params.nombre = $("#txtParam").val();
-    params.descripcion = $("#txtDescription").val();
-    params.valor = $("#txtValue").val();
+        const params = {};
+        const id = $("#hId").val();
+        params.nombre = $("#txtParam").val();
+        params.descripcion = $("#txtDescription").val();
+        params.valor = $("#txtValue").val();
 
-       $.ajax({
+        $.ajax({
             type: 'PUT',
-           contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-            url: controlador + 'actualizar/'+id,
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            url: controlador +  id,
             dataType: "json",
             data:  params,
             success: function (dataObject, textStatus) {
                 if (textStatus == "success") {
-                //    MostrarAlerta("alertBox", "alert-success", "Se actualizó con <strong>éxito</strong> el valor del parámetro.")
-                   irListado();
+                    //No operativo , tampoco se encuentra en la plataforma
+                    //MostrarAlerta("alertBox", "alert-success", "Se actualizó con <strong>éxito</strong> el valor del parámetro.")
+                    irListado();
                     $('#form_registro').trigger("reset");
-
                 }
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                var error = JSON.parse(xhr.responseText);
+                const error = JSON.parse(xhr.responseText);
             },
             complete: function (data) {
-              //  $btn.button('reset');
+                $btn.button('reset');
                 listarRegistros();
-                //$("#load_pace").hide();
             }
         });
- //   }
-
-
-
+ }
 }

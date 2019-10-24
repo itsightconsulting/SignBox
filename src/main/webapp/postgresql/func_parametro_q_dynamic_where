@@ -1,0 +1,30 @@
+CREATE OR REPLACE FUNCTION func_parametro_q_dynamic_where (
+    u_Limit          INT DEFAULT NULL ,
+    u_Offset         INT DEFAULT 0)
+    RETURNS TABLE ( id INT,
+                    nombre VARCHAR(200),
+                    valor VARCHAR(200),
+                    descripcion VARCHAR(200),
+                    rows INT)
+    LANGUAGE SQL
+BEGIN ATOMIC
+RETURN
+    SELECT PR.PARAMETROID,
+           PR.NOMBRE,
+           PR.VALOR,
+           PR.DESCRIPCION,
+           PR.ROWS
+    FROM (
+             SELECT row_number() OVER ( ORDER BY p.PARAMETROID ) AS RID,
+                    P.PARAMETROID,
+                    P.NOMBRE,
+                    P.VALOR,
+                    P.DESCRIPCION,
+                    CAST(COUNT(*) OVER() AS INT) AS ROWS
+             FROM  PARAMETRO AS P
+             ORDER BY P.PARAMETROID desc
+         ) PR
+    WHERE PR.RID BETWEEN u_Offset AND u_Offset + u_Limit;
+END;
+
+

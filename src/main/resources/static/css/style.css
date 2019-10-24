@@ -518,7 +518,7 @@ textarea {
     background-color: #8c8c8c;
 }
 
-.my-error-class {
+label.my-error-class , em.my-error-class{
     color: #FF0000 !important; /* red */
     font-weight: bold !important;
     font-size: 12px;

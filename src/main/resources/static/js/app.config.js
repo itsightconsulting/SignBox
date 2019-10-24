@@ -45,12 +45,15 @@
  * SAVE INSTANCE REFERENCE (DO NOT CHANGE)
  * Save a reference to the global object (window in the browser)
  */
-	var root = this,	
+	var root = this;
+
+
+
 /*
- * DEBUGGING MODE
- * debugState = true; will spit all debuging message inside browser console.
- * The colors are best displayed in chrome browser.
- */
+* DEBUGGING MODE
+* debugState = true; will spit all debuging message inside browser console.
+* The colors are best displayed in chrome browser.
+*/
 	debugState = false,	
 	debugStyle = 'font-weight: bold; color: #00f;',
 	debugStyle_green = 'font-weight: bold; font-style:italic; color: #46C246;',

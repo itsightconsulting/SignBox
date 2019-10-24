@@ -1,0 +1,46 @@
+package com.itsight.signbox.domain;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.itsight.signbox.domain.base.AuditingEntity;
+import com.itsight.signbox.json.JsonDateSimpleDeserializer;
+import com.itsight.signbox.json.JsonDateSimpleSerializer;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import java.util.Date;
+
+public class Certificados extends AuditingEntity {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "CERTIFICADOSID")
+  private Integer certificadosId;
+
+  @NotBlank
+  @Column(nullable = false, name = "ALIAS")
+  private String alias;
+
+  @NotBlank
+  @Column(nullable = false, name = "IDENTIFICADORHSM")
+  private String identificadorHsm;
+
+  @NotBlank
+  @Column(nullable = false, name = "PINSEGURIDAD")
+  private String pinSeguridad;
+
+  @NotBlank
+  @Column(nullable = false, name = "RESPONSABLE")
+  private String responsable;
+
+
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "FECHACADUCIDAD", nullable = false, updatable = false)
+  @JsonSerialize(using = JsonDateSimpleSerializer.class)
+  @JsonDeserialize(using = JsonDateSimpleDeserializer.class)
+  private Date fechaCaducidad;
+
+  @NotBlank
+  @Column(nullable = false , name = "DESCRIPCION")
+  private String descripcion;
+}

@@ -13,29 +13,29 @@ import java.util.Date;
 @MappedSuperclass
 public class AuditingEntity {
 
-    @Column(name = "CREATED_BY", nullable = false, updatable = false)
-    private String createdBy;
+    @Column(name = "CREADOPOR", nullable = false, updatable = false)
+    private String creadoPor;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "CREATION_DATE", nullable = false, updatable = false)
+    @Column(name = "FECHACREACION", nullable = false, updatable = false)
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
     @JsonDeserialize(using = JsonDateSimpleDeserializer.class)
-    private Date creationDate;
+    private Date fechaCreacion;
 
-    @Column(name = "MODIFIED_BY")
-    private String modifiedBy;
+    @Column(name = "MODIFICADOPOR")
+    private String modificadoPor;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "MODIFIED_DATE")
+    @Column(name = "FECHAMODIFICACION")
     @JsonSerialize(using = JsonDateSimpleSerializer.class)
     @JsonDeserialize(using = JsonDateSimpleDeserializer.class)
-    private Date modifiedDate;
+    private Date fechaModificacion;
 
-    @Column(name = "FLAG_ENABLED", nullable = false)
-    private boolean flagEnabled;
+    @Column(name = "FLAGACTIVO", nullable = false)
+    private boolean flagActivo;
 
-    @Column(name = "FLAG_DELETED", nullable = false)
-    private boolean flagDeleted;
+    @Column(name = "FLAGELIMINADO", nullable = false)
+    private boolean flagEliminado;
 
     public AuditingEntity(){
         /*
@@ -43,13 +43,13 @@ public class AuditingEntity {
          */
     }
 
-    public AuditingEntity(String createdBy, Date creationDate, String modifiedBy, Date modifiedDate, boolean flagEnabled, boolean flagDeleted) {
-        this.createdBy = createdBy;
-        this.creationDate = creationDate;
-        this.modifiedBy = modifiedBy;
-        this.modifiedDate = modifiedDate;
-        this.flagEnabled = flagEnabled;
-        this.flagDeleted = flagDeleted;
+    public AuditingEntity(String creadoPor, Date fechaCreacion, String modificadoPor, Date fechaModificacion, boolean flagActivo, boolean flagEliminado) {
+        this.creadoPor = creadoPor;
+        this.fechaCreacion = fechaCreacion;
+        this.modificadoPor = modificadoPor;
+        this.fechaModificacion = fechaModificacion;
+        this.flagActivo = flagActivo;
+        this.flagEliminado = flagEliminado;
     }
 
 }
