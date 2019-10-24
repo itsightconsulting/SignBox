@@ -4,6 +4,9 @@ target/
 !**/src/main/**
 !**/src/test/**
 
+### CUSTOM IGNORES ###
+src/main/resources/application.yml
+
 ### STS ###
 .apt_generated
 .classpath
