@@ -7,6 +7,7 @@ import javax.validation.constraints.NotBlank;
 
 @Entity
 @Data
+@Table(name = "TIPO_FIRMA")
 public class TipoFirma {
 
   @Id

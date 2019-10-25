@@ -1,13 +1,11 @@
-const $table = $('#tblRegistros');
-const controlador = _ctx + 'admin/tipoarchivos/';
-const validator;
-const validatorUser;
-const editarUser = false;
+var $table = $('#tblRegistros');
+var controlador = _ctx + 'admin/tipos-archivos/';
+var validator;
 
 var TEXTO_SELECCIONE = "Seleccione";
 
 $(function () {
-    $("#cboEmpresa").append($("<option />").val("0").text(TEXTO_SELECCIONE));
+
     $("#cboFiltroTipo").append($("<option />").val("0").text(TEXTO_SELECCIONE));
     $("#btnGuardar").click(function () { addSede(); });
     $("#btnBuscar").click(function () {
@@ -46,7 +44,7 @@ function clearValidation(formElement) {
 
 function cargarData() {
     $.ajax({
-        type: 'POST',
+        type: 'GET',
         contentType: "application/json; charset=utf-8",
         url: controlador + 'CargarData',
         dataType: "json",
@@ -106,32 +104,30 @@ function addSede() {
         });
     }
 }
+
 function listarRegistros() {
+
+    var tipoId = $("#cboFiltroTipo").val();
+    var nombre = $("#txtFiltroNombre").val();// == "" ? null : $("#txtFiltroNombre").val();
+    var flagActivo = ($("#cboFiltroEstado").val() == "") ? false : $("#cboFiltroEstado").val();
+
     $table.bootstrapTable('destroy');
-    $table.bootstrapTable({
-        url: controlador + "Obtener",
-        method: 'POST',
-        pagination: true,
-        contentType: "application/json; charset=utf-8",
-        sidePagination: 'server',
-        queryParamsType: 'else',
-        pageSize: 20,
-        queryParams: function (p) {
-            var pageNumber = p.pageNumber;
-            var pageSize = p.pageSize;
-            return JSON.stringify({
-                tipoId: $("#cboFiltroTipo").val(),
-                Nombre: $("#txtFiltroNombre").val(),
-                flagActivo: ($("#cboFiltroEstado").val() == "") ? null : $("#cboFiltroEstado").val(),
-                pageNumber: pageNumber,
-                pageSize: pageSize
-            })
-        },
-        responseHandler: function (res) {
-            var data = res.d;
-            return { rows: data.ListTipoArchivo, total: data.Total }
-        }
-    });
+        $table.bootstrapTable({
+            url:  controlador + 'listarTodo' + '?tipoId=' + tipoId + '&nombre=' + nombre + '&flagActivo=' + flagActivo,
+            method: 'get',
+            pagination: true,
+            sidePagination: 'server',
+            pageSize: 20,
+            onLoadSuccess: function (data) {
+            },
+            onLoadError: function (xhr) {
+                console.log(xhr);
+            },
+            responseHandler: function (res) {
+                 return { rows: res, total: res.length > 0 ?  res[0].rows : 0 };
+            }
+        });
+
 }
 function validarRegistros() {
     $.validator.addMethod('validarCodigo', function (val, element) {
