@@ -2,6 +2,8 @@ package com.itsight.signbox.service.serviceImpl;
 
 import com.itsight.signbox.domain.pojo.TipoArchivoPOJO;
 import com.itsight.signbox.service.TipoArchivoProcedureInvoker;
+import com.sun.org.apache.xpath.internal.operations.Bool;
+import org.hibernate.type.descriptor.sql.VarcharTypeDescriptor;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
@@ -19,12 +21,18 @@ public class TipoArchivoProcedureInvokerImpl implements TipoArchivoProcedureInvo
     }
 
     @Override
-    public List<TipoArchivoPOJO> getTipoArchivos(int limit, int offset) {
+    public List<TipoArchivoPOJO> getTipoArchivos(int limit, int offset, String descripcion, boolean flafActivo, int idTipoFirma) {
         StoredProcedureQuery storedProcedureQuery = entityManager.createStoredProcedureQuery("VQJ33260.FUNC_TIPO_ARCHIVO_Q_DYNAMIC_WHERE", "TipoArchivoGetAll");
-        storedProcedureQuery.registerStoredProcedureParameter(0, Integer.class, ParameterMode.IN);
-        storedProcedureQuery.registerStoredProcedureParameter(1, Integer.class, ParameterMode.IN);
-        storedProcedureQuery.setParameter(0, limit);
-        storedProcedureQuery.setParameter(1, offset);
+        storedProcedureQuery.registerStoredProcedureParameter("u_Limit", Integer.class, ParameterMode.IN);
+        storedProcedureQuery.registerStoredProcedureParameter("u_Offset", Integer.class, ParameterMode.IN);
+        storedProcedureQuery.registerStoredProcedureParameter("u_nombre", String.class, ParameterMode.IN);
+        storedProcedureQuery.registerStoredProcedureParameter("u_flagActivo", Boolean.class, ParameterMode.IN);
+        storedProcedureQuery.registerStoredProcedureParameter("u_IDFORMATOFIRMA", Integer.class, ParameterMode.IN);
+        storedProcedureQuery.setParameter("u_Limit", limit);
+        storedProcedureQuery.setParameter("u_Offset", offset);
+        storedProcedureQuery.setParameter("u_nombre", descripcion);
+        storedProcedureQuery.setParameter("u_flagActivo", flafActivo);
+        storedProcedureQuery.setParameter("u_IDFORMATOFIRMA", idTipoFirma);
 
         return storedProcedureQuery.getResultList();
     }

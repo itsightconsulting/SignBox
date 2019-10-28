@@ -10,8 +10,10 @@ import com.itsight.signbox.json.JsonDateSimpleSerializer;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 @SqlResultSetMapping(
         name = "TipoArchivoGetAll",
@@ -24,15 +26,17 @@ import javax.validation.constraints.NotNull;
                                 @ColumnResult(name = "Extensiones"),
                                 @ColumnResult(name = "Descripcion"),
                                 @ColumnResult(name = "IdFormatoFirma"),
-                                @ColumnResult(name = "TipoFirmaToString"),
-                                @ColumnResult(name = "rows"),
+                                @ColumnResult(name = "Detalle"),
+                                @ColumnResult(name = "flagActivo"),
+                                @ColumnResult(name = "rows")
                         }
-
                 )
         }
 )
+
 @Entity
 @Data
+@Table(name = "TIPOARCHIVO")
 public class TipoArchivo {
 
   @Id
@@ -52,9 +56,33 @@ public class TipoArchivo {
   @Column(nullable = false , name = "DESCRIPCION")
   private String descripcion;
 
-  @NotBlank
-  @Column(nullable = false , name = "IDFORMATOFIRMA")
+  @NotNull(message = "Por favor elija un tipo")
+  @Column(name = "IDFORMATOFIRMA")
   private Integer idFormatoFirma;
+
+  @Column(name = "FLAGACTIVO")
+  private Boolean FlagActivo;
+
+  @Column(name = "FLAGELIMINADO")
+  private Boolean FlagEliminado;
+
+  @Column(name = "CREADOPOR")
+  private String CreadoPor;
+
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "FECHACREACION")
+  @JsonSerialize(using = JsonDateSimpleSerializer.class)
+  @JsonDeserialize(using = JsonDateSimpleDeserializer.class)
+  private Date fechaCreacion;
+
+  @Column(name = "MODIFICADOPOR")
+  private String modificadoPor;
+
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "FECHAMODIFICACION")
+  @JsonSerialize(using = JsonDateSimpleSerializer.class)
+  @JsonDeserialize(using = JsonDateSimpleDeserializer.class)
+  private Date fechaModificacion;
 
   public TipoArchivo(){
 

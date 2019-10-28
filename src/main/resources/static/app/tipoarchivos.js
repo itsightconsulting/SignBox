@@ -7,8 +7,22 @@ var TEXTO_SELECCIONE = "Seleccione";
 $(function () {
 
     $("#cboFiltroTipo").append($("<option />").val("0").text(TEXTO_SELECCIONE));
-    $("#btnGuardar").click(function () { addSede(); });
+
+    $("#btnGuardar").click(function () {
+        var id = ($("#hId").val() == "") ? 0 : parseInt($("#hId").val());
+
+        if(id == 0){
+            add();
+        }
+        else{
+            update();
+        }
+
+    });
     $("#btnBuscar").click(function () {
+
+        listarRegistros();
+
         $table.bootstrapTable('refresh');
         $(".panel-body").fadeOut();
     });
@@ -52,12 +66,11 @@ function cargarData() {
         success: function (dataObject, textStatus) {
             if (textStatus == "success") {
 
-                var data = dataObject.d;
                 // al registrar
-                $.each(data.ListTipoFirma, function ()
+                $.each(dataObject, function ()
                 {
-                    $("#cboTipo").append($("<option />").val(this.FormatoFirmaId).text(this.Descripcion));
-                    $("#cboFiltroTipo").append($("<option />").val(this.FormatoFirmaId).text(this.Descripcion));
+                    $("#cboTipo").append($("<option />").val(this.tipoFirmaId).text(this.detalle));
+                    $("#cboFiltroTipo").append($("<option />").val(this.tipoFirmaId).text(this.detalle));
                 });
             }
         },
@@ -69,36 +82,78 @@ function cargarData() {
         }
     });
 }
-function addSede() {
-    //editarUser = false;
+
+function add() {
+
     if ($("#form_registro").valid()) {
         $("#btnGuardar").button("loading");
         var item = {};
-        item.TipoArchivoId = ($("#hId").val() == "") ? 0 : parseInt($("#hId").val());
-        item.CodigoArchivo = $("#txtNombre").val().trim();
-        item.Extensiones = $("#txtExtensiones").val();
-        item.Descripcion = $("#txtDescripcion").val();
-        item.IdFormatoFirma = $("#cboTipo").val();
-
+        item.tipoArchivoId = ($("#hId").val() == "") ? 0 : parseInt($("#hId").val());
+        item.codigoArchivo = $("#txtNombre").val().trim();
+        item.extensiones = $("#txtExtensiones").val();
+        item.descripcion = $("#txtDescripcion").val();
+        item.idFormatoFirma = $("#cboTipo").val();
 
         $.ajax({
             type: 'POST',
-            contentType: "application/json; charset=utf-8",
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
             url: controlador + 'Agregar',
             dataType: "json",
-            data: JSON.stringify({ item }),
+            data:  item,
             success: function (dataObject, textStatus) {
 
                 $table.bootstrapTable('refresh');
-                irListado();
+                listarRegistros();
+
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 var error = JSON.parse(xhr.responseText);
-                MostrarAlerta("alertBoxTabAreas", "alert-danger", String.Format("<strong>Error!</strong> {0}", error.Message));
+                MostrarAlerta("alertBoxTabAreas", "alert-danger", String.Format("<strong>Error!</strong> {0}", error.message));
             },
             complete: function (data) {
                 $("#btnGuardar").button("reset");
                 limpiarRegistro();
+
+
+                $(".view_register").hide();
+            },
+            //async: false
+        });
+    }
+}
+
+function update() {
+
+    if ($("#form_registro").valid()) {
+        $("#btnGuardar").button("loading");
+        var item = {};
+        item.tipoArchivoId = ($("#hId").val() == "") ? 0 : parseInt($("#hId").val());
+        item.codigoArchivo = $("#txtNombre").val().trim();
+        item.extensiones = $("#txtExtensiones").val();
+        item.descripcion = $("#txtDescripcion").val();
+        item.idFormatoFirma = $("#cboTipo").val();
+
+        $.ajax({
+            type: 'PUT',
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            url: controlador + 'actualizar/' + item.tipoArchivoId,
+            dataType: "json",
+            data:  item,
+            success: function (dataObject, textStatus) {
+
+                $table.bootstrapTable('refresh');
+                listarRegistros();
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                var error = JSON.parse(xhr.responseText);
+                MostrarAlerta("alertBoxTabAreas", "alert-danger", String.Format("<strong>Error!</strong> {0}", error.message));
+            },
+            complete: function (data) {
+                $("#btnGuardar").button("reset");
+                limpiarRegistro();
+
+
+                $(".view_register").hide();
             },
             //async: false
         });
@@ -109,7 +164,7 @@ function listarRegistros() {
 
     var tipoId = $("#cboFiltroTipo").val();
     var nombre = $("#txtFiltroNombre").val();// == "" ? null : $("#txtFiltroNombre").val();
-    var flagActivo = ($("#cboFiltroEstado").val() == "") ? false : $("#cboFiltroEstado").val();
+    var flagActivo = ($("#cboFiltroEstado").val() == "") ? true : $("#cboFiltroEstado").val();
 
     $table.bootstrapTable('destroy');
         $table.bootstrapTable({
@@ -175,31 +230,40 @@ function limpiarFiltros() {
 function opciones(value, row, index) {
     var estado = "";
 
-    if (row.FlagActivo) {
-        estado = String.Format("<a href='javascript:cambiarEstado(" + row.TipoArchivoId + ");' title='Desactivar registro'><i class='glyphicon glyphicon-ok'></i></a>");
+    if (row.flagActivo) {
+        estado = String.Format("<a href='javascript:cambiarEstado(" + row.tipoArchivoId + ");' title='Desactivar registro'><i class='glyphicon glyphicon-ok'></i></a>");
     } else {
-        estado = String.Format("<a href='javascript:cambiarEstado(" + row.TipoArchivoId + ");' title='Activar registro'><i class='glyphicon glyphicon-ok' style='color:gray;opacity: 0.35'></i></a>");
+        estado = String.Format("<a href='javascript:cambiarEstado(" + row.tipoArchivoId + ");' title='Activar registro'><i class='glyphicon glyphicon-ok' style='color:gray;opacity: 0.35'></i></a>");
     }
 
     return estado;
 }
+
+function estado(value, row, index){
+    if (row.flagActivo) {
+        return "Activo";
+    }
+    return "Inactivo";
+
+}
+
 function linkFormatter(value, row, index) {
-    return String.Format('<a class="editable editable-click" href="javascript:irModificarRegistro(' + row.TipoArchivoId + ')" title="Editar">{0}</a>', value);
+    return String.Format('<a class="editable editable-click" href="javascript:irModificarRegistro(' + row.tipoArchivoId + ')" title="Editar">{0}</a>', value);
 }
 function cambiarEstado(id) {
     bootbox.setLocale("es");
     bootbox.confirm("¿Estás seguro que deseas cambiar el estado del registro seleccionado?", function (result) {
         if (result) {
             var params = {
-                id: id,
+                id: id
             };
             $("#load_pace").show();
             $.ajax({
                 type: 'POST',
                 contentType: "application/json; charset=utf-8",
-                url: controlador + 'CambiarEstado',
+                url: controlador + 'CambiarEstado/'+params.id,
                 dataType: "json",
-                data: JSON.stringify(params),
+                data: params,
                 success: function (dataObject, textStatus) {
                     if (textStatus == "success") {
                         MostrarAlerta("alertBox", "alert-success", "Se cambió con <strong>éxito</strong> el estado del proveedor.")
@@ -217,32 +281,30 @@ function cambiarEstado(id) {
         }
     });
 }
+
 function irModificarRegistro(id) {
     //validatorUpdate = false;
     $("#form_registro").validate().resetForm();
     $("#txtTitleForm").html("Editar Tipo");
 
     limpiarRegistro();
-    var params = {
-        id: id,
-    };
+
     $.ajax({
-        type: 'POST',
+        type: 'GET',
         contentType: "application/json; charset=utf-8",
-        url: controlador + 'ObtenerPorId',
+        url: controlador + 'ObtenerPorId/'+id,
         dataType: "json",
-        data: JSON.stringify(params),
         success: function (dataObject, textStatus) {
             if (textStatus == "success") {
 
-                data = dataObject.d;
+                data = dataObject;
 
                 var registro = data;
-                $("#hId").val(registro.TipoArchivoId);
-                $("#txtNombre").val(registro.CodigoArchivo);
-                $("#cboTipo").val(registro.IdFormatoFirma);
-                $("#txtDescripcion").val(registro.Descripcion);
-                $("#txtExtensiones").val(registro.Extensiones);
+                $("#hId").val(registro.tipoArchivoId);
+                $("#txtNombre").val(registro.codigoArchivo);
+                $("#cboTipo").val(registro.idFormatoFirma);
+                $("#txtDescripcion").val(registro.descripcion);
+                $("#txtExtensiones").val(registro.extensiones);
 
                 $("#txtNombre").attr("disabled", "disabled");
             }
@@ -255,6 +317,7 @@ function irModificarRegistro(id) {
         }
     });
 }
+
 function limpiarRegistro() {
     $("#hId").val("");
     $("#txtNombre").val("");
@@ -263,6 +326,7 @@ function limpiarRegistro() {
 
     $("#txtNombre").removeAttr("disabled");
 }
+
 function centerModals(parametro) {
     $("#" + parametro.id + "").each(function (i) {
         var $clone = $(this).clone().css('display', 'block').appendTo('body');
@@ -277,20 +341,16 @@ function validarCodigo() {
 
     var rpta = false;
 
-    var params = {
-        codigo: $("#txtNombre").val()
-    };
+    var codigo = $("#txtNombre").val();
 
     $.ajax({
-        type: 'POST',
+        type: 'GET',
         contentType: "application/json; charset=utf-8",
-        url: controlador + 'ValidarCodigo',
-        dataType: "json",
-        data: JSON.stringify(params),
+        url: controlador + 'ValidarCodigo?codigo='+ codigo,
         success: function (dataObject, textStatus) {
             if (textStatus == "success") {
 
-                var data = dataObject.d;
+                var data = dataObject;
                 if (data != null) {
                     rpta = data;
                 }
