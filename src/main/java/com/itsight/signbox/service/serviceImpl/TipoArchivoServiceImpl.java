@@ -13,6 +13,7 @@ import static com.itsight.util.Enums.ResponseCode.EMPTY_RESPONSE;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -112,14 +113,18 @@ public class TipoArchivoServiceImpl extends BaseServiceImpl<TipoArchivoRepositor
     @Override
     public boolean validarCodigo(String codigo) {
 
-        List<TipoArchivo> tipos = repository.findAll();
+        Object[] tipo = repository.findAll().stream().filter(c -> c.getCodigoArchivo() == codigo && !c.getFlagEliminado()).toArray();
 
-        Boolean resultado = false;
+        if (tipo.length > 0 ){
+            return true;
+        }
 
-        for (TipoArchivo p : tipos)  {
+        return false;
+
+        /*for (TipoArchivo p : tipos)  {
             resultado = codigo.equalsIgnoreCase(p.getCodigoArchivo());
         }
 
-        return resultado;
+        return resultado;*/
     }
 }
