@@ -31,8 +31,6 @@ public class AuditingEntity {
     @JsonDeserialize(using = JsonDateSimpleDeserializer.class)
     private Date fechaModificacion;
 
-    @Column(name = "FLAGACTIVO", nullable = false)
-    private boolean flagActivo;
 
     @Column(name = "FLAGELIMINADO", nullable = false)
     private boolean flagEliminado;
@@ -43,12 +41,11 @@ public class AuditingEntity {
          */
     }
 
-    public AuditingEntity(String creadoPor, Date fechaCreacion, String modificadoPor, Date fechaModificacion, boolean flagActivo, boolean flagEliminado) {
+    public AuditingEntity(String creadoPor, Date fechaCreacion, String modificadoPor, Date fechaModificacion, boolean flagEliminado) {
         this.creadoPor = creadoPor;
         this.fechaCreacion = fechaCreacion;
         this.modificadoPor = modificadoPor;
         this.fechaModificacion = fechaModificacion;
-        this.flagActivo = flagActivo;
         this.flagEliminado = flagEliminado;
     }
 
