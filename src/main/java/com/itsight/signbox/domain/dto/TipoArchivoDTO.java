@@ -16,8 +16,4 @@ public class TipoArchivoDTO {
 
     private Integer IdFormatoFirma ;
 
-    private String TipoFirmaToString ;
-
-
-
 }

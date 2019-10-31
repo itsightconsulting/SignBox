@@ -1,8 +1,8 @@
 package com.itsight.signbox.service;
 
-import com.itsight.signbox.domain.TipoArchivo;
+import com.itsight.signbox.domain.Ambientes;
 import com.itsight.signbox.generic.BaseService;
 
-public interface TipoArchivoService extends BaseService<TipoArchivo, Integer> {
+public interface AmbientesService extends BaseService<Ambientes, Integer> {
     boolean validarCodigo(String codigo);
 }

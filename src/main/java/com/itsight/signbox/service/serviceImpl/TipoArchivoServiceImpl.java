@@ -2,16 +2,18 @@ package com.itsight.signbox.service.serviceImpl;
 
 import com.itsight.signbox.advice.CustomValidationException;
 import com.itsight.signbox.advice.NotFoundValidationException;
-import com.itsight.signbox.domain.Parametro;
 import com.itsight.signbox.domain.TipoArchivo;
 import com.itsight.signbox.generic.BaseServiceImpl;
 import com.itsight.signbox.repository.TipoArchivoRepository;
-import com.itsight.signbox.service.ParametroService;
 import com.itsight.signbox.service.TipoArchivoService;
 import org.springframework.stereotype.Service;
 
+import static com.itsight.util.Enums.Msg.RESOURCE_NOT_FOUND;
+import static com.itsight.util.Enums.ResponseCode.EMPTY_RESPONSE;
+
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -21,30 +23,21 @@ public class TipoArchivoServiceImpl extends BaseServiceImpl<TipoArchivoRepositor
         super(repository);
     }
 
-
-    @Override
-    public List<TipoArchivo> obtenerTipoArchivos() {
-        return null;
-    }
-
-    @Override
-    public TipoArchivo obtenerTipoArchivoPorId(Integer id) {
-        return null;
-    }
-
     @Override
     public TipoArchivo save(TipoArchivo entity) {
-        return null;
+
+        return repository.save(entity);
     }
 
     @Override
     public TipoArchivo update(TipoArchivo entity) {
-        return null;
+
+        return repository.saveAndFlush(entity);
     }
 
     @Override
     public TipoArchivo findOne(Integer id) throws NotFoundValidationException, NotFoundValidationException {
-        return null;
+        return repository.findById(id).orElseThrow(()-> new NotFoundValidationException(EMPTY_RESPONSE.get()));
     }
 
     @Override
@@ -54,7 +47,7 @@ public class TipoArchivoServiceImpl extends BaseServiceImpl<TipoArchivoRepositor
 
     @Override
     public void delete(Integer id) {
-
+        repository.deleteById(id);
     }
 
     @Override
@@ -115,5 +108,23 @@ public class TipoArchivoServiceImpl extends BaseServiceImpl<TipoArchivoRepositor
     @Override
     public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
 
+    }
+
+    @Override
+    public boolean validarCodigo(String codigo) {
+
+        Object[] tipo = repository.findAll().stream().filter(c -> c.getCodigoArchivo() == codigo && !c.getFlagEliminado()).toArray();
+
+        if (tipo.length > 0 ){
+            return true;
+        }
+
+        return false;
+
+        /*for (TipoArchivo p : tipos)  {
+            resultado = codigo.equalsIgnoreCase(p.getCodigoArchivo());
+        }
+
+        return resultado;*/
     }
 }
