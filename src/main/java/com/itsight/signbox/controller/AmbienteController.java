@@ -46,11 +46,12 @@ public class AmbienteController {
     public ResponseEntity<List<AmbientesPOJO>> listarTodo(
             @RequestParam String nombre,
             @RequestParam Boolean flagActivo,
+            @RequestParam String tipoBusqueda,
             @RequestParam Integer offset, @RequestParam Integer limit){
 
         return new ResponseEntity<List<AmbientesPOJO>>(
                 ambientesProcedureInvoker.getAmbientes(
-                        limit,offset, nombre, flagActivo), HttpStatus.OK);
+                        limit,offset, nombre, flagActivo, tipoBusqueda), HttpStatus.OK);
     }
 
     @PutMapping("actualizar/{id}")

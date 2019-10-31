@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface TipoArchivoProcedureInvoker {
 
-     List<TipoArchivoPOJO> getTipoArchivos(int limit, int offset, String descripcion, boolean flafActivo, int idTipoFirma);
+     List<TipoArchivoPOJO> getTipoArchivos(int limit, int offset, String descripcion, boolean flafActivo, int idTipoFirma, String tipoBusqueda);
 
 }

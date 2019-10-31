@@ -51,11 +51,12 @@ public class TipoArchivoController {
     public ResponseEntity<List<TipoArchivoPOJO>> listarTodo(
             @RequestParam Integer tipoId, @RequestParam String nombre,
             @RequestParam Boolean flagActivo,
+            @RequestParam String tipoBusqueda,
             @RequestParam Integer offset, @RequestParam Integer limit){
 
             return new ResponseEntity<List<TipoArchivoPOJO>>(
                 tipoArchivoProcedureInvoker.getTipoArchivos(
-                        limit,offset, nombre, flagActivo, tipoId), HttpStatus.OK);
+                        limit,offset, nombre, flagActivo, tipoId, tipoBusqueda), HttpStatus.OK);
     }
 
     @PutMapping("actualizar/{id}")

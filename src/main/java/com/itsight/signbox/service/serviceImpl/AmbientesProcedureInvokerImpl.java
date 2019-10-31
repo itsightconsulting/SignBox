@@ -20,16 +20,18 @@ public class AmbientesProcedureInvokerImpl implements AmbientesProcedureInvoker 
 
 
     @Override
-    public List<AmbientesPOJO> getAmbientes(int limit, int offset, String nombre, Boolean flafActivo) {
+    public List<AmbientesPOJO> getAmbientes(int limit, int offset, String nombre, Boolean flafActivo, String tipoBusqueda) {
         StoredProcedureQuery storedProcedureQuery = entityManager.createStoredProcedureQuery("VQJ33260.FUNC_AMBIENTES_Q_DYNAMIC_WHERE", "AmbientesGetAll");
         storedProcedureQuery.registerStoredProcedureParameter("u_Limit", Integer.class, ParameterMode.IN);
         storedProcedureQuery.registerStoredProcedureParameter("u_Offset", Integer.class, ParameterMode.IN);
         storedProcedureQuery.registerStoredProcedureParameter("u_nombre", String.class, ParameterMode.IN);
         storedProcedureQuery.registerStoredProcedureParameter("u_flagActivo", Boolean.class, ParameterMode.IN);
+        storedProcedureQuery.registerStoredProcedureParameter("u_tipoBusqueda", String.class, ParameterMode.IN);
         storedProcedureQuery.setParameter("u_Limit", limit);
         storedProcedureQuery.setParameter("u_Offset", offset);
         storedProcedureQuery.setParameter("u_nombre", nombre);
         storedProcedureQuery.setParameter("u_flagActivo", flafActivo);
+        storedProcedureQuery.setParameter("u_tipoBusqueda", tipoBusqueda);
 
         return storedProcedureQuery.getResultList();
     }

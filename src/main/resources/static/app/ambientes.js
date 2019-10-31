@@ -127,10 +127,11 @@ function listarRegistros() {
 
     var nombre = $("#txtFiltroNombre").val();
     var flagActivo = ($("#cboFiltroEstado").val() == "") ? true : $("#cboFiltroEstado").val();
+    var tipoBusqueda = $("#cboFiltroEstado").val() == "" ? "Todos" : "";
 
     $table.bootstrapTable('destroy');
     $table.bootstrapTable({
-        url:  controlador + 'listarTodo' + '?nombre=' + nombre + '&flagActivo=' + flagActivo,
+        url:  controlador + 'listarTodo' + '?nombre=' + nombre + '&flagActivo=' + flagActivo + '&tipoBusqueda=' + tipoBusqueda,
         method: 'get',
         pagination: true,
         sidePagination: 'server',

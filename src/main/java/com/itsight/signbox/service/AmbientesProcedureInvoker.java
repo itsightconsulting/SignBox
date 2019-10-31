@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface AmbientesProcedureInvoker {
 
-    List<AmbientesPOJO> getAmbientes(int limit, int offset, String nombre, Boolean flafActivo);
+    List<AmbientesPOJO> getAmbientes(int limit, int offset, String nombre, Boolean flafActivo, String tipoBusqueda);
 
 }

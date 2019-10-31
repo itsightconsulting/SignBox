@@ -165,10 +165,11 @@ function listarRegistros() {
     var tipoId = $("#cboFiltroTipo").val();
     var nombre = $("#txtFiltroNombre").val();// == "" ? null : $("#txtFiltroNombre").val();
     var flagActivo = ($("#cboFiltroEstado").val() == "") ? true : $("#cboFiltroEstado").val();
+    var tipoBusqueda = $("#cboFiltroEstado").val() == "" ? "Todos" : "";
 
     $table.bootstrapTable('destroy');
         $table.bootstrapTable({
-            url:  controlador + 'listarTodo' + '?tipoId=' + tipoId + '&nombre=' + nombre + '&flagActivo=' + flagActivo,
+            url:  controlador + 'listarTodo' + '?tipoId=' + tipoId + '&nombre=' + nombre + '&flagActivo=' + flagActivo + '&tipoBusqueda=' + tipoBusqueda,
             method: 'get',
             pagination: true,
             sidePagination: 'server',
