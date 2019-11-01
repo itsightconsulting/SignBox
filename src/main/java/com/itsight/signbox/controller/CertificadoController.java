@@ -40,6 +40,7 @@ public class CertificadoController {
 
     @GetMapping("")
     public ResponseEntity<List<CertificadosPOJO>> listarTodo(@ModelAttribute @Valid CertificadosQueryDTO certificadosQueryDTO){
+
         return new ResponseEntity<List<CertificadosPOJO>>(certificadoProcedureInvoker.getCertificados(certificadosQueryDTO), HttpStatus.OK);
     }
 

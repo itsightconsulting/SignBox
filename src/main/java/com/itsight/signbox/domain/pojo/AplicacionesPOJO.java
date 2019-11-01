@@ -12,12 +12,14 @@ public class AplicacionesPOJO {
     private Boolean FlagActivo;
     private Integer rows;
 
-    public AplicacionesPOJO(Integer aplicacionesId, String codigo, String nombre, String descripcion, Boolean flagActivo, Integer rows) {
+    public AplicacionesPOJO(Integer aplicacionesId,
+                            String codigo, String nombre,
+                            String descripcion, Boolean FlagActivo, Integer rows) {
         this.aplicacionesId = aplicacionesId;
         this.codigo = codigo;
         this.nombre = nombre;
         this.descripcion = descripcion;
-        FlagActivo = flagActivo;
+        this.FlagActivo = FlagActivo;
         this.rows = rows;
     }
 }

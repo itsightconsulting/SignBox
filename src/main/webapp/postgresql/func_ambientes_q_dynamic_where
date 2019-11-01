@@ -1,4 +1,4 @@
-CREATE OR REPLACE PROCEDURE FUNC_AMBIENTES_Q_DYNAMIC_WHERE (
+CREATE OR REPLACE PROCEDURE VQJ33260.FUNC_AMBIENTES_Q_DYNAMIC_WHERE (
     u_Limit          INT DEFAULT NULL ,
     u_Offset         INT DEFAULT 0,
     u_nombre         VARCHAR(200),
@@ -12,14 +12,14 @@ DECLARE cursor1 CURSOR
     WITH RETURN FOR SELECT PR.ambientesId,
                    PR.nombre,
                    PR.prefijo,
-                   PR.FLAGACTIVO,
+                   PR.FlagActivo,
                    PR.ROWS
             FROM (
 					SELECT row_number() OVER ( ORDER BY p.ambientesId ) AS RID,
 							P.ambientesId,
 							P.nombre,
 							P.prefijo,
-							P.FLAGACTIVO,
+							P.FlagActivo,
 							CAST(COUNT(*) OVER() AS INT) AS ROWS
 					FROM  VQJ33260.ambientes AS P
 					WHERE P.nombre LIKE concat(concat('%', trim(u_nombre)) , '%' ) AND
@@ -31,18 +31,18 @@ DECLARE cursor2 CURSOR
     WITH RETURN FOR SELECT PR.ambientesId,
                    PR.nombre,
                    PR.prefijo,
-                   PR.FLAGACTIVO,
+                   PR.FlagActivo,
                    PR.ROWS
             FROM (
 					SELECT row_number() OVER ( ORDER BY p.ambientesId ) AS RID,
 							P.ambientesId,
 							P.nombre,
 							P.prefijo,
-							P.FLAGACTIVO,
+							P.FlagActivo,
 							CAST(COUNT(*) OVER() AS INT) AS ROWS
 					FROM  VQJ33260.ambientes AS P
 					WHERE P.nombre LIKE concat(concat('%', trim(u_nombre)) , '%' ) AND
-						P.FLAGACTIVO = u_flagActivo AND
+						P.FlagActivo = u_flagActivo AND
 						(P.FlagEliminado = 0)
 					ORDER BY P.ambientesId desc
                  ) PR

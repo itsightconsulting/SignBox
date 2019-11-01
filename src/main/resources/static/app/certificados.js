@@ -1,5 +1,5 @@
 var $table = $('#tblRegistros');
-const controlador = _ctx + 'admin/certificados/';
+var controlador = _ctx + 'admin/certificados/';
 var validator;
 var validatorUser;
 var editarUser = false;

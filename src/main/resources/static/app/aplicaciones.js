@@ -6,8 +6,18 @@ var validator;
 var validatorUser;
 
 $(function () {
-    $("#btnGuardar").click(function () { addSede(); });
+    $("#btnGuardar").click(function () {
+        var id = ($("#hId").val() == "") ? 0 : parseInt($("#hId").val());
+
+        if(id == 0){
+            addSede();
+        }
+        else{
+            update();
+        }
+    });
     $("#btnBuscar").click(function () {
+        listarRegistros();
         $table.bootstrapTable('refresh');
         $(".panel-body").fadeOut();
     });
@@ -44,7 +54,7 @@ function cargarAmbientes() {
     var combo = $("#cboAmbiente");
 
     $.ajax({
-        type: 'POST',
+        type: 'get',
         contentType: "application/json; charset=utf-8",
         url: controlador + 'ListarAmbientes',
         dataType: "json",
@@ -66,7 +76,7 @@ function cargarCertificados() {
     var combo = $("#cboCertificado");
 
     $.ajax({
-        type: 'POST',
+        type: 'get',
         contentType: "application/json; charset=utf-8",
         url: controlador + 'ListarCertificados',
         dataType: "json",
@@ -171,7 +181,7 @@ function update() {
 function listarRegistros() {
 
     var nombre= $("#txtFiltroNombre").val();
-    var flagActivo= ($("#cboFiltroEstado").val() == "") ? null : $("#cboFiltroEstado").val();
+    var flagActivo= ($("#cboFiltroEstado").val() == "") ? true : $("#cboFiltroEstado").val();
     var tipoBusqueda = $("#cboFiltroEstado").val() == "" ? "Todos" : "";
 
     $table.bootstrapTable('destroy');
@@ -301,7 +311,7 @@ function irModificarRegistro(id) {
         id: id,
     };
     $.ajax({
-        type: 'POST',
+        type: 'GET',
         contentType: "application/json; charset=utf-8",
         url: controlador + 'ObtenerPorId/' + id,
         dataType: "json",
@@ -353,16 +363,13 @@ function validarCodigo() {
 
     var rpta = false;
 
-    var params = {
-        codigo: $("#txtNombre").val()
-    };
+    var codigo = $("#txtNombre").val();
 
     $.ajax({
-        type: 'POST',
+        type: 'GET',
         contentType: "application/json; charset=utf-8",
         url: controlador + 'ValidarCodigo?codigo='+ codigo,
         dataType: "json",
-        data: params,
         success: function (dataObject, textStatus) {
             if (textStatus == "success") {
 
@@ -392,30 +399,26 @@ function opcionesAmbiente(value, row, index) {
     return String.Format("<a href='javascript:eliminarAmbiente(" + row.ambientesId + ");' title='Eliminar registro'><i class='glyphicon glyphicon-trash'></i></a>");
 }
 
-/*
+
 function listarAmbientes() {
+    var id = $("#hIdApp").val();
+
     $tableAmbientes.bootstrapTable('destroy');
     $tableAmbientes.bootstrapTable({
-        url: controlador + "ObtenerAmbientes",
-        method: 'POST',
+        url: controlador + "ObtenerAmbientes?id="+id,
+        method: 'GET',
         pagination: true,
         contentType: "application/json; charset=utf-8",
         sidePagination: 'server',
         queryParamsType: 'else',
         pageSize: 20,
-        queryParams: function (p) {
-            var pageNumber = p.pageNumber;
-            var pageSize = p.pageSize;
-            return JSON.stringify({
-                id: $("#hIdApp").val(),
-                pageNumber: pageNumber,
-                pageSize: pageSize
-            })
-        },
         responseHandler: function (res) {
-            var data = res.d;
-            return { rows: data.ListTipoAmbiente, total: data.Total }
+            var data = res;
+
+            return { rows: data, total: data.length }
         }
+
+
     });
 }
 
@@ -476,29 +479,38 @@ function eliminarCertificado(id) {
 }
 
 function eliminarAmbiente(id) {
+
+    var aplicacion = $("#hIdApp").val();
+
     bootbox.setLocale("es");
     bootbox.confirm("¿Estás seguro que deseas eliminar el registro seleccionado?", function (result) {
         if (result) {
-            var params = {
-                id: id,
-            };
+
             $.ajax({
                 type: 'POST',
-                contentType: "application/json; charset=utf-8",
-                url: controlador + 'EliminarAmbiente',
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                url: controlador + 'EliminarAmbiente/'+aplicacion+'/'+id,
                 dataType: "json",
-                data: params,
                 success: function (dataObject, textStatus) {
                     if (textStatus == "success") {
-                        bootbox.alert("Registro eliminado con éxito");
+                        if (dataObject){
+                            bootbox.alert("Registro eliminado con éxito");
+                        }
+                        else{
+                            bootbox.alert("No se pudo eliminar el registro");
+                        }
+
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     var error = JSON.parse(xhr.responseText);
                 },
                 complete: function (data) {
-                    $tableAmbientes.bootstrapTable('refresh');
-                    listarAmbientes();
+                    if (data.responseText == "true"){
+                        $tableAmbientes.bootstrapTable('refresh');
+                        listarAmbientes();
+                    }
+
                 }
             });
         }
@@ -550,33 +562,38 @@ function agregarAmbiente() {
     bootbox.setLocale("es");
     bootbox.confirm("¿Estás seguro que deseas vincular el ambiente a la aplicación?", function (result) {
         if (result) {
-            var params = {
-                ambiente: ambiente,
-                aplicacion: aplicacion
-            };
+
             $.ajax({
                 type: 'POST',
-                contentType: "application/json; charset=utf-8",
-                url: controlador + 'AgregarAmbiente',
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                url: controlador + 'AgregarAmbiente/'+aplicacion+'/'+ambiente,
                 dataType: "json",
-                data: params,
                 success: function (dataObject, textStatus) {
                     if (textStatus == "success") {
-                        bootbox.alert("Registro vinculado con éxito");
+                        if (dataObject){
+                            bootbox.alert("Registro vinculado con éxito");
+                        }
+                        else{
+                            bootbox.alert("Este ambiente ya está vinculado");
+                        }
+
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     var error = JSON.parse(xhr.responseText);
                 },
                 complete: function (data) {
-                    $tableAmbientes.bootstrapTable('refresh');
-                    listarAmbientes();
+
+                    if(data.responseText != "false"){
+                        $tableAmbientes.bootstrapTable('refresh');
+                        listarAmbientes();
+                    }
                 }
             });
         }
     });
 }
-
+/*
 function agregarCertificado() {
     var certificado = $("#cboCertificado").val();
     var aplicacion = $("#hIdApp").val();

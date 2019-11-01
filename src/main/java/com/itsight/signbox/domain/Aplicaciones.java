@@ -7,6 +7,7 @@ import com.itsight.signbox.domain.pojo.AplicacionesPOJO;
 import com.itsight.signbox.json.JsonDateSimpleDeserializer;
 import com.itsight.signbox.json.JsonDateSimpleSerializer;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -20,6 +21,7 @@ import java.util.Date;
                         columns = {
                                 @ColumnResult(name = "aplicacionesId"),
                                 @ColumnResult(name = "codigo"),
+                                @ColumnResult(name = "nombre"),
                                 @ColumnResult(name = "descripcion"),
                                 @ColumnResult(name = "FlagActivo"),
                                 @ColumnResult(name = "rows")
@@ -30,6 +32,7 @@ import java.util.Date;
 
 @Entity
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class Aplicaciones extends AuditingEntity {
 
   @Id
@@ -56,24 +59,4 @@ public class Aplicaciones extends AuditingEntity {
   @Column(name = "FLAGACTIVO")
   private Boolean FlagActivo;
 
-  @Column(name = "FLAGELIMINADO")
-  private Boolean FlagEliminado;
-
-  @Column(name = "CREADOPOR")
-  private String CreadoPor;
-
-  @Temporal(TemporalType.TIMESTAMP)
-  @Column(name = "FECHACREACION")
-  @JsonSerialize(using = JsonDateSimpleSerializer.class)
-  @JsonDeserialize(using = JsonDateSimpleDeserializer.class)
-  private Date fechaCreacion;
-
-  @Column(name = "MODIFICADOPOR")
-  private String modificadoPor;
-
-  @Temporal(TemporalType.TIMESTAMP)
-  @Column(name = "FECHAMODIFICACION")
-  @JsonSerialize(using = JsonDateSimpleSerializer.class)
-  @JsonDeserialize(using = JsonDateSimpleDeserializer.class)
-  private Date fechaModificacion;
 }

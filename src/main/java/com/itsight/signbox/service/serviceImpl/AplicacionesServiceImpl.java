@@ -24,7 +24,7 @@ public class AplicacionesServiceImpl extends BaseServiceImpl<AplicacionesReposit
     @Override
     public boolean validarCodigo(String codigo) {
 
-        Object[] existe = repository.findAll().stream().filter(c -> c.getCodigo() == codigo && !c.getFlagEliminado()).toArray();
+        Object[] existe = repository.findAll().stream().filter(c -> c.getCodigo() == codigo ).toArray();//&& !c.getFlagEliminado()
         if (existe.length > 0 ){
             return true;
         }
