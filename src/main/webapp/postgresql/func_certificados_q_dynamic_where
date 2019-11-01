@@ -1,0 +1,34 @@
+CREATE OR REPLACE PROCEDURE func_certificados_q_dynamic_where (
+    u_Limit          INT DEFAULT NULL ,
+    u_Offset         INT DEFAULT 0,
+    u_alias        VARCHAR(200) DEFAULT NULL,
+    u_flagActivo     BOOLEAN DEFAULT NULL)
+    DYNAMIC RESULT SETS 1
+    LANGUAGE SQL
+BEGIN
+
+    DECLARE cursor1 CURSOR
+WITH RETURN FOR
+    SELECT     CD.CERTIFICADOSID id,
+               CD.ALIAS alias,
+               CD.IDENTIFICADORHSM identificadorHsm,
+               CD.RESPONSABLE responsable,
+               CD.FLAGACTIVO flagActivo,
+               CD.ROWS rows
+    FROM (
+             SELECT row_number() OVER ( ORDER BY C.CERTIFICADOSID ) AS CID,
+                    C.CERTIFICADOSID,
+                    C.ALIAS,
+                    C.IDENTIFICADORHSM,
+                    C.RESPONSABLE,
+                    C.FLAGACTIVO,
+                    CAST(COUNT(*) OVER() AS INT) AS ROWS
+             FROM  CERTIFICADOS AS C
+             WHERE ((u_alias IS NULL) OR  LOWER(C.ALIAS) LIKE LOWER(concat(concat('%', u_alias) , '%' ) )) AND
+                   (u_flagActivo IS NULL OR C.FLAGACTIVO = u_flagActivo)
+             ORDER BY C.CERTIFICADOSID desc
+         ) CD
+    WHERE CD.CID BETWEEN u_Offset AND u_Offset + u_Limit;
+
+  OPEN cursor1;
+END;

@@ -2,8 +2,6 @@ package com.itsight.signbox.service.serviceImpl;
 
 import com.itsight.signbox.domain.pojo.TipoArchivoPOJO;
 import com.itsight.signbox.service.TipoArchivoProcedureInvoker;
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import org.hibernate.type.descriptor.sql.VarcharTypeDescriptor;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;

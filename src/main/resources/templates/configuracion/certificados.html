@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:insert="html-commons/meta :: fg-meta"></th:block>
+    <th:block th:insert="html-commons/css  :: fg-css"></th:block>
+
+    <title>SignOn</title>
+</head>
+<body>
+
+<!-- HEADER -->
+<div th:replace="html-commons/header :: fg-header"></div>
+<!-- END HEADER -->
+
+<!-- Left panel : Navigation area -->
+<!-- Note: This width of the aside area can be adjusted through LESS variables -->
+<div th:replace="html-commons/left-panel :: fg-left-panel"></div>
+
+
+<div id="main" role="main">
+ <div id="content">
+   <div>
+       <section class="content-header">
+           <style>
+            @media (min-width: 992px) {
+                .modal-lg {
+                    width: 1200px;
+                }
+            }
+
+             #accordion {
+                width: 100%;
+            }
+
+            /*Manejo de Archivo*/
+            #lblMensajeArchivo, #lblMensajeArchivoActualizar, #lblMensajeArchivoCambiar {
+                color: #FF0000 !important;
+                font-weight: bold !important;
+                font-size: 12px;
+            }
+
+            .margin {
+                margin-left: 10px;
+            }
+
+
+        </style>
+
+
+           <h1>Gestión de certificados digitales
+               <small>Permite la gestión de los certificados digitales registrados en la plataforma</small>
+               <button class="btn btn-primary btn-add" id="btnRegistroColaborador"><span class="fa fa-plus"></span>Nuevo</button>
+           </h1>
+       </section>
+
+
+       <div class="view_list" <%--style="overflow-x: hidden; overflow-y: scroll; display: block;--%>">
+       <div class="row">
+           <div class="col-xs-12" style="margin: 15px; padding-left: 0;">
+               <div id="accordion" class="panel panel-default">
+                   <div class="panel-heading">Búsqueda<span class="fa fa-search"></span></div>
+                   <div style="display: none" class="panel-body">
+                       <form id="frm_busqueda">
+                           <div class="col-sm-3">
+                               <div class="form-group">
+                                   <label for="txtFiltroNombre">Alías</label>
+                                   <input id="txtFiltroNombre" class="form-control" autocomplete="off" />
+                               </div>
+                           </div>
+                           <div class="col-sm-3">
+                               <div class="form-group">
+                                   <label for="cboFiltroEstado">Estado</label>
+                                   <select id="cboFiltroEstado" class="form-control">
+                                       <option value="">Todos</option>
+                                       <option value="true">Activo</option>
+                                       <option value="false">Inactivo</option>
+                                   </select>
+                               </div>
+                           </div>
+                           <div class="col-sm-3">
+                               <div class="form-group btn_mod">
+                                   <button id="btnBuscar" type="button" class="btn btn-primary">Buscar</button>
+                               </div>
+                               <div class="form-group btn_mod">
+                                   <button type="button" class="btn btn-danger btn_cancel" id="btnLimpiar">Limpiar</button>
+                               </div>
+                           </div>
+                       </form>
+                   </div>
+               </div>
+               <ul class="nav nav-tabs v_mode">
+                   <li>Modo: </li>
+                   <li class="active"><a data-toggle="tab" href="#lista_v">Lista</a></li>
+               </ul>
+           </div>
+       </div>
+       <div class="row">
+           <div class="col-xs-12">
+               <div class="tab-content">
+                   <div id="lista_v" class="tab-pane fade in active">
+                       <div class="table-responsive">
+                           <table id="tblRegistros" class="table table-striped table-responsive">
+                               <thead>
+                               <tr>
+                                   <th data-formatter="rowNumFormatter" data-halign="center" data-valign="middle" data-align="center" data-width="20">#</th>
+                                   <th data-formatter="linkFormatter" data-field="alias" data-width="40" data-halign="center" data-valign="middle" data-align="center">Alías</th>
+                                   <th data-field="identificadorHsm" data-width="200" data-halign="center" data-valign="middle" data-align="center">Identificador HSM</th>
+                                   <th data-field="responsable" data-width="200" data-halign="center" data-valign="middle" data-align="center">Responsable</th>
+                                   <th data-formatter="estado"  data-field="flagActivo" data-width="80" data-halign="center" data-valign="middle" data-align="center">Estado</th>
+                                   <th data-formatter="opciones" data-width="40" data-halign="center" data-valign="middle" data-align="center">Opciones</th>
+                               </tr>
+                               </thead>
+                           </table>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </div>
+
+     <div class="view_register">
+         <div class="content_register">
+             <a href="#" class="close_register btn_register_hide"><i class="fa fa-close" id="iCerrarModal"></i></a>
+             <input type="hidden" id="hId" name="hId" value="0" />
+             <h3 id="txtTitleForm">Nueva Sucursal</h3>
+             <div class="form_register">
+                 <form id="form_registro">
+                     <div class="row">
+                         <div class="col-md-6">
+                             <div class="form-group">
+                                 <label for="txtNombre">Alías: <span>(*)</span></label>
+                                 <input type="text" tabindex="1" class="form-control" id="txtNombre" name="txtNombre" maxlength="60" autocomplete="off" />
+                             </div>
+                         </div>
+                         <div class="col-md-6">
+                             <div class="form-group">
+                                 <label for="txtHSM">Identificador HSM: </label>
+                                 <input type="text" tabindex="1" class="form-control" id="txtHSM" name="txtHSM" maxlength="120" autocomplete="off" />
+                             </div>
+                         </div>
+                     </div>
+                     <div class="row">
+                         <div class="col-md-6">
+                             <div class="form-group">
+                                 <label for="txtPIN">PIN seguridad: <span>(*)</span></label>
+                                 <input type="password" tabindex="1" class="form-control" id="txtPIN" name="txtPIN" maxlength="10" autocomplete="off" />
+                             </div>
+                         </div>
+                         <div class="col-md-6">
+                             <div class="form-group">
+                                 <label for="txtFecha">Fecha de caducidad: </label>
+                                 <input type="text" tabindex="1" class="form-control" id="txtFecha" name="txtFecha" maxlength="20" autocomplete="off" />
+                             </div>
+                         </div>
+                     </div>
+                     <div class="row">
+                         <div class="col-md-6">
+                             <div class="form-group">
+                                 <label for="txtResponsable">Responsable: <span>(*)</span></label>
+                                 <input type="text" tabindex="1" class="form-control" id="txtResponsable" name="txtResponsable" maxlength="120" autocomplete="off" />
+                             </div>
+                         </div>
+                         <div class="col-md-6">
+                             <div class="form-group">
+                                 <label for="txtDescripcion">Descripción: </label>
+                                 <input type="text" tabindex="1" class="form-control" id="txtDescripcion" name="txtDescripcion" maxlength="200" autocomplete="off" />
+                             </div>
+                         </div>
+                     </div>
+                 </form>
+             </div>
+             <div class="button_group">
+                 <button type="button" style="border: 1px solid #D7D5D4" class="btn btn-default btn_register_hide" id="btnCancelar">Cancelar</button>
+                 <button type="button" class="btn btn-primary" id="btnGuardar" data-loading-text="Procesando...">Guardar</button>
+             </div>
+             <br /><br /><br />
+         </div>
+     </div>
+
+ </div>
+ </div>
+
+</div>
+<!-- PAGE FOOTER -->
+<div th:replace="html-commons/footer :: fg-footer"></div>
+
+<div th:replace="html-commons/loading :: fg-loading"></div>
+
+
+<!-- END PAGE FOOTER -->
+<!-- IMPORTS JAVASCRIPT -->
+<script th:replace="html-commons/js :: fg-js"/>
+
+<script th:src="@{/app/certificados.js}"></script>
+<script th:src="@{/app/libs/bootstrap-table.min.js}"></script>
+
+</body>
+
+</html>

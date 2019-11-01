@@ -3,13 +3,38 @@ package com.itsight.signbox.domain;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.itsight.signbox.domain.base.AuditingEntity;
+import com.itsight.signbox.domain.pojo.CertificadosPOJO;
+import com.itsight.signbox.domain.pojo.ParametroPOJO;
 import com.itsight.signbox.json.JsonDateSimpleDeserializer;
 import com.itsight.signbox.json.JsonDateSimpleSerializer;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
+
+@SqlResultSetMapping(
+        name = "CertificadosGetAll",
+        classes = {
+                @ConstructorResult(
+                        targetClass = CertificadosPOJO.class,
+                        columns = {
+                                @ColumnResult(name = "id"),
+                                @ColumnResult(name = "alias"),
+                                @ColumnResult(name = "identificadorHsm"),
+                                @ColumnResult(name = "responsable"),
+                                @ColumnResult(name = "flagActivo"),
+                                @ColumnResult(name = "rows"),
+                        }
+
+                )
+        }
+)
+@Entity
+@Data
+@EqualsAndHashCode(callSuper = false)
 public class Certificados extends AuditingEntity {
 
   @Id
@@ -43,4 +68,8 @@ public class Certificados extends AuditingEntity {
   @NotBlank
   @Column(nullable = false , name = "DESCRIPCION")
   private String descripcion;
+
+  @Column(name = "FLAGACTIVO", nullable = false)
+  private boolean flagActivo;
+
 }
