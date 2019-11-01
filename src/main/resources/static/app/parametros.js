@@ -1,5 +1,5 @@
-const $table = $('#tblRegistros');
-const controlador = _ctx + 'admin/parametros/';
+var $table = $('#tblRegistros');
+var controlador = _ctx + 'admin/parametros/';
 
 $(function () {
     $("#btnGuardar").click(function () {
@@ -31,7 +31,7 @@ function irModificarRegistro(id) {
         success: function (dataObject, textStatus) {
             if (textStatus == "success") {
 
-                const registro = dataObject;
+                var registro = dataObject;
                 $("#hId").val(registro.id);
                 $("#txtParam").val(registro.nombre);
                 $("#txtDescription").val(registro.descripcion);
@@ -104,11 +104,11 @@ function listarRegistros() {
 function actualizar() {
 
   if ($("#form_registro").valid()) {
-        const $btn = $("#btnGuardar");
+      var $btn = $("#btnGuardar");
         $btn.button('loading');
 
-        const params = {};
-        const id = $("#hId").val();
+      var params = {};
+      var id = $("#hId").val();
         params.nombre = $("#txtParam").val();
         params.descripcion = $("#txtDescription").val();
         params.valor = $("#txtValue").val();
@@ -128,7 +128,7 @@ function actualizar() {
                 }
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                const error = JSON.parse(xhr.responseText);
+                var error = JSON.parse(xhr.responseText);
             },
             complete: function (data) {
                 $btn.button('reset');

@@ -1,3 +1,5 @@
+package com.itsight.signbox.domain;
+
 import lombok.Data;
 
 import javax.persistence.*;
