@@ -1,6 +1,5 @@
 package com.itsight.signbox.domain;
 
-import jdk.nashorn.internal.ir.annotations.Ignore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -26,7 +25,7 @@ public class AmbienteAplicacion {
   @Column(nullable = false , name = "IDAMBIENTE")
   private Integer idAmbiente;
 
-  /*@Ignore
+  /*
   @ManyToOne
   private Ambientes ambientes;*/
 

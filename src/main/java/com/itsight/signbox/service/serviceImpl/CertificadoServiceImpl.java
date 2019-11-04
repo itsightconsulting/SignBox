@@ -25,12 +25,12 @@ public class CertificadoServiceImpl extends BaseServiceImpl<CertificadoRepositor
 
     @Override
     public Certificados update(Certificados entity) {
-        return null;
+        return repository.saveAndFlush(entity);
     }
 
     @Override
     public Certificados findOne(Integer id) throws NotFoundValidationException, NotFoundValidationException {
-        return null;
+        return repository.findById(id).orElse(null);
     }
 
     @Override
@@ -101,5 +101,10 @@ public class CertificadoServiceImpl extends BaseServiceImpl<CertificadoRepositor
     @Override
     public void actualizarFlagActivoById(Integer id, boolean flagActivo) {
 
+    }
+
+    @Override
+    public boolean existsByAlias(String alias) {
+        return repository.existsAliasLike(alias);
     }
 }

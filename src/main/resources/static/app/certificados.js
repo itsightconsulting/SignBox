@@ -46,14 +46,17 @@ function addSede() {
 
 
     //editarUser = false;
- //   if ($("#form_registro").valid()) {
+    if ($("#form_registro").valid()) {
+
         $("#btnGuardar").button("loading");
         var fecha = moment($("#txtFecha").val(), "DD/MM/YYYY");
 
         var item = {};
 
 
-        ($("#hId").val() == "") ?  null: item.certificadosId  = parseInt($("#hId").val());
+        const itemId = ($("#hId").val() == "") ?  null : parseInt($("#hId").val());
+
+
         item.alias = $("#txtNombre").val().trim();
         item.identificadorHsm = $("#txtHSM").val();
         item.pinSeguridad = $("#txtPIN").val();
@@ -61,19 +64,21 @@ function addSede() {
         item.fechaCaducidad = fecha.toDate();
         item.descripcion = $("#txtDescripcion").val();
 
-        console.log(item);
+        console.log(itemId);
+
+
 
      $.ajax({
-         type: 'POST',
+         type:  itemId === null ?  'POST' : 'PUT' ,
          contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-         url: controlador,
+         url:  itemId === null ?   controlador  :  controlador + itemId,
          dataType: "json",
          data:  item ,
          success: function (dataObject, textStatus) {
 
              console.log(dataObject, textStatus);
-            // $table.bootstrapTable('refresh');
-            // irListado();
+             $table.bootstrapTable('refresh');
+             irListado();
          },
          error: function (xhr, ajaxOptions, thrownError) {
              var error = JSON.parse(xhr.responseText);
@@ -86,8 +91,10 @@ function addSede() {
          //async: false
      });
 
-  //  }
+  }
 }
+
+
 function listarRegistros() {
 
     $table.bootstrapTable('destroy');
@@ -117,7 +124,7 @@ function listarRegistros() {
     });
 }
 function validarRegistros() {
-    $.validator.addMethod('validarCodigo', function (val, element) {
+    $.validator.addMethod('aliasValido', function (val, element) {
         return validarCodigo();
     });
     validator = $("#form_registro").validate({
@@ -127,7 +134,7 @@ function validarRegistros() {
         rules: {
             txtNombre: {
                 required: true,
-                validarCodigo: true
+                aliasValido: true
             },
             txtHSM: {
                 required: true
@@ -145,7 +152,7 @@ function validarRegistros() {
         messages: {
             txtNombre: {
                 required: "Debes ingresar un valor para el campo",
-                validarCodigo: "El código ingresado ya existe"
+                aliasValido: "El código ingresado ya existe"
             },
             txtHSM: {
                 required: "Debes ingresar un valor para el campo"
@@ -173,16 +180,17 @@ function limpiarFiltros() {
 function opciones(value, row, index) {
     var estado = "";
 
+    console.log(row);
     if (row.flagActivo) {
-        estado = String.Format("<a href='javascript:cambiarEstado(" + row.CertificadosId + ");' title='Desactivar registro'><i class='glyphicon glyphicon-ok'></i></a>");
+        estado = String.Format("<a href='javascript:cambiarEstado(" + row.id + ");' title='Desactivar registro'><i class='glyphicon glyphicon-ok'></i></a>");
     } else {
-        estado = String.Format("<a href='javascript:cambiarEstado(" + row.CertificadosId + ");' title='Activar registro'><i class='glyphicon glyphicon-ok' style='color:gray;opacity: 0.35'></i></a>");
+        estado = String.Format("<a href='javascript:cambiarEstado(" + row.id + ");' title='Activar registro'><i class='glyphicon glyphicon-ok' style='color:gray;opacity: 0.35'></i></a>");
     }
 
     return estado;
 }
 function linkFormatter(value, row, index) {
-    return String.Format('<a class="editable editable-click" href="javascript:irModificarRegistro(' + row.CertificadosId + ')" title="Editar">{0}</a>', value);
+    return String.Format('<a class="editable editable-click" href="javascript:irModificarRegistro(' + row.id + ')" title="Editar">{0}</a>', value);
 }
 
 
@@ -199,18 +207,15 @@ function cambiarEstado(id) {
     bootbox.setLocale("es");
     bootbox.confirm("¿Estás seguro que deseas cambiar el estado del registro seleccionado?", function (result) {
         if (result) {
-            var params = {
-                id: id,
-            };
+
             $("#load_pace").show();
             $.ajax({
-                type: 'POST',
-                contentType: "application/json; charset=utf-8",
-                url: controlador + 'CambiarEstado',
-                dataType: "json",
-                data: JSON.stringify(params),
+                type: 'PUT',
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                url: controlador + 'estado/'+ id,
+                dataType: 'json',
                 success: function (dataObject, textStatus) {
-                    if (textStatus == "success") {
+                    if (textStatus === "success") {
                         MostrarAlerta("alertBox", "alert-success", "Se cambió con <strong>éxito</strong> el estado del proveedor.")
                     }
                 },
@@ -229,32 +234,26 @@ function cambiarEstado(id) {
 function irModificarRegistro(id) {
     //validatorUpdate = false;
     $("#form_registro").validate().resetForm();
-    $("#txtTitleForm").html("Editar Ambiente");
+    $("#txtTitleForm").html("Editar Certificado");
 
     limpiarRegistro();
-    var params = {
-        id: id,
-    };
+
     $.ajax({
-        type: 'POST',
-        contentType: "application/json; charset=utf-8",
-        url: controlador + 'ObtenerPorId',
+        type: 'GET',
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        url: controlador + id,
         dataType: "json",
-        data: JSON.stringify(params),
         success: function (dataObject, textStatus) {
             if (textStatus == "success") {
-
-                data = dataObject.d;
-
-                var registro = data;
-                $("#hId").val(registro.CertificadosId);
-                $("#txtNombre").val(registro.Alias);
-                $("#txtHSM").val(registro.IdentificadorHSM);
-                $("#txtPIN").val(registro.PinSeguridadSinCifrar);
-                $("#txtResponsable").val(registro.Responsable);
-                $("#txtDescripcion").val(registro.Descripcion);
-                $("#txtFecha").val(registro.FechaCaducidadToString);
-
+                const registro = dataObject;
+                console.log(registro);
+                $("#hId").val(registro.certificadosId);
+                $("#txtNombre").val(registro.alias);
+                $("#txtHSM").val(registro.identificadorHsm);
+                $("#txtPIN").val(registro.pinSeguridad);
+                $("#txtResponsable").val(registro.responsable);
+                $("#txtDescripcion").val(registro.descripcion);
+                $("#txtFecha").val(moment(registro.fechaCaducidad, 'DD/MM/YYYY HH:mm:ss').format('DD/MM/YYYY'));
                 $("#txtNombre").attr("disabled", "disabled");
             }
         },
@@ -289,24 +288,23 @@ function centerModals(parametro) {
 
 function validarCodigo() {
 
-    var rpta = false;
+    var valido = false;
 
-    var params = {
-        codigo: $("#txtNombre").val()
-    };
+    const params = {
+        alias: $("#txtNombre").val()
+    }
 
     $.ajax({
-        type: 'POST',
-        contentType: "application/json; charset=utf-8",
-        url: controlador + 'ValidarCodigo',
+        type: 'GET',
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        url: controlador + 'alias/validacion',
         dataType: "json",
-        data: JSON.stringify(params),
+        data: params,
         success: function (dataObject, textStatus) {
-            if (textStatus == "success") {
-                var data = dataObject.d;
-                if (data != null) {
-                    rpta = data;
-                }
+
+
+            if (dataObject != null) {
+                valido = !dataObject.aliasExiste;
             }
         },
         error: function (xhr, ajaxOptions, thrownError) {
@@ -318,5 +316,8 @@ function validarCodigo() {
         async: false
     });
 
-    return rpta;
+
+    console.log(valido);
+
+    return valido   ;
 }
