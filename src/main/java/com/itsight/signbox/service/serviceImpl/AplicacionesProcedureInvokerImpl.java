@@ -19,7 +19,7 @@ public class AplicacionesProcedureInvokerImpl implements AplicacionesProcedureIn
 
     @Override
     public List<AplicacionesPOJO> getAplicaciones(int limit, int offset, String nombre, Boolean flagActivo, String tipoBusqueda) {
-        StoredProcedureQuery storedProcedureQuery = entityManager.createStoredProcedureQuery("VQJ33260.FUNC_APLICACIONES_Q_DYNAMIC_WHERE", "AplicacionesGetAll");
+        StoredProcedureQuery storedProcedureQuery = entityManager.createStoredProcedureQuery("VQJ33260.func_aplicaciones_q_dynamic_where.sql", "AplicacionesGetAll");
         storedProcedureQuery.registerStoredProcedureParameter("u_Limit", Integer.class, ParameterMode.IN);
         storedProcedureQuery.registerStoredProcedureParameter("u_Offset", Integer.class, ParameterMode.IN);
         storedProcedureQuery.registerStoredProcedureParameter("u_nombre", String.class, ParameterMode.IN);

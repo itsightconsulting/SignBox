@@ -21,12 +21,13 @@ import java.util.Date;
                 @ConstructorResult(
                         targetClass = CertificadosPOJO.class,
                         columns = {
+
                                 @ColumnResult(name = "id"),
                                 @ColumnResult(name = "alias"),
                                 @ColumnResult(name = "identificadorHsm"),
                                 @ColumnResult(name = "responsable"),
                                 @ColumnResult(name = "flagActivo"),
-                                @ColumnResult(name = "rows"),
+                                @ColumnResult(name = "rows")
                         }
 
                 )

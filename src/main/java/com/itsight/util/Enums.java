@@ -1,5 +1,7 @@
 package com.itsight.util;
 
+import lombok.Data;
+
 public class Enums {
 
     public enum ResponseCode {
@@ -76,5 +78,54 @@ public class Enums {
 
         public String get(){return id;}
     }
+
+    public enum ModosAcceso
+    {
+        ActiveDirectory("1", "Acceso por Active Directory"),
+        PorFormulario("2", "Por Formulario");
+
+        final String id;
+        final String descripcion;
+
+        ModosAcceso(String id, String descripcion) {
+            this.id = id;
+            this.descripcion = descripcion;
+        }
+        public String getId() {
+            return id;
+        }
+
+        public String getDescripcion() {
+            return descripcion;
+        }
+
+
+    }
+
+    public enum Perfiles
+    {
+        Administracion("1" , "Administrador"),
+        Operador("2" , "Operador"),
+        Auditor("3", "Auditor");
+
+
+        final String id;
+        final String nombre;
+
+        Perfiles(String id, String nombre) {
+            this.id = id;
+            this.nombre = nombre;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public String getNombre() {
+            return nombre;
+        }
+
+      }
+
 
 }
