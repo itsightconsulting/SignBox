@@ -7,6 +7,7 @@ import com.itsight.signbox.generic.BaseService;
 
 public interface CertificadoService extends BaseService<Certificados, Integer> {
 
+     boolean existsByAlias(String alias);
 
 
 }

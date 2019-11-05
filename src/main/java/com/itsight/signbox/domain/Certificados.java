@@ -21,12 +21,13 @@ import java.util.Date;
                 @ConstructorResult(
                         targetClass = CertificadosPOJO.class,
                         columns = {
+
                                 @ColumnResult(name = "id"),
                                 @ColumnResult(name = "alias"),
                                 @ColumnResult(name = "identificadorHsm"),
                                 @ColumnResult(name = "responsable"),
                                 @ColumnResult(name = "flagActivo"),
-                                @ColumnResult(name = "rows"),
+                                @ColumnResult(name = "rows")
                         }
 
                 )
@@ -60,7 +61,7 @@ public class Certificados extends AuditingEntity {
 
 
   @Temporal(TemporalType.TIMESTAMP)
-  @Column(name = "FECHACADUCIDAD", nullable = false, updatable = false)
+  @Column(name = "FECHACADUCIDAD", nullable = false)
   @JsonSerialize(using = JsonDateSimpleSerializer.class)
   @JsonDeserialize(using = JsonDateSimpleDeserializer.class)
   private Date fechaCaducidad;
@@ -71,5 +72,16 @@ public class Certificados extends AuditingEntity {
 
   @Column(name = "FLAGACTIVO", nullable = false)
   private boolean flagActivo;
+
+
+
+  public void setCertificados(Certificados certificados){
+
+    this.descripcion = certificados.getDescripcion();
+    this.identificadorHsm = certificados.getIdentificadorHsm();
+    this.pinSeguridad = certificados.getPinSeguridad();
+    this.fechaCaducidad = certificados.getFechaCaducidad();
+    this.responsable = certificados.getResponsable();
+  }
 
 }

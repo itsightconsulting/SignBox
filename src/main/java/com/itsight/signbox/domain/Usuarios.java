@@ -1,21 +1,42 @@
 package com.itsight.signbox.domain;
 
+import com.itsight.signbox.domain.base.AuditingEntity;
+import com.itsight.signbox.domain.pojo.CertificadosPOJO;
+import com.itsight.signbox.domain.pojo.UsuariosPOJO;
 import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
+@SqlResultSetMapping(
+        name = "UsuariosGetAll",
+        classes = {
+                @ConstructorResult(
+                        targetClass = UsuariosPOJO.class,
+                        columns = {
+                                @ColumnResult(name = "id"),
+                                @ColumnResult(name = "nombres"),
+                                @ColumnResult(name = "dni"),
+                                @ColumnResult(name = "perfilNombre"),
+                                @ColumnResult(name = "nombreUsuario"),
+                                @ColumnResult(name = "flagActivo"),
+                                @ColumnResult(name = "rows")
+
+                        }
+
+                )
+        }
+)
 @Entity
 @Data
-public class Usuarios {
+public class Usuarios  extends AuditingEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "USUARIOID")
   private Integer usuarioId;
 
-  @NotBlank
-  @Column(nullable = false, name = "CONTRASENA")
+  @Column(name = "CONTRASENA")
   private String contrasena;
 
   @NotBlank
@@ -48,5 +69,17 @@ public class Usuarios {
   @Column(nullable = false , name = "DNI")
   private String dni;
 
+  @Column(name = "FLAGACTIVO", nullable = false)
+  private boolean flagActivo;
+
+  public void setUsuario ( Usuarios usuario){
+     this.contrasena = usuario.getContrasena();
+     this.nombres = usuario.getNombres();
+     this.paterno = usuario.getPaterno();
+     this.materno = usuario.getMaterno();
+     this.correoElectronico = usuario.getCorreoElectronico();
+     this.dni = usuario.getDni();
+
+  }
 
 }

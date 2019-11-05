@@ -6,7 +6,6 @@ import com.itsight.signbox.domain.base.AuditingEntity;
 import com.itsight.signbox.domain.pojo.AmbientesPOJO;
 import com.itsight.signbox.json.JsonDateSimpleDeserializer;
 import com.itsight.signbox.json.JsonDateSimpleSerializer;
-import jdk.nashorn.internal.ir.annotations.Ignore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -71,7 +70,7 @@ public class Ambientes  {
   @JsonDeserialize(using = JsonDateSimpleDeserializer.class)
   private Date fechaModificacion;
 
-  /*@Ignore
+  /*
   @OneToMany(mappedBy = "ambienteAplicacion")
   private List<AmbienteAplicacion> ambienteAplicacion;*/
 

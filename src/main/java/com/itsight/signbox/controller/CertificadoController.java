@@ -1,5 +1,6 @@
 package com.itsight.signbox.controller;
 
+import com.itsight.signbox.advice.NotFoundValidationException;
 import com.itsight.signbox.constants.ViewConstant;
 import com.itsight.signbox.domain.Certificados;
 import com.itsight.signbox.domain.Parametro;
@@ -17,8 +18,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/admin/certificados")
@@ -44,10 +47,45 @@ public class CertificadoController {
         return new ResponseEntity<List<CertificadosPOJO>>(certificadoProcedureInvoker.getCertificados(certificadosQueryDTO), HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Certificados> listarporId(@PathVariable(name = "id") Integer id) throws NotFoundValidationException {
+
+        return new ResponseEntity<Certificados>(certificadoService.findOne(id),HttpStatus.OK) ;
+    }
+
+
     @PostMapping("")
     public Certificados agregar(@ModelAttribute @Valid Certificados certificado){
         certificado.setFlagActivo(true);
         return certificadoService.save(certificado);
     }
+
+
+    @PutMapping("/{id}")
+    public @ResponseBody Certificados actualizar(@ModelAttribute @Valid Certificados certificados, @PathVariable(name = "id") Integer id) throws NotFoundValidationException {
+
+        Certificados qCertificados = certificadoService.findOne(id);
+        qCertificados.setCertificados(certificados);
+
+        return certificadoService.update(qCertificados);
+    }
+
+
+    @PutMapping("/estado/{id}")
+    public @ResponseBody Certificados actualizarEstado(@PathVariable(name = "id") Integer id) throws NotFoundValidationException {
+
+        Certificados certificados = certificadoService.findOne(id);
+        certificados.setFlagActivo(!certificados.isFlagActivo());
+
+        return certificadoService.update(certificados);
+    }
+
+
+    @GetMapping("/alias/validacion")
+    public @ResponseBody
+    Map<String, Boolean> existeAlias(@RequestParam String alias) {
+        return Collections.singletonMap("aliasExiste", certificadoService.existsByAlias(alias));
+    }
+
 
 }

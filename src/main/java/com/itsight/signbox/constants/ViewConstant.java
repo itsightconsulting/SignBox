@@ -12,5 +12,9 @@ public class ViewConstant {
  public static final String MAIN_ESTAMPA = "configuracion/estampa";
  public static final String MAIN_INICIO = "index";
 
+ //MAIN SEGURIDAD
+
+ public static final String MAIN_USUARIOS = "seguridad/usuarios";
+
 
 }
