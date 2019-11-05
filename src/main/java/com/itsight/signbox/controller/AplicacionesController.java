@@ -2,9 +2,7 @@ package com.itsight.signbox.controller;
 
 import com.itsight.signbox.advice.NotFoundValidationException;
 import com.itsight.signbox.constants.ViewConstant;
-import com.itsight.signbox.domain.AmbienteAplicacion;
-import com.itsight.signbox.domain.Ambientes;
-import com.itsight.signbox.domain.Aplicaciones;
+import com.itsight.signbox.domain.*;
 import com.itsight.signbox.domain.dto.AplicacionesDTO;
 import com.itsight.signbox.domain.pojo.AmbientesPOJO;
 import com.itsight.signbox.domain.pojo.AplicacionesPOJO;
@@ -30,17 +28,20 @@ public class AplicacionesController {
     private AmbientesProcedureInvoker ambientesProcedureInvoker;
     private CertificadoProcedureInvoker certificadoProcedureInvoker;
     private AmbienteAplicacionService ambienteAplicacionService;
+    private AplicacionCertificadoService aplicacionCertificadoService;
 
     public AplicacionesController(AplicacionesService aplicacionesService,
                                   AplicacionesProcedureInvoker aplicacionesProcedureInvoker,
                                   AmbientesProcedureInvoker ambientesProcedureInvoker,
                                   CertificadoProcedureInvoker certificadoProcedureInvoker,
-                                  AmbienteAplicacionService ambienteAplicacionService) {
+                                  AmbienteAplicacionService ambienteAplicacionService,
+                                  AplicacionCertificadoService aplicacionCertificadoService) {
         this.aplicacionesService = aplicacionesService;
         this.aplicacionesProcedureInvoker = aplicacionesProcedureInvoker;
         this.ambientesProcedureInvoker = ambientesProcedureInvoker;
         this.certificadoProcedureInvoker = certificadoProcedureInvoker;
         this.ambienteAplicacionService = ambienteAplicacionService;
+        this.aplicacionCertificadoService = aplicacionCertificadoService;
     }
 
     @GetMapping(value = "/gestion")
@@ -185,6 +186,48 @@ public class AplicacionesController {
         certificadosQueryDTO.setFlagActivo(true);
 
         return new ResponseEntity<List<CertificadosPOJO>>(certificadoProcedureInvoker.getCertificados(certificadosQueryDTO), HttpStatus.OK);
+    }
+
+    @GetMapping("ObtenerCertificados")
+    public ResponseEntity<List<Certificados>> ObtenerCertificados(@RequestParam Integer id){
+
+        return new ResponseEntity<List<Certificados>>(
+                aplicacionCertificadoService.obtenerCertificadosPorAplicacion(id), HttpStatus.OK);
+    }
+
+    @PostMapping("AgregarCertificado/{idApp}/{idCert}")
+    public boolean AgregarCertificado(@PathVariable Integer idApp, @PathVariable Integer idCert) {
+
+        List<AplicacionCertificado> qAplicaciones = aplicacionCertificadoService.obtenerAplicacionCertificado(idApp, idCert);
+        Boolean resultado = false;
+        if(qAplicaciones.size() == 0 ){
+            AplicacionCertificado qAplicacion = new AplicacionCertificado();
+            qAplicacion.setIdAplicacion(idApp);
+            qAplicacion.setIdCertificado(idCert);
+
+            AplicacionCertificado insertado = aplicacionCertificadoService.save(qAplicacion);
+
+            if (insertado.getAplicacionCertificadoid() != 0){
+                resultado = true;
+            }
+        }
+        return resultado;
+    }
+
+    //
+    @PostMapping("EliminarCertificado/{idApp}/{idCert}")
+    public boolean EliminarCertificado(@PathVariable Integer idApp, @PathVariable Integer idCert) {
+
+        List<AplicacionCertificado> qAplicaciones = aplicacionCertificadoService.obtenerAplicacionCertificado(idApp, idCert);
+        Boolean resultado = false;
+
+        if(qAplicaciones.size() > 0 ){
+
+            aplicacionCertificadoService.delete(qAplicaciones.get(0).getAplicacionCertificadoid());
+            resultado = true;
+        }
+
+        return resultado;
     }
 
 

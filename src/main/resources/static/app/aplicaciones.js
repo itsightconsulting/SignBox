@@ -86,7 +86,7 @@ function cargarCertificados() {
 
                 combo.html('');
                 $.each(data, function () {
-                    combo.append($("<option />").val(this.certificadosId).text(this.identificadorHsm));
+                    combo.append($("<option />").val(this.id).text(this.identificadorHsm));
                 });
             }
         },
@@ -423,55 +423,55 @@ function listarAmbientes() {
 }
 
 function listarCertificados() {
+    var id = $("#hIdApp").val();
+
     $tableCertificados.bootstrapTable('destroy');
     $tableCertificados.bootstrapTable({
-        url: controlador + "ObtenerCertificados",
-        method: 'POST',
+        url: controlador + "ObtenerCertificados?id="+id,
+        method: 'GET',
         pagination: true,
         contentType: "application/json; charset=utf-8",
         sidePagination: 'server',
         queryParamsType: 'else',
         pageSize: 20,
-        queryParams: function (p) {
-            var pageNumber = p.pageNumber;
-            var pageSize = p.pageSize;
-            return JSON.stringify({
-                id: $("#hIdApp").val(),
-                pageNumber: pageNumber,
-                pageSize: pageSize
-            })
-        },
         responseHandler: function (res) {
-            var data = res.d;
-            return { rows: data.ListCertificados, total: data.Total }
+            var data = res;
+            return { rows: data, total: data.length }
         }
     });
 }
 
 function eliminarCertificado(id) {
+
+    var aplicacion = $("#hIdApp").val();
+
     bootbox.setLocale("es");
     bootbox.confirm("¿Estás seguro que deseas eliminar el registro seleccionado?", function (result) {
         if (result) {
-            var params = {
-                id: id,
-            };
+
             $.ajax({
                 type: 'POST',
-                contentType: "application/json; charset=utf-8",
-                url: controlador + 'EliminarCertificado',
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                url: controlador + 'EliminarCertificado/'+aplicacion+'/'+id,
                 dataType: "json",
-                data: params,
                 success: function (dataObject, textStatus) {
                     if (textStatus == "success") {
-                        bootbox.alert("Registro eliminado con éxito");
+                        if (dataObject){
+                            bootbox.alert("Registro eliminado con éxito");
+                        }
+                        else{
+                            bootbox.alert("No se pudo eliminar el registro");
+                        }
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     var error = JSON.parse(xhr.responseText);
                 },
                 complete: function (data) {
-                    $tableCertificados.bootstrapTable('refresh');
-                    listarCertificados();
+                    if (data.responseText == "true"){
+                        $tableCertificados.bootstrapTable('refresh');
+                        listarCertificados();
+                    }
                 }
             });
         }
@@ -593,7 +593,7 @@ function agregarAmbiente() {
         }
     });
 }
-/*
+
 function agregarCertificado() {
     var certificado = $("#cboCertificado").val();
     var aplicacion = $("#hIdApp").val();
@@ -601,31 +601,32 @@ function agregarCertificado() {
     bootbox.setLocale("es");
     bootbox.confirm("¿Estás seguro que deseas vincular el certificado a la aplicación?", function (result) {
         if (result) {
-            var params = {
-                certificado: certificado,
-                aplicacion: aplicacion
-            };
+
             $.ajax({
                 type: 'POST',
-                contentType: "application/json; charset=utf-8",
-                url: controlador + 'AgregarCertificado',
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                url: controlador + 'AgregarCertificado/'+aplicacion+'/'+certificado,
                 dataType: "json",
-                data: params,
                 success: function (dataObject, textStatus) {
                     if (textStatus == "success") {
-                        bootbox.alert("Registro vinculado con éxito");
+                        if (dataObject){
+                            bootbox.alert("Registro vinculado con éxito");
+                        }
+                        else{
+                            bootbox.alert("Este certificado ya está vinculado");
+                        }
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     var error = JSON.parse(xhr.responseText);
                 },
                 complete: function (data) {
-                    $tableCertificados.bootstrapTable('refresh');
-                    listarCertificados();
+                    if(data.responseText != "false"){
+                        $tableCertificados.bootstrapTable('refresh');
+                        listarCertificados();
+                    }
                 }
             });
         }
     });
 }
-
- */

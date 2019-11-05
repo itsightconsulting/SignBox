@@ -1,7 +1,7 @@
 package com.itsight.signbox.service.serviceImpl;
 
-import com.itsight.signbox.domain.pojo.AmbientesPOJO;
-import com.itsight.signbox.service.AmbientesProcedureInvoker;
+import com.itsight.signbox.domain.pojo.EstampaPOJO;
+import com.itsight.signbox.service.EstampaProcedureInvoker;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
@@ -10,19 +10,17 @@ import javax.persistence.StoredProcedureQuery;
 import java.util.List;
 
 @Component
-public class AmbientesProcedureInvokerImpl implements AmbientesProcedureInvoker {
+public class EstampaProcedureInvokerImpl implements EstampaProcedureInvoker {
 
     private EntityManager entityManager;
 
-    public AmbientesProcedureInvokerImpl(EntityManager entityManager) {
-
+    public EstampaProcedureInvokerImpl(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
-
     @Override
-    public List<AmbientesPOJO> getAmbientes(int limit, int offset, String nombre, Boolean flafActivo, String tipoBusqueda) {
-        StoredProcedureQuery storedProcedureQuery = entityManager.createStoredProcedureQuery("VQJ33260.FUNC_AMBIENTES_Q_DYNAMIC_WHERE", "AmbientesGetAll");
+    public List<EstampaPOJO> getEstampa(int limit, int offset, String nombre, Boolean flafActivo, String tipoBusqueda) {
+        StoredProcedureQuery storedProcedureQuery = entityManager.createStoredProcedureQuery("VQJ33260.FUNC_ESTAMPA_Q_DYNAMIC_WHERE", "EstampaGetAll");
         storedProcedureQuery.registerStoredProcedureParameter("u_Limit", Integer.class, ParameterMode.IN);
         storedProcedureQuery.registerStoredProcedureParameter("u_Offset", Integer.class, ParameterMode.IN);
         storedProcedureQuery.registerStoredProcedureParameter("u_nombre", String.class, ParameterMode.IN);

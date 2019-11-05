@@ -1,13 +1,31 @@
 package com.itsight.signbox.domain;
 
 import com.itsight.signbox.domain.base.AuditingEntity;
+import com.itsight.signbox.domain.pojo.EstampaPOJO;
+import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
+@SqlResultSetMapping(
+        name = "EstampaGetAll",
+        classes = {
+                @ConstructorResult(
+                        targetClass = EstampaPOJO.class,
+                        columns = {
+                                @ColumnResult(name = "estampaid"),
+                                @ColumnResult(name = "alias"),
+                                @ColumnResult(name = "nombre"),
+                                @ColumnResult(name = "descripcion"),
+                                @ColumnResult(name = "FlagActivo"),
+                                @ColumnResult(name = "rows")
+                        }
+                )
+        }
+)
+
+@Entity
+@Data
 public class Estampa extends AuditingEntity {
 
   @Id
@@ -30,5 +48,6 @@ public class Estampa extends AuditingEntity {
   @Column(nullable = false , name = "PAGINA")
   private Integer pagina;
 
-
+  @Column(name = "FLAGACTIVO")
+  private Boolean FlagActivo;
 }

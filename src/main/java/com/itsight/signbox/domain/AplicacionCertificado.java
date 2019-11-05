@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Data
+@Table(name = "APLICACIONCERTIFICADO")
 public class AplicacionCertificado {
 
   @Id
