@@ -107,17 +107,18 @@ public class UsuarioServiceImpl extends BaseServiceImpl<UsuarioRepository> imple
     }
 
     @Override
-    public boolean existsUsernameLike(String username, int modoAcceso) {
-        return repository.existsUsernameLike(username,modoAcceso);
+    public boolean isUsernameValid(String username, int modoAcceso) {
+        return repository.isUsernameValid(username,modoAcceso);
     }
 
     @Override
-    public boolean existsDNILike(String dni, Integer userId) {
-        return repository.existsDNILike(dni, userId);
+    public boolean isDNIValid(String dni, Integer userId) {
+        return repository.isDNIValid(dni, userId);
     }
 
     @Override
-    public boolean existsCorreoElectronicoLike(String correoElectronico) {
-        return repository.existsCorreoElectronicoLike(correoElectronico);
+    public boolean isEmailValid(String email, Integer userId) {
+        return repository.isEmailValid(email, userId);
     }
+
 }

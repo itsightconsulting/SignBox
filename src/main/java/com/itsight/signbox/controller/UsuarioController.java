@@ -110,7 +110,7 @@ public class UsuarioController {
     @GetMapping("/username/validacion")
     public @ResponseBody
     Map<String, Boolean> existeUsername(@RequestParam String username, @RequestParam Integer modoAccesoId) {
-        return Collections.singletonMap("usernameExiste", usuarioService.existsUsernameLike(username,modoAccesoId));
+        return Collections.singletonMap("isUsernameValid", usuarioService.isUsernameValid(username,modoAccesoId));
     }
 
 
@@ -118,14 +118,14 @@ public class UsuarioController {
     @GetMapping("/dni/validacion")
     public @ResponseBody
     Map<String, Boolean> existeDni(@RequestParam String dni, @RequestParam Integer userId) {
-        return Collections.singletonMap("dniExiste", usuarioService.existsDNILike(dni, userId));
+        return Collections.singletonMap("isDNIValid", usuarioService.isDNIValid(dni, userId));
     }
 
 
     @GetMapping("/email/validacion")
     public @ResponseBody
-    Map<String, Boolean> existeEmail(@RequestParam String email) {
-        return Collections.singletonMap("emailExiste", usuarioService.existsCorreoElectronicoLike(email));
+    Map<String, Boolean> existeEmail(@RequestParam String email, @RequestParam Integer userId) {
+        return Collections.singletonMap("isEmailValid", usuarioService.isEmailValid(email, userId));
     }
 
     @DeleteMapping("/{id}")

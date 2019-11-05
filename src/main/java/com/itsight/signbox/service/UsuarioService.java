@@ -7,12 +7,12 @@ import org.springframework.data.jpa.repository.Query;
 public interface UsuarioService extends BaseService<Usuarios, Integer> {
 
 
-    boolean existsUsernameLike(String username, int modoAcceso);
+    boolean isUsernameValid(String username, int modoAcceso);
 
 
-    boolean existsDNILike(String dni, Integer userId);
+    boolean isDNIValid(String dni, Integer userId);
 
 
-    boolean existsCorreoElectronicoLike(String correoElectronico);
+    boolean isEmailValid(String email, Integer userId);
 
 }

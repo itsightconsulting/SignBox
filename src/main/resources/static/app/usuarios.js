@@ -12,13 +12,13 @@ $(function () {
     $("#cboPerfil").append($("<option />").val("0").text(TEXTO_SELECCIONE));
     $("#cboFiltroPerfil").append($("<option />").val("0").text(TEXTO_SELECCIONE));
     $("#cboModoAcceso").append($("<option />").val("0").text(TEXTO_SELECCIONE));
-    $("#btnGuardar").click(function () { addUsuario(); });
+    $("#btnGuardar").click(function () {  addUsuario(); });
     $("#btnBuscar").click(function () {         $table.bootstrapTable('refresh');
         $(".panel-body").fadeOut(); });
     $("#btnLimpiar").click(function () { limpiarFiltros(); })
 
 
-
+    alert("sss");
     $(".btn-add").click(function () {
 
         var myForm = document.getElementById("form_registro");
@@ -67,7 +67,7 @@ $(function () {
     cargarModosAcceso();
     listarRegistros();
 
-    /*$("#txtUserName").keypress(function (key) {
+    $("#txtUserName").keypress(function (key) {
         window.console.log(key.charCode)
         if (key.charCode == 32) //espacio
             return false;
@@ -89,7 +89,7 @@ $(function () {
         this.value = this.value.trim();
     });
 
-    */
+
 
 });
 
@@ -200,7 +200,8 @@ function cargarData() {
     });
 }
 function addUsuario() {
-   // if ($("#form_registro").valid()) {
+    debugger
+    if ($("#form_registro").valid()) {
         $("#btnGuardar").button("loading");
         var usuario = {};
         const usuarioId = ($("#hId").val() == "") ? null : parseInt($("#hId").val());
@@ -233,34 +234,40 @@ function addUsuario() {
             complete: function (data) {
                 $("#btnGuardar").button("reset");
                 limpiarRegistro();
-            },
+            }
             //async: false
         });
 
-  //  }
+        }
+
 }
 
 
+function validateEmail() {
 
-function validarDNI() {
+    let rpta = false;
+    const usuarioId = ($("#hId").val() == "") ? null : parseInt($("#hId").val());
 
-    var valido = false;
 
     const params = {
-        alias: $("#txtNombre").val()
-    }
+        email: $("#txtEmail").val()  ,
+        userId : usuarioId
+    };
 
     $.ajax({
         type: 'GET',
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-        url: controlador + 'dni/validacion',
+        url: controlador + 'email/validacion',
         dataType: "json",
         data: params,
         success: function (dataObject, textStatus) {
+            if (textStatus == "success") {
 
+                var data = dataObject;
 
-            if (dataObject != null) {
-                valido = !dataObject.aliasExiste;
+                if (data != null) {
+                    rpta = data.isEmailValid;
+                }
             }
         },
         error: function (xhr, ajaxOptions, thrownError) {
@@ -272,16 +279,13 @@ function validarDNI() {
         async: false
     });
 
-
-    console.log(valido);
-
-    return valido   ;
+    return rpta;
 }
 
 
 
 
-function validarNombreUsuario(modoAccesoId) {
+function validateUsername(modoAccesoId) {
 
     let rpta = false;
 
@@ -299,12 +303,10 @@ function validarNombreUsuario(modoAccesoId) {
         success: function (dataObject, textStatus) {
             if (textStatus == "success") {
 
-
-
                 var data = dataObject;
 
                 if (data != null) {
-                    rpta = data;
+                    rpta = data.isUsernameValid;
                 }
             }
         },
@@ -317,7 +319,7 @@ function validarNombreUsuario(modoAccesoId) {
         async: false
     });
 
-    return !rpta.usernameExiste //debe ser falso para activar la validacion.;
+    return rpta;
 }
 
 function validateUserDni() {
@@ -335,22 +337,24 @@ function validateUserDni() {
         },
         success: function (dataObject, textStatus) {
             if (textStatus == "success") {
-                rpta = dataObject;
+                rpta = dataObject.isDNIValid;
             }
         },
 
         async: false
     });
-    return !rpta.dniExiste // Tiene que ser falso para activar la validacion;
+    return rpta;
 }
 
 function validarRegistros() {
+
+
     $.validator.addMethod('validExistUserName', function (val, element) {
         if (!validatorUpdate) return true;
         if (parseInt($("#cboModoAcceso").val()) === 1 /*Modo Active Directory */) {
             return true;
         } else {
-            return validarNombreUsuario(2); //Modo formulario
+            return validateUsername(2); //Modo formulario
         }
     });
     $.validator.addMethod('requiredUserName', function (val, element) {
@@ -368,6 +372,11 @@ function validarRegistros() {
     $.validator.addMethod("validateUserDni", function (value, element) {
 
       return validateUserDni();
+    });
+
+    $.validator.addMethod("validateUserEmail", function (value, element) {
+
+        return validateEmail();
     });
 
 
@@ -412,14 +421,19 @@ function validarRegistros() {
         if (parseInt($("#cboModoAcceso").val()) === 2 /* modoNormal */) {
             return true;
         } else {
-            return validarNombreUsuario(1);
+            return validateUsername(1);
         }
     });
 
+
+
     validator = $("#form_registro").validate({
+
         ignore: ".ignore",
         errorClass: "my-error-class",
         validClass: "my-valid-class",
+        onkeyup: function(element) {$(element).valid()},
+        onfocusout: false,
         rules: {
             txtNombres: {
                 required: true,
@@ -440,6 +454,7 @@ function validarRegistros() {
             txtEmail: {
                 required: true,
                 email: true,
+                validateUserEmail : true
             },
             txtDni: {
                 required: true,
@@ -482,8 +497,7 @@ function validarRegistros() {
             txtEmail: {
                 required: "Debes ingresar un correo para el usuario",
                 email: "Debe ingresar un correo válido",
-                validateUserEmail: "El correo ingresado ya existe, por favor elija otro"
-
+                validateUserEmail : "El correo ingresado ya existe, por favor elija otro"
             },
             txtDni: {
                 required: "Debes ingresar el DNI del usuario",
@@ -594,7 +608,6 @@ function irModificarRegistro(id) {
                 $("#txtPass").val(registro.contrasena);
 
                 $("#cboModoAcceso").val(registro.modoAccesoId);
-                cargarPerfiles();
                 $("#cboPerfil").val(registro.perfilId);
 
                 $("#cboModoAcceso").attr("disabled", "disabled");
