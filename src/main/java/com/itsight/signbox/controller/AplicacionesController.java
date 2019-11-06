@@ -59,12 +59,11 @@ public class AplicacionesController {
     public ResponseEntity<List<AplicacionesPOJO>> listarTodo(
             @RequestParam String nombre,
             @RequestParam Boolean flagActivo,
-            @RequestParam String tipoBusqueda,
             @RequestParam Integer offset, @RequestParam Integer limit){
 
         return new ResponseEntity<List<AplicacionesPOJO>>(
                 aplicacionesProcedureInvoker.getAplicaciones(
-                        limit,offset, nombre, flagActivo, tipoBusqueda), HttpStatus.OK);
+                        limit,offset, nombre, flagActivo), HttpStatus.OK);
     }
 
     @PutMapping("actualizar/{id}")

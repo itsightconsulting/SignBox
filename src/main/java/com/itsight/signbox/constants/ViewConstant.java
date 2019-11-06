@@ -16,5 +16,8 @@ public class ViewConstant {
 
  public static final String MAIN_USUARIOS = "seguridad/usuarios";
 
+ //MAIN REPORTES
+
+ public static final String MAIN_LOGS_ADMIN = "reportes/logs_portal";
 
 }

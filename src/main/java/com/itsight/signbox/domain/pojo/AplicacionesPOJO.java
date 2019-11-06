@@ -21,5 +21,6 @@ public class AplicacionesPOJO {
         this.descripcion = descripcion;
         this.FlagActivo = FlagActivo;
         this.rows = rows;
+
     }
 }

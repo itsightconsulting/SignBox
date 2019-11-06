@@ -18,7 +18,6 @@ $(function () {
     $("#btnLimpiar").click(function () { limpiarFiltros(); })
 
 
-    alert("sss");
     $(".btn-add").click(function () {
 
         var myForm = document.getElementById("form_registro");
@@ -200,7 +199,7 @@ function cargarData() {
     });
 }
 function addUsuario() {
-    debugger
+
     if ($("#form_registro").valid()) {
         $("#btnGuardar").button("loading");
         var usuario = {};
@@ -432,7 +431,7 @@ function validarRegistros() {
         ignore: ".ignore",
         errorClass: "my-error-class",
         validClass: "my-valid-class",
-        onkeyup: function(element) {$(element).valid()},
+        onkeyup: function(element) { $(element).valid(); },
         onfocusout: false,
         rules: {
             txtNombres: {

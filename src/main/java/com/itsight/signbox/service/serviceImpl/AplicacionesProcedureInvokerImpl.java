@@ -18,18 +18,16 @@ public class AplicacionesProcedureInvokerImpl implements AplicacionesProcedureIn
     }
 
     @Override
-    public List<AplicacionesPOJO> getAplicaciones(int limit, int offset, String nombre, Boolean flagActivo, String tipoBusqueda) {
-        StoredProcedureQuery storedProcedureQuery = entityManager.createStoredProcedureQuery("VQJ33260.func_aplicaciones_q_dynamic_where.sql", "AplicacionesGetAll");
+    public List<AplicacionesPOJO> getAplicaciones(int limit, int offset, String nombre, Boolean flagActivo) {
+        StoredProcedureQuery storedProcedureQuery = entityManager.createStoredProcedureQuery("VQJ33260.FUNC_APLICACIONES_Q_DYNAMIC_WHERE", "AplicacionesGetAll");
         storedProcedureQuery.registerStoredProcedureParameter("u_Limit", Integer.class, ParameterMode.IN);
         storedProcedureQuery.registerStoredProcedureParameter("u_Offset", Integer.class, ParameterMode.IN);
         storedProcedureQuery.registerStoredProcedureParameter("u_nombre", String.class, ParameterMode.IN);
         storedProcedureQuery.registerStoredProcedureParameter("u_flagActivo", Boolean.class, ParameterMode.IN);
-        storedProcedureQuery.registerStoredProcedureParameter("u_tipoBusqueda", String.class, ParameterMode.IN);
         storedProcedureQuery.setParameter("u_Limit", limit);
         storedProcedureQuery.setParameter("u_Offset", offset);
         storedProcedureQuery.setParameter("u_nombre", nombre);
         storedProcedureQuery.setParameter("u_flagActivo", flagActivo);
-        storedProcedureQuery.setParameter("u_tipoBusqueda", tipoBusqueda);
 
         return storedProcedureQuery.getResultList();
     }
