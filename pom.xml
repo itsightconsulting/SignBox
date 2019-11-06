@@ -13,6 +13,8 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>signbox</name>
     <description>SignBox Java Implementation</description>
+    <packaging>war</packaging>
+
 
     <properties>
         <java.version>1.8</java.version>
@@ -73,6 +75,26 @@
             <version>RELEASE</version>
             <scope>compile</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>3.17</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sun.activation</groupId>
+            <artifactId>javax.activation</artifactId>
+            <version>1.2.0</version>
+        </dependency>
+
+
     </dependencies>
     <repositories>
         <repository>

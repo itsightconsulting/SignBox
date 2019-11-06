@@ -24,7 +24,7 @@ RETURN
              FROM  PARAMETRO AS P
              ORDER BY P.PARAMETROID desc
          ) PR
-    WHERE PR.RID BETWEEN u_Offset AND u_Offset + u_Limit;
+    WHERE PR.RID BETWEEN (u_Offset + 1) AND u_Offset + u_Limit;
 END;
 
 

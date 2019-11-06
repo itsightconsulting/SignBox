@@ -40,17 +40,19 @@ public class LogsPortalPOJO implements Serializable {
 
   private Integer rows;
 
-    public LogsPortalPOJO(Integer id, String identificador, String accion, String entidad, String idAsociado, String campo, String valorAnterior, String valorNuevo, String usuario, Date fechaHora, Integer rows) {
-        this.id = id;
-        this.identificador = identificador;
-        this.accion = accion;
-        this.entidad = entidad;
-        this.idAsociado = idAsociado;
-        this.campo = campo;
-        this.valorAnterior = valorAnterior;
-        this.valorNuevo = valorNuevo;
-        this.usuario = usuario;
-        this.fechaHora = fechaHora;
-        this.rows = rows;
-    }
+  public LogsPortalPOJO(Integer id, String identificador, String accion, String entidad, String idAsociado, String campo, String valorAnterior, String valorNuevo, String usuario, Date fechaHora, Integer rows) {
+     this.id = id;
+     this.identificador = identificador;
+     this.accion = accion;
+     this.entidad = entidad;
+     this.idAsociado = idAsociado;
+     this.campo = campo;
+     this.valorAnterior = valorAnterior;
+     this.valorNuevo = valorNuevo;
+     this.usuario = usuario;
+     this.fechaHora = fechaHora;
+     this.rows = rows;
+  }
+
+
 }

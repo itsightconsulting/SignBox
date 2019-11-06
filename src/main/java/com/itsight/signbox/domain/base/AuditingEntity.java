@@ -32,21 +32,17 @@ public class AuditingEntity {
     private Date fechaModificacion;
 
 
-    @Column(name = "FLAGELIMINADO", nullable = false)
-    private boolean flagEliminado;
-
     public AuditingEntity(){
         /*
          *
          */
     }
 
-    public AuditingEntity(String creadoPor, Date fechaCreacion, String modificadoPor, Date fechaModificacion, boolean flagEliminado) {
+    public AuditingEntity(String creadoPor, Date fechaCreacion, String modificadoPor, Date fechaModificacion) {
         this.creadoPor = creadoPor;
         this.fechaCreacion = fechaCreacion;
         this.modificadoPor = modificadoPor;
         this.fechaModificacion = fechaModificacion;
-        this.flagEliminado = flagEliminado;
     }
 
 }

@@ -28,7 +28,7 @@ WITH RETURN FOR
                    (u_flagActivo IS NULL OR C.FLAGACTIVO = u_flagActivo)
              ORDER BY C.CERTIFICADOSID desc
          ) CD
-    WHERE CD.CID BETWEEN u_Offset AND u_Offset + u_Limit;
+    WHERE CD.CID BETWEEN u_Offset + 1  AND u_Offset + u_Limit;
 
   OPEN cursor1;
 END;

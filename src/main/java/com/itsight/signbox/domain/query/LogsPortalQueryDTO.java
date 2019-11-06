@@ -44,4 +44,14 @@ public class LogsPortalQueryDTO implements Serializable {
     */
     private String fechaFin;
 
+
+    public void getAll(){
+
+        this.limit = 5;
+        this.offset = 0;
+        this.entidad = null;
+        this.fechaInicio = "";
+        this.fechaFin = "";
+    }
+
 }

@@ -33,7 +33,7 @@ WITH RETURN FOR
                    (u_flagActivo IS NULL OR U.FLAGACTIVO = u_flagActivo)
              ORDER BY U.USUARIOID ASC
          ) US
-    WHERE US.UID BETWEEN u_Offset AND u_Offset + u_Limit;
+    WHERE US.UID BETWEEN u_Offset + 1 AND u_Offset + u_Limit;
   OPEN cursor1;
 END;
 

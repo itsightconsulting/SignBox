@@ -8,6 +8,10 @@ import com.itsight.signbox.domain.query.UsuariosQueryDTO;
 import com.itsight.signbox.service.UsuarioService;
 import com.itsight.signbox.service.UsuariosProcedureInvoker;
 import com.itsight.util.Enums;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -26,6 +30,8 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     private UsuariosProcedureInvoker usuarioProcedureInvoker;
+    private Object HSSFCellStyle;
+
 
     public UsuarioController(UsuarioService usuarioService, UsuariosProcedureInvoker usuarioProcedureInvoker) {
         this.usuarioService = usuarioService;
@@ -128,10 +134,15 @@ public class UsuarioController {
         return Collections.singletonMap("isEmailValid", usuarioService.isEmailValid(email, userId));
     }
 
-    @DeleteMapping("/{id}")
-    public void eliminarUsuario(@PathVariable(name = "id") Integer id) {
-        usuarioService.delete(id);
+    @PutMapping("/eliminar/{id}")
+    public @ResponseBody Usuarios eliminarUsuario(@PathVariable(name = "id") Integer id) throws NotFoundValidationException {
+
+        Usuarios usuario = usuarioService.findOne(id);
+        usuario.setFlagEliminado(true);
+
+        return usuarioService.update(usuario);
     }
+
 
 /*
     @GetMapping("/{id}")

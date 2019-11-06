@@ -40,7 +40,7 @@ WITH RETURN FOR
                    ( (u_fechaFin IS NULL) OR  L.FECHAHORA < to_date(u_fechaFin, 'DD/MM/YYYY'))
              ORDER BY L.LOGSID DESC
          ) LG
-    WHERE LG.LID BETWEEN u_Offset AND u_Offset + u_Limit;
+    WHERE (u_Limit IS NULL ) or   (LG.LID BETWEEN u_Offset + 1 AND u_Offset + u_Limit);
   OPEN cursor1;
 END;
 

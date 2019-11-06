@@ -46,13 +46,12 @@ DECLARE cursor2 CURSOR
 						(P.FlagEliminado = 0)
 					ORDER BY P.ambientesId desc
                  ) PR
-            WHERE PR.RID BETWEEN u_Offset AND u_Offset + u_Limit;
+            WHERE PR.RID BETWEEN u_Offset + 1 AND u_Offset + u_Limit;
 
 IF (u_tipoBusqueda = '') THEN
     OPEN cursor2;
 ELSE
     OPEN cursor1;
 END IF;
-
 
 END

@@ -99,14 +99,40 @@ function limpiarFiltros() {
 }
 
 function exportarReporte() {
-    var usuario = $("#txtFiltroNombre").val();
-    var fechaI = $("#txtFechaInicioFiltro").val();
-    var fechaF = $("#txtFechaFinFiltro").val();
 
-    window.location.href = siteRoot + "handlers/DownloadReports.ashx"
-        + "?reporte=" + reporte
-        + "&entidad=" + usuario
-        + "&desde=" + fechaI
-        + "&hasta=" + fechaF;
+    const entidadQuery =  $("#txtFiltroNombre").val();
+    const fInicioQuery =  $("#txtFechaInicioFiltro").val();
+    const fFinQuery =  $("#txtFechaFinFiltro").val();
+
+
+    window.location = controlador + `reporte-excel/?` +
+                        `order=asc&` +
+                        `offset=&` +
+                        `limit=&` +
+                        `entidad=${entidadQuery}&` +
+                        `fechaInicio=${fInicioQuery}&` +
+                        `fechaFin=${fFinQuery}`;
 
 }
+
+function testReporte() {
+
+            //$("#load_pace").show();
+            $.ajax({
+                type: 'GET',
+                url: controlador + "reporte-excel/",
+                success: function(data) {
+
+                    alert("lo hice");
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    var error = JSON.parse(xhr.responseText);
+                },
+                complete: function (data) {
+                  //  $table.bootstrapTable('refresh');
+                }
+            });
+
+}
+
+

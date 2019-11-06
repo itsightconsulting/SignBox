@@ -30,7 +30,7 @@ DECLARE cursor1 CURSOR
                         (P.FlagEliminado = 0)
 					ORDER BY P.aplicacionesId desc
                  ) PR
-            WHERE PR.RID BETWEEN u_Offset AND u_Offset + u_Limit;
+            WHERE PR.RID BETWEEN u_Offset + 1 AND u_Offset + u_Limit;
 OPEN cursor1;
 END;
 

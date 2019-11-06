@@ -214,6 +214,7 @@ function addUsuario() {
         usuario.nombreUsuario = parseInt($("#cboModoAcceso").val()) == 2 ? $("#txtUserName").val() : $("#txtUserAD").val(); //Modo por Formulario
         usuario.dni = $("#txtDni").val();
 
+        debugger;
 
         $.ajax({
             type: usuarioId === null ? 'POST' : 'PUT',
@@ -643,19 +644,14 @@ function eliminar(id) {
 
             //$("#load_pace").show();
             $.ajax({
-                type: 'DELETE',
+                type: 'PUT',
                 contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-                url: controlador + id,
+                url: controlador + "eliminar/" + id,
                 success: function (dataObject, textStatus) {
 
                     if (textStatus == "success") {
                         const data = dataObject;
                         if (data != "") {
-                            bootbox.alert({
-                                message: data,
-                                size: 'small'
-                            });
-                        } else {
                             bootbox.alert({
                                 message: "Acción realizada con Éxito.",
                                 size: 'small'

@@ -72,6 +72,9 @@ public class Usuarios  extends AuditingEntity {
   @Column(name = "FLAGACTIVO", nullable = false)
   private boolean flagActivo;
 
+  @Column(name = "FLAGELIMINADO", nullable = false)
+  private boolean flagEliminado;
+
   public void setUsuario ( Usuarios usuario){
      this.contrasena = usuario.getContrasena();
      this.nombres = usuario.getNombres();

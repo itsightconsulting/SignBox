@@ -26,4 +26,6 @@ public class UsuariosQueryDTO  implements Serializable {
     private Integer perfilId;
 
     private Boolean flagActivo;
+
+
 }

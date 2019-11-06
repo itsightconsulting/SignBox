@@ -34,7 +34,6 @@ public class LogsPortalProcedureInvokerImpl implements LogsPortalProcedureInvoke
         storedProcedureQuery.setParameter(3, query.getFechaInicio() == "" ? null : query.getFechaInicio());
         storedProcedureQuery.setParameter(4, query.getFechaFin() == "" ? null : query.getFechaFin()) ;
 
-        int s = storedProcedureQuery.getResultList().size();
 
         return storedProcedureQuery.getResultList();
     }
