@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en-us" id="extr-page" xmlns:th="http://www.thymeleaf.org"
+      th:with="version = ${#servletContext.getAttribute('version')}">
+<head>
+    <meta charset="utf-8">
+  <!--  <meta name="_csrf" th:attr="content=${_csrf.token}"/> -->
+    <!-- default header name is X-CSRF-TOKEN -->
+ <!-- <meta name="_csrf_header" th:attr="content=${_csrf.headerName}"/> -->
+    <meta name="_ctx" th:content="@{/}"/>
+    <title>Login - SignBoxContract</title>
+    <meta charset="UTF-8">
+    <link href="/css/bootstrap-datetimepicker.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet" />
+    <script type="text/javascript" src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/bootstrap.min.css">
+    <link href="css/font-awesome.min.css" rel='stylesheet' type='text/css'>
+    <link href="css/hover-min.css" rel='stylesheet' type='text/css'>
+    <link href="css/style.css" rel='stylesheet' type='text/css'>
+    <link href="css/smart/smartadmin-production.min.css" rel="stylesheet" />
+    <link href="css/smart/smartadmin-production-plugins.min.css" rel="stylesheet" />
+    <link href="css/smartadmin-skins.min.css" rel="stylesheet" type="text/css" media="screen">
+    <link href="css/smartadmin-rtl.min.css" rel="stylesheet" type="text/css" media="screen">
+    <!-- #FAVICONS -->
+
+    <link href="img/favicon/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="img/favicon/favicon.ico" rel="icon" type="image/x-icon">
+
+    <script type="text/javascript">
+        var siteRoot = '<%= ResolveUrl("~/")%>';
+    </script>
+    <script src="js/bootstrap/bootstrap.min.js"></script>
+    <script src="js/util.js"></script>
+
+    <script src="js/libs/jquery.validate.js"></script>
+    <script src="js/plugin/pace/pace.min.js"></script>
+    <script src="js/plugin/masked-input/jquery.maskedinput.min.js"></script>
+    <script src="js/app.config.js"></script>
+    <script src="js/app.min.js"></script>
+
+    <style>
+        .form-control my-error-class, .bootstrap-timepicker label.my-error-class {
+            position: absolute;
+            left: 0;
+            bottom: -25px;
+        }
+
+        /*#footerlogin {
+            margin: 0;
+            height: 71px;
+            border-bottom: 1px solid #eee !important;
+            overflow: hidden;
+            padding: 0 30px;
+            border-width: 0;
+            min-height: 28px;
+            background: #f4f4f4 !important;
+        }*/
+
+        #footerlogin {
+            margin: 0;
+            height: 60px;
+            border-bottom: 1px solid #eee !important;
+            overflow: hidden;
+            padding: 0 30px;
+            border-width: 0;
+            min-height: 28px;
+            background: #f4f4f4 !important;
+        }
+    </style>
+
+</head>
+
+<body class="animated fadeInDown">
+
+<header id="header">
+    <div id="logo-group">
+             <span id="logo">
+                 <a href="login.aspx" class="logo">
+                    <!--<img width="80" height="50"  src="img/images/logo.png" />-->
+                    <img style="margin-top:-20px" src="img/images/logo.png" />
+                </a>
+             </span>
+
+    </div>
+
+</header>
+
+<div id="main" role="main">
+    <!-- MAIN CONTENT -->
+    <div id="content" class="container">
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-5 col-lg-4">
+                <div class="contenedor">
+                    <div class="space_form_block">
+                        <form id="login-form" action="#" th:action="@{/login_authentication}" method="post">
+                         <div class="form-group">
+                                <label for="username">Nombre de Usuario</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="username" name="username" autocomplete="off" maxlength="100" />
+                                    <span class="input-group-addon"><i class="icon-append fa fa-envelope"></i></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Contraseña</label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control" id="password" name="password" maxlength="100">
+                                    <span class="input-group-addon"><i class="icon-append fa fa-lock"></i></span>
+                                </div>
+                            </div>
+                            <!-- <div class="form-group" style="margin-top: 10px">
+                            <a href="#" id="btnReContrasenia" class="editable editable-click">Olvidé mi contraseña</a>
+                        </div>-->
+                            <button class="btn btn-primary form-control hvr-back-pulse" id="btnLogin" type="submit" data-loading-text="Procesando...">Iniciar sesión</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-5 col-lg-8">
+                <br />
+                <br />
+                <div class="space_form text-center">
+                    <div class="column mcb-column one column_column  column-margin-">
+                        <div class="column_attr" style="">
+                            <h2 style="margin: 0;"><strong>SignBox - Administración</strong></h2>
+                        </div>
+                    </div>
+                    <div class="column mcb-column one column_divider ">
+                        <hr class="no_line" style="margin: 0 auto 20px;">
+                    </div>
+                    <div class="column mcb-column one column_column  column-margin-">
+                        <div class="column_attr align_justify" style="">
+                            <div class="list_item lists_2 clearfix">
+                                <div class="list_left list_image">
+                                    <div class="row">
+                                        <div>
+                                            <h1><small>Portal de administración</small></h1> <br />
+                                            <div style="text-align:justify;">
+                                                Consola de configuración y administración del servicio de firma digital SignBoxContract.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <br />
+                                <hr class="no_line" style="margin: 0 auto 20px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/js/bootbox.min.js"></script>
+<script src="app/login.js"></script>
+<footer id="footerlogin"></footer>
+</body>
+</html>

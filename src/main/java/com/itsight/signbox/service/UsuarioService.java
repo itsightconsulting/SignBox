@@ -15,4 +15,6 @@ public interface UsuarioService extends BaseService<Usuarios, Integer> {
 
     boolean isEmailValid(String email, Integer userId);
 
+
+
 }
