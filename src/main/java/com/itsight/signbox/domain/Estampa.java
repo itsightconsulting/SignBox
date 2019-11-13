@@ -3,29 +3,33 @@ package com.itsight.signbox.domain;
 import com.itsight.signbox.domain.base.AuditingEntity;
 import com.itsight.signbox.domain.pojo.EstampaPOJO;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
-@SqlResultSetMapping(
-        name = "EstampaGetAll",
-        classes = {
-                @ConstructorResult(
-                        targetClass = EstampaPOJO.class,
-                        columns = {
-                                @ColumnResult(name = "estampaid"),
-                                @ColumnResult(name = "alias"),
-                                @ColumnResult(name = "nombre"),
-                                @ColumnResult(name = "descripcion"),
-                                @ColumnResult(name = "FlagActivo"),
-                                @ColumnResult(name = "rows")
-                        }
-                )
-        }
-)
 
+@SqlResultSetMappings({
+        @SqlResultSetMapping(
+                name = "EstampaGetAll",
+                classes = {
+                        @ConstructorResult(
+                                targetClass = EstampaPOJO.class,
+                                columns = {
+                                        @ColumnResult(name = "estampaid"),
+                                        @ColumnResult(name = "alias"),
+                                        @ColumnResult(name = "nombre"),
+                                        @ColumnResult(name = "descripcion"),
+                                        @ColumnResult(name = "FlagActivo"),
+                                        @ColumnResult(name = "rows")
+                                }
+                        )
+                }
+        )
+})
 @Entity
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class Estampa extends AuditingEntity {
 
   @Id

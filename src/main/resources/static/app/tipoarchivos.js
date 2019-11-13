@@ -1,5 +1,5 @@
 var $table = $('#tblRegistros');
-var controlador = _ctx + 'admin/tipos-archivos/';
+var controlador = _ctx + 'configuracion/tipos-archivos/';
 var validator;
 
 var TEXTO_SELECCIONE = "Seleccione";

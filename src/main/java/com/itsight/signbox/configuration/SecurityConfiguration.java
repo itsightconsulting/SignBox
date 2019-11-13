@@ -21,23 +21,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
         securedEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-
-/*
     @Autowired
     @Qualifier("securityServiceImpl")
     private UserDetailsService securityService;
-*/
 
-    @Override
-    protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("user1").password(passwordEncoder().encode("user1Pass")).roles("OPERADOR")
-                .and()
-                .withUser("user2").password(passwordEncoder().encode("user2Pass")).roles("AUDITORIA")
-                .and()
-                .withUser("admin").password(passwordEncoder().encode("123456")).roles("ADMIN");
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(securityService).passwordEncoder(new BCryptPasswordEncoder());
     }
-
 
 
     @Override
@@ -45,8 +37,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/reportes/**").hasRole("ADMIN")
+                .antMatchers("/configuracion/**/").hasRole("ADMINISTRATOR")
+                .antMatchers("/seguridad/credenciales/**").hasAnyRole("ADMINISTRATOR", "OPERATOR")
+                .antMatchers("/seguridad/**").hasRole("ADMINISTRATOR")
+                .antMatchers("/reportes/**/").hasAnyRole("ADMINISTRATOR", "AUDITOR")
                 .antMatchers(
                         "/css/**",
                         "/js/**",
@@ -60,19 +54,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/login")
+                .usernameParameter("nombreUsuario")
+                .passwordParameter("contrasena")
                 .loginProcessingUrl("/login_authentication")
                 .defaultSuccessUrl("/", true)
                 //.failureUrl("/login.html?error=true")
                 .failureHandler(customAuthenticationFailureHandler())
                 .and()
                 .logout()
-                .logoutUrl("/perform_logout")
-                .deleteCookies("JSESSIONID");
-    }
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login").permitAll()
+                .deleteCookies("SESSION");
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+
     }
 
 
@@ -80,8 +74,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public CustomAuthenticationFailureHandler customAuthenticationFailureHandler() {
         return new CustomAuthenticationFailureHandler();
     }
-
-
 
 
 

@@ -1,4 +1,4 @@
-//var controller = siteRoot + 'admin/default.aspx/';
+//var controller = siteRoot + 'configuracion/default.aspx/';
 
 $(function () {
    // SetDataInfo();

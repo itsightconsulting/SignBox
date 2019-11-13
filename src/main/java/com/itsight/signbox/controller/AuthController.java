@@ -1,17 +1,20 @@
 package com.itsight.signbox.controller;
 
 import com.itsight.signbox.constants.ViewConstant;
-import org.springframework.stereotype.Controller;
+import com.itsight.signbox.repository.UsuarioRepository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
 public class AuthController {
 
+    UsuarioRepository usuarioRepository;
 
+    public AuthController(UsuarioRepository usuarioRepository) {
+        this.usuarioRepository = usuarioRepository;
+    }
     @GetMapping(value = "/login")
     public ModelAndView loginView( /*@RequestParam(value = "error", required = false) String error, */
                                   Model model) {
@@ -38,7 +41,12 @@ public class AuthController {
         return new ModelAndView(ViewConstant.MAIN_LOGIN);
     }
 
-    public ModelAndView index(Model model) {
+
+    @GetMapping(value = "")
+    public ModelAndView index(Model model)
+    {
+
+
         return new ModelAndView(ViewConstant.MAIN_INICIO);
     }
 }

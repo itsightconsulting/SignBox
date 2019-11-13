@@ -4,38 +4,40 @@
 
         <!--Administracion-->
 
+      <th:block sec:authorize="hasRole('ADMINISTRATOR')">
+
         <ul>
             <li>
                 <a href="#" title="Gestiona la configuración de la aplicación"><i class="fa fa-gears"></i><span class="menu-item-parent">Configuración</span><b class="collapse-sign"><em class="fa fa-minus-square-o"></em></b></a>
                 <ul>
                     <li>
-                        <a href="/admin/parametros/gestion" title="Gestiona los parámetros de la aplicación"><span class="menu-item-parent">Parámetros</span></a>
+                        <a href="/configuracion/parametros/gestion" title="Gestiona los parámetros de la aplicación"><span class="menu-item-parent">Parámetros</span></a>
                     </li>
                     <li>
-                        <a href="/admin/tipos-archivos/gestion" title="Gestiona los tipos de archivos"><span class="menu-item-parent">Tipos de archivos</span></a>
+                        <a href="/configuracion/tipos-archivos/gestion" title="Gestiona los tipos de archivos"><span class="menu-item-parent">Tipos de archivos</span></a>
                     </li>
                     <li>
-                        <a href="/admin/ambientes/gestion" title="Gestiona los ambientes de la aplicación"><span class="menu-item-parent">Ambientes</span></a>
+                        <a href="/configuracion/ambientes/gestion" title="Gestiona los ambientes de la aplicación"><span class="menu-item-parent">Ambientes</span></a>
                     </li>
                     <li>
-                        <a href="/admin/certificados/gestion" title="Gestiona los certificados digitales vinculados a la plataforma"><span class="menu-item-parent">Certificados digitales</span></a>
+                        <a href="/configuracion/certificados/gestion" title="Gestiona los certificados digitales vinculados a la plataforma"><span class="menu-item-parent">Certificados digitales</span></a>
                     </li>
                     <li>
-                        <a href="/admin/aplicaciones/gestion" title="Gestiona las aplicaciones habilitadas a usar el servicio de firma en línea"><span class="menu-item-parent">Aplicaciones</span></a>
+                        <a href="/configuracion/aplicaciones/gestion" title="Gestiona las aplicaciones habilitadas a usar el servicio de firma en línea"><span class="menu-item-parent">Aplicaciones</span></a>
                     </li>
                     <li>
-                        <a href="/admin/estampas/gestion" title="Gestiona las estampas gráficas asociado al servicio de firma en línea"><span class="menu-item-parent">Estampas gráficas</span></a>
+                        <a href="/configuracion/estampas/gestion" title="Gestiona las estampas gráficas asociado al servicio de firma en línea"><span class="menu-item-parent">Estampas gráficas</span></a>
                     </li>
                 </ul>
             </li>
-            <li>
+           <li>
                 <a href="#" title="Gestiona las credenciales de acceso a la plataforma"><i class="fa fa-user-secret"></i><span class="menu-item-parent">Seguridad</span><b class="collapse-sign"><em class="fa fa-plus-square-o"></em></b></a>
                 <ul>
                     <li>
-                        <a href="/admin/usuarios/gestion" title="Gestiona los usuarios"><span class="menu-item-parent">Usuarios</span></a>
+                        <a href="/seguridad/usuarios/gestion" title="Gestiona los usuarios"><span class="menu-item-parent">Usuarios</span></a>
                     </li>
                     <li>
-                        <a href="/admin/credenciales" title="Gestiona las credenciales del portal cliente"><span class="menu-item-parent">Credenciales portal cliente</span></a>
+                        <a href="/configuracion/credenciales" title="Gestiona las credenciales del portal cliente"><span class="menu-item-parent">Credenciales portal cliente</span></a>
                     </li>
                 </ul>
             </li>
@@ -60,6 +62,48 @@
                 </ul>
             </li>
         </ul>
+      </th:block>
+      <th:block sec:authorize="hasRole('OPERATOR')">
+
+            <ul>
+
+                <li>
+                    <a href="#" title="Gestiona las credenciales de acceso a la plataforma"><i class="fa fa-user-secret"></i><span class="menu-item-parent">Seguridad</span><b class="collapse-sign"><em class="fa fa-plus-square-o"></em></b></a>
+                    <ul>
+
+                        <li>
+                            <a href="/configuracion/credenciales" title="Gestiona las credenciales del portal cliente"><span class="menu-item-parent">Credenciales portal cliente</span></a>
+                        </li>
+                    </ul>
+                </li>
+
+            </ul>
+        </th:block>
+      <th:block sec:authorize="hasRole('AUDITOR')">
+          <ul>
+                <li>
+                    <a href="#" title="Gestiona los reportes"><i class="fa fa-pie-chart"></i><span class="menu-item-parent">Reportes</span><b class="collapse-sign"><em class="fa fa-plus-square-o"></em></b></a>
+                    <ul>
+                        <li>
+                            <a href="/reportes/logs-portal/gestion" title="Revisa los logs administrativos de la plataforma"><span class="menu-item-parent">Logs del portal</span></a>
+                        </li>
+                        <li>
+                            <a href="/reportes/logs" title="Revisa los logs del proceso de invocación al servicio de firma digital"><span class="menu-item-parent">Logs de invocación al servicio de firma</span></a>
+                        </li>
+                        <li>
+                            <a href="/reportes/logsejecucion" title="Revisa los logs detallados del servicio de firma digital"><span class="menu-item-parent">Logs detallado del servicio de firma</span></a>
+                        </li>
+                        <li>
+                            <a href="/reportes/notificaciones" title="Revisa los logs detallados del servicio de notificaciones"><span class="menu-item-parent">Logs de notificaciones</span></a>
+                        </li>
+                        <li>
+                            <a href="/reportes/logscompletos" title="Revisa los logs completo del servicio de firma"><span class="menu-item-parent">Logs de trazabilidad del servicio de firma</span></a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </th:block>
+
 
     </nav>
 

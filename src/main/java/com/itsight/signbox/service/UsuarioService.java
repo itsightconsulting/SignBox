@@ -1,6 +1,7 @@
 package com.itsight.signbox.service;
 
 import com.itsight.signbox.domain.Usuarios;
+import com.itsight.signbox.domain.dto.SecurityUserDTO;
 import com.itsight.signbox.generic.BaseService;
 import org.springframework.data.jpa.repository.Query;
 
@@ -15,6 +16,6 @@ public interface UsuarioService extends BaseService<Usuarios, Integer> {
 
     boolean isEmailValid(String email, Integer userId);
 
-
+    SecurityUserDTO getForCookieById(Integer id);
 
 }

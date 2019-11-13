@@ -1,5 +1,5 @@
 var $table = $('#tblRegistros');
-var controlador = _ctx + 'admin/ambientes/';
+var controlador = _ctx + 'configuracion/ambientes/';
 var validator;
 var validatorUser;
 var editarUser = false;

@@ -14,6 +14,7 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -24,14 +25,12 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @RestController
-@RequestMapping("/admin/usuarios")
+@RequestMapping("/seguridad/usuarios")
 public class UsuarioController {
 
     private UsuarioService usuarioService;
-
     private UsuariosProcedureInvoker usuarioProcedureInvoker;
     private Object HSSFCellStyle;
-
 
     public UsuarioController(UsuarioService usuarioService, UsuariosProcedureInvoker usuarioProcedureInvoker) {
         this.usuarioService = usuarioService;
@@ -86,10 +85,9 @@ public class UsuarioController {
     @PostMapping("")
     public Usuarios agregar(@ModelAttribute @Valid Usuarios usuario){
         usuario.setFlagActivo(true);
+        usuario.setContrasena(new BCryptPasswordEncoder().encode(usuario.getContrasena()));
         return usuarioService.save(usuario);
     }
-
-
 
     @PutMapping("/{id}")
     public @ResponseBody Usuarios actualizar(@ModelAttribute @Valid Usuarios usuario, @PathVariable(name = "id") Integer id) throws NotFoundValidationException {

@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin/parametros")
+@RequestMapping("/configuracion/parametros")
 public class ParametroController {
 
     private ParametroService parametroService;
