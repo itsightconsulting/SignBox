@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:insert="html-commons/meta :: fg-meta"></th:block>
+    <th:block th:insert="html-commons/css  :: fg-css"></th:block>
+
+    <title>Ambientes</title>
+</head>
+<body>
+
+<!-- HEADER -->
+<div th:replace="html-commons/header :: fg-header"></div>
+<!-- END HEADER -->
+
+<!-- Left panel : Navigation area -->
+<!-- Note: This width of the aside area can be adjusted through LESS variables -->
+<div th:replace="html-commons/left-panel :: fg-left-panel"></div>
+
+<!-- PAGE FOOTER -->
+<div th:replace="html-commons/footer :: fg-footer"></div>
+
+<div th:replace="html-commons/loading :: fg-loading"></div>
+
+<div id="main" role="main">
+    <div id="content">
+        <div>
+
+            <section class="content-header">
+                <style>
+                    @media (min-width: 992px) {
+                        .modal-lg {
+                            width: 1200px;
+                        }
+                    }
+
+                    #accordion {
+                        width: 100%;
+                    }
+
+                    /*Manejo de Archivo*/
+                    #lblMensajeArchivo, #lblMensajeArchivoActualizar, #lblMensajeArchivoCambiar {
+                        color: #FF0000 !important;
+                        font-weight: bold !important;
+                        font-size: 12px;
+                    }
+
+                    .margin {
+                        margin-left: 10px;
+                    }
+                </style>
+
+                <h1>Gestión de credenciales de clientes
+                    <small>Permite la gestión de las credenciales externas configuradas para los usuarios</small>
+                </h1>
+            </section>
+
+            <div class="view_list">
+            <div class="row">
+                <div class="col-xs-12" style="margin: 15px; padding-left: 0;">
+                    <div id="accordion" class="panel panel-default">
+                        <div class="panel-heading">Búsqueda<span class="fa fa-search"></span></div>
+                        <div style="display: none" class="panel-body">
+                            <form id="frm_busqueda">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label for="txtFiltroNombre">Documento</label>
+                                        <input id="txtFiltroNombre" class="form-control" autocomplete="off" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label for="cboFiltroTipo">Tipo de persona</label>
+                                        <select id="cboFiltroTipo" class="form-control">
+                                            <option value="0">Todos</option>
+                                            <option value="1">Natural</option>
+                                            <option value="2">Jurídica</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group btn_mod">
+                                        <button id="btnBuscar" type="button" class="btn btn-primary">Buscar</button>
+                                    </div>
+                                    <div class="form-group btn_mod">
+                                        <button type="button" class="btn btn-danger btn_cancel" id="btnLimpiar">Limpiar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <ul class="nav nav-tabs v_mode">
+                        <li>Modo: </li>
+                        <li class="active"><a data-toggle="tab" href="#lista_v">Lista</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="tab-content">
+                        <div id="lista_v" class="tab-pane fade in active">
+                            <div class="table-responsive">
+                                <table id="tblRegistros" class="table table-striped table-responsive">
+                                    <thead>
+                                    <tr>
+                                        <th data-formatter="rowNumFormatter" data-halign="center" data-valign="middle" data-align="center" data-width="10">#</th>
+                                        <th data-formatter="opciones" data-width="30" data-halign="center" data-valign="middle" data-align="center">Opciones</th>
+                                        <th data-field="tipoPersona" data-width="60" data-halign="center" data-valign="middle" data-align="center">Tipo de persona</th>
+                                        <th data-formatter="linkFormatter" data-field="documento" data-width="40" data-halign="center" data-valign="middle" data-align="center">Documento</th>
+                                        <th data-field="folderBase" data-width="300" data-halign="left" data-valign="middle" data-align="left">Directorio principal</th>
+                                        <th data-field="telefono" data-width="80" data-halign="center" data-valign="middle" data-align="center">Teléfono</th>
+                                        <th data-field="correo" data-width="200" data-halign="center" data-valign="middle" data-align="center">Correo electrónico</th>
+                                        <th data-field="fechaCreacion" data-width="80" data-halign="center" data-valign="middle" data-align="center">Fecha de creación</th>
+                                        <th data-field="fechaUltimaModificacion" data-width="80" data-halign="center" data-valign="middle" data-align="center">Fecha de última modificación</th>
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="view_register">
+            <div class="content_register">
+                <a href="#" class="close_register btn_register_hide"><i class="fa fa-close" id="iCerrarModal"></i></a>
+                <input type="hidden" id="hId" name="hId" value="0" />
+                <h3 id="txtTitleForm">Editar datos</h3>
+                <div class="form_register">
+                    <form id="form_registro">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="txtCorreo">Correo electrónico: <span>(*)</span></label>
+                                    <input type="text" tabindex="1" class="form-control" id="txtCorreo" name="txtCorreo" maxlength="120" autocomplete="off" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="txtTelefono">Teléfono móvil: <span>(*)</span></label>
+                                    <input type="text" tabindex="1" class="form-control" onkeypress='return IsEnteroNumber(event)'  id="txtTelefono" name="txtTelefono" maxlength="20" autocomplete="off" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="button_group">
+                    <button type="button" style="border: 1px solid #D7D5D4" class="btn btn-default btn_register_hide" id="btnCancelar">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="btnGuardar" data-loading-text="Procesando...">Guardar</button>
+                </div>
+                <br /><br /><br />
+            </div>
+        </div>
+        <div id="modalEnvio" class="form-horizontal" style="display: none;">
+            <div class="row" style="padding-left:20px; padding-right:20px;">
+                <div class="col-xs-7">
+                    <div class="form-group">
+                        <label class="control-label" for="cboTipo">Tipo de envío:</label>
+                        <select id="cboTipo" name="cboTipo" class="form-control">
+                            <option value="3">SMS y Correo electrónico</option>
+                            <option value="1">SMS</option>
+                            <option value="2">Correo electrónico</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button id="btnEnviar" name="btnEnviar" type="button" class="btn btn-danger">Enviar credenciales</button>
+                    </div>
+                </div>
+                <div class="col-xs-1"></div>
+                <div class="col-xs-4"></div>
+            </div>
+        </div>
+        <input type="hidden" id="hIdPersona" name="hIdPersona" value="0" />
+
+        </div>
+    </div>
+</div>
+
+<!-- END PAGE FOOTER -->
+<!-- IMPORTS JAVASCRIPT -->
+<script th:replace="html-commons/js :: fg-js"/>
+
+<script th:src="@{/app/credenciales.js}"></script>
+<script th:src="@{/app/libs/bootstrap-table.min.js}"></script>
+
+</body>
+</html>

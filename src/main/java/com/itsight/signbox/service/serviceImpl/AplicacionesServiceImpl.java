@@ -3,6 +3,7 @@ package com.itsight.signbox.service.serviceImpl;
 import com.itsight.signbox.advice.CustomValidationException;
 import com.itsight.signbox.advice.NotFoundValidationException;
 import com.itsight.signbox.domain.Aplicaciones;
+import com.itsight.signbox.domain.Persona;
 import com.itsight.signbox.generic.BaseServiceImpl;
 import com.itsight.signbox.repository.AplicacionesRepository;
 import com.itsight.signbox.service.AplicacionesService;

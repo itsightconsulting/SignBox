@@ -1,6 +1,8 @@
 package com.itsight.signbox.service.serviceImpl;
 
+import com.itsight.signbox.domain.Persona;
 import com.itsight.signbox.domain.pojo.AplicacionesPOJO;
+import com.itsight.signbox.domain.pojo.PersonaPOJO;
 import com.itsight.signbox.service.AplicacionesProcedureInvoker;
 import org.springframework.stereotype.Component;
 
@@ -31,4 +33,8 @@ public class AplicacionesProcedureInvokerImpl implements AplicacionesProcedureIn
 
         return storedProcedureQuery.getResultList();
     }
+
+
+
+
 }

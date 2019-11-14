@@ -1,14 +1,37 @@
 package com.itsight.signbox.domain;
 
 import com.itsight.signbox.domain.base.AuditingEntity;
+import com.itsight.signbox.domain.pojo.PersonaPOJO;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.constraints.NotBlank;
 
+@SqlResultSetMapping(
+        name = "PersonaGetAll",
+        classes = {
+                @ConstructorResult(
+                        targetClass = PersonaPOJO.class,
+                        columns = {
+                                @ColumnResult(name = "personaId"),
+                                @ColumnResult(name = "documento"),
+                                @ColumnResult(name = "folderBase"),
+                                @ColumnResult(name = "tipoPersona"),
+                                @ColumnResult(name = "telefono"),
+                                @ColumnResult(name = "correo"),
+                                @ColumnResult(name = "fechaCreacion"),
+                                @ColumnResult(name = "fechaUltimaModificacion"),
+                                @ColumnResult(name = "rows")
+                        }
+                )
+        }
+)
+
 @Entity
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class Persona extends AuditingEntity {
 
   @Id
@@ -44,9 +67,8 @@ public class Persona extends AuditingEntity {
   @Column(nullable = false , name = "CORREO")
   private String correo;
 
-  @NotBlank
-  @Column(nullable = false , name = "FLAGCAMBIO")
-  private String flagCambio;
+  @Column(name = "FLAGCAMBIO")
+  private Boolean flagCambio;
 
 
 }
