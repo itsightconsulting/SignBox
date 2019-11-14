@@ -31,7 +31,6 @@
 
 	$.root_ = $('body');
 
-	const _ctx = $('meta[name="_ctx"]').attr('content');
 
 /*
  * APP CONFIGURATION (HTML/AJAX/PHP Versions ONLY)

@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin/aplicaciones")
+@RequestMapping("/configuracion/aplicaciones")
 public class AplicacionesController {
 
     private AplicacionesService aplicacionesService;

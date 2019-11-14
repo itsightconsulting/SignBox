@@ -2,6 +2,9 @@ package com.itsight.util;
 
 import lombok.Data;
 
+import java.util.Arrays;
+import java.util.Optional;
+
 public class Enums {
 
     public enum ResponseCode {
@@ -125,7 +128,11 @@ public class Enums {
             return nombre;
         }
 
-      }
+    }
+
+    public enum Galletas{
+        GLL_NOMBRE_COMPLETO
+    }
 
 
 }

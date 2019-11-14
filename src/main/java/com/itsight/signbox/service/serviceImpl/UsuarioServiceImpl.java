@@ -3,6 +3,7 @@ package com.itsight.signbox.service.serviceImpl;
 import com.itsight.signbox.advice.CustomValidationException;
 import com.itsight.signbox.advice.NotFoundValidationException;
 import com.itsight.signbox.domain.Usuarios;
+import com.itsight.signbox.domain.dto.SecurityUserDTO;
 import com.itsight.signbox.generic.BaseServiceImpl;
 import com.itsight.signbox.repository.UsuarioRepository;
 import com.itsight.signbox.service.UsuarioService;
@@ -122,4 +123,8 @@ public class UsuarioServiceImpl extends BaseServiceImpl<UsuarioRepository> imple
         return repository.isEmailValid(email, userId);
     }
 
+    @Override
+    public SecurityUserDTO getForCookieById(Integer id) {
+        return repository.getForCookieById(id);
+    }
 }

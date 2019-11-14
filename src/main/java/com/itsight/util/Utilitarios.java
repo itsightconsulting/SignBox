@@ -1,6 +1,9 @@
 package com.itsight.util;
 
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import javax.servlet.http.Cookie;
 import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Optional;
@@ -44,12 +47,22 @@ public class Utilitarios {
             return false;
         }
     }
-/*
-    public static final String bcryptEncoder(String password) {
+
+    public static final String encoderPassword(String password) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         return encoder.encode(password);
     }
-*/
+
+
+    public static Cookie createCookie(String cookieName, String cookieValue) {
+        Cookie cookie = new Cookie(cookieName, cookieValue);
+        cookie.setPath("/");
+        cookie.setMaxAge(60 * 60 * 24 * 365 * 10);
+        cookie.setHttpOnly(false);//Not access available by js
+        cookie.setSecure(false);//Only accessed with https
+        return cookie;
+    }
+
     public static final String parseMonth(String month) {
         switch (month) {
             case "1":

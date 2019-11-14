@@ -1,7 +1,7 @@
 var $table = $('#tblRegistros');
 var $tableAmbientes = $('#tblAmbiente');
 var $tableCertificados = $('#tblCertificados');
-var controlador = _ctx + 'admin/aplicaciones/';
+var controlador = _ctx + 'configuracion/aplicaciones/';
 var validator;
 var validatorUser;
 

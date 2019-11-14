@@ -117,15 +117,20 @@ var calc_navbar_height = function() {
 			
 					}, function(ButtonPressed) {
 						if (ButtonPressed == "Si") {
-							$.root_.addClass('animated fadeOutUp');
-							setTimeout(logout, 1000);
+							$.ajax({
+								url: _ctx + "logout",
+								type: "POST",
+								success: function (e) {
+									document.cookie = "GLL_NOMBRE_COMPLETO=; path=/;";
+									window.location = _ctx + "login";
+								},
+								error: function (err) {
+									exception(err)
+								}
+							});
+
 						}
 					});
-					function logout() {
-					    //window.location = $this.attr('href');
-					    CloseSession();
-					}
-			
 				},
 		
 				// RESET WIDGETS

@@ -2,6 +2,9 @@ package com.itsight.signbox.constants;
 
 public class ViewConstant {
 
+ //MAIN LOGIN
+ public static final String MAIN_LOGIN = "login";
+
  //MAIN CONFIGURACION
 
  public static final String MAIN_PARAMETROS = "configuracion/parametros";

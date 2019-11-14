@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin/tipos-archivos")
+@RequestMapping("/configuracion/tipos-archivos")
 public class TipoArchivoController {
 
     private TipoArchivoService tipoArchivoService;

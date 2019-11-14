@@ -1,5 +1,5 @@
 var $table = $('#tblRegistros');
-var controlador = _ctx + 'admin/parametros/';
+var controlador = _ctx + 'configuracion/parametros/';
 
 $(function () {
     $("#btnGuardar").click(function () {

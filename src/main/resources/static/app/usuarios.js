@@ -1,4 +1,4 @@
-var controlador =  _ctx + 'admin/usuarios/';
+var controlador =  _ctx + 'seguridad/usuarios/';
 var $table = $('#tblRegistros');
 var TEXTO_SELECCIONE = "Seleccione";
 var TEXTO_TODOS = "Todos";
