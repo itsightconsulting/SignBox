@@ -82,9 +82,9 @@ function listarRegistros() {
             var pageSize = p.pageSize;
             return {
                 archivo: $("#txtFiltroUsuario").val().trim(),
-                fechaI: ($("#txtFechaInicioFiltro").val() === "") ? null : $("#txtFechaInicioFiltro").val(),
-                fechaF: ($("#txtFechaFinFiltro").val() === "") ? null : $("#txtFechaFinFiltro").val(),
-                transaccion: $("#txtFiltroTransaccion").val(),
+                fechaI: '10/10/2019'  ,// ($("#txtFechaInicioFiltro").val() === "") ? null : $("#txtFechaInicioFiltro").val(),
+                fechaF: '11/11/2019', // ($("#txtFechaFinFiltro").val() === "") ? null : $("#txtFechaFinFiltro").val(),
+                transaccion:  $("#txtFiltroTransaccion").val(),
                 tipoDocumento: $("#txtFiltroTipo").val().trim(),
                 documento: $("#txtFiltroDocumento").val().trim(),
                 numeroCuenta: $("#txtNumeroCuenta").val().trim(),
@@ -93,8 +93,7 @@ function listarRegistros() {
             }
         },
         responseHandler: function (res) {
-            var data = res.d;
-            return { rows: data.ListLogs, total: data.Total }
+            return { rows: res, total: res.length > 0 ?  res[0].rows : 0 };
         }
     });
 }

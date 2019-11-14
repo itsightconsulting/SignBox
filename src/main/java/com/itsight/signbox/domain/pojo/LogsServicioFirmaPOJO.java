@@ -5,7 +5,11 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.itsight.signbox.json.JsonDateSimpleDeserializer;
 import com.itsight.signbox.json.JsonDateSimpleSerializer;
 import lombok.Data;
+
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.io.Serializable;
+import java.util.Date;
 
 
 @Data
@@ -13,17 +17,26 @@ public class LogsServicioFirmaPOJO implements Serializable {
 
     private Integer logEjecucionId;
     private String idTransaccion;
-    private Integer tipoDocumento;
+    private String tipoDocumento;
     private String documento;
     private String nombreArchivo;
     private String tipoFirma;
     private String tipoEjecucion;
-    private String fechaInicioToString;
-    private String fechaFinToString;
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonSerialize(using = JsonDateSimpleSerializer.class)
+    @JsonDeserialize(using = JsonDateSimpleDeserializer.class)
+    private Date fechaInicioToString;
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonSerialize(using = JsonDateSimpleSerializer.class)
+    @JsonDeserialize(using = JsonDateSimpleDeserializer.class)
+    private Date fechaFinToString;
+
+  //  private String fechaInicioToString;
+ //   private String fechaFinToString;
     private String numeroCuenta;
     private Integer rows;
 
-    public LogsServicioFirmaPOJO(Integer logEjecucionId, String idTransaccion, Integer tipoDocumento, String documento, String nombreArchivo, String tipoFirma, String tipoEjecucion, String fechaInicioToString, String fechaFinToString, String numeroCuenta, Integer rows) {
+    public LogsServicioFirmaPOJO(Integer logEjecucionId, String idTransaccion, String tipoDocumento, String documento, String nombreArchivo, String tipoFirma, String tipoEjecucion, Date fechaInicioToString, Date fechaFinToString, String numeroCuenta, Integer rows) {
         this.logEjecucionId = logEjecucionId;
         this.idTransaccion = idTransaccion;
         this.tipoDocumento = tipoDocumento;

@@ -19,7 +19,7 @@ public class LogsServicioFirmaQueryDTO implements Serializable {
     private String fechaI;
     private String fechaF;
     private String transaccion;
-    private Integer tipoDocumento;
+    private String tipoDocumento;
     private String documento;
     private String numeroCuenta;
 
@@ -30,7 +30,7 @@ public class LogsServicioFirmaQueryDTO implements Serializable {
         this.fechaI = "";
         this.fechaF = "";
         this.transaccion = "";
-        this.tipoDocumento = 0;
+        this.tipoDocumento = "";
         this.documento = "";
         this.numeroCuenta = "";
     }
