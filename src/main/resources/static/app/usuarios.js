@@ -1,28 +1,32 @@
-var controlador =  _ctx + 'seguridad/usuarios/';
-var $table = $('#tblRegistros');
-var TEXTO_SELECCIONE = "Seleccione";
-var TEXTO_TODOS = "Todos";
-var validator;
-var strDni;
-var strEmail;
-var validatorUpdate = true;
+const controlador =  _ctx + 'seguridad/usuarios/';
+const $table = $('#tblRegistros');
+const TEXTO_SELECCIONE = "Seleccione";
+const TEXTO_TODOS = "Todos";
+let validator;
+let strDni;
+let strEmail;
+let validatorUpdate = true;
+const body = document.querySelector('body');
 var validarUsuarioAD = false;
+const verifiedNames = [];
+const invalidNames = [];
+
 
 $(function () {
+    const body = document.querySelector('body');
     $("#cboPerfil").append($("<option />").val("0").text(TEXTO_SELECCIONE));
     $("#cboFiltroPerfil").append($("<option />").val("0").text(TEXTO_SELECCIONE));
     $("#cboModoAcceso").append($("<option />").val("0").text(TEXTO_SELECCIONE));
     $("#btnGuardar").click(function () {  addUsuario(); });
-    $("#btnBuscar").click(function () {         $table.bootstrapTable('refresh');
-        $(".panel-body").fadeOut(); });
+    $("#btnBuscar").click(function () {
+       $table.bootstrapTable('refresh');
+       $(".panel-body").fadeOut(); });
     $("#btnLimpiar").click(function () { limpiarFiltros(); })
-
-
+  //  body.addEventListener("focusout" , bodyFocusOutListenerTest);
     $(".btn-add").click(function () {
 
         var myForm = document.getElementById("form_registro");
         clearValidation(myForm);
-
         limpiarRegistro();
         $("#txtTitleForm").html("Nuevo Usuario");
         validatorUpdate = true;
@@ -67,7 +71,7 @@ $(function () {
     listarRegistros();
 
     $("#txtUserName").keypress(function (key) {
-        window.console.log(key.charCode)
+      //  window.console.log(key.charCode)
         if (key.charCode == 32) //espacio
             return false;
     });
@@ -91,6 +95,22 @@ $(function () {
 
 
 });
+
+
+function bodyFocusOutListenerTest(e){
+
+    const input = e.target;
+
+    if(input.name === "txtUserName"){
+        if($(input).valid()){
+
+            if(!verifiedNames.includes(input.value)){
+                validUniqueEmailOrUsernameOrNomPag(input,  $("#cboModoAcceso").val() , 'correo');
+            }
+        }
+    }
+
+}
 
 
 function limpiarFiltros() {
@@ -304,9 +324,21 @@ function validateUsername(modoAccesoId) {
             if (textStatus == "success") {
 
                 var data = dataObject;
-
+                debugger
                 if (data != null) {
                     rpta = data.isUsernameValid;
+
+
+                    if(rpta === true){
+
+                        if(verifiedNames){
+                            verifiedNames.push(params.username);
+                        }
+                    }else{
+                        if(invalidNames){
+                            invalidNames.push(params.username);
+                        }
+                    }
                 }
             }
         },
@@ -350,11 +382,23 @@ function validarRegistros() {
 
 
     $.validator.addMethod('validExistUserName', function (val, element) {
+
         if (!validatorUpdate) return true;
         if (parseInt($("#cboModoAcceso").val()) === 1 /*Modo Active Directory */) {
             return true;
         } else {
-            return validateUsername(2); //Modo formulario
+            if(!verifiedNames.includes(element.value)) {
+
+                if(invalidNames.includes(element.value)){
+
+                    return false;
+                }else{
+                    return validateUsername(2); //Modo formulario
+                }
+
+            }else{
+                return true;
+            }
         }
     });
     $.validator.addMethod('requiredUserName', function (val, element) {
@@ -421,7 +465,17 @@ function validarRegistros() {
         if (parseInt($("#cboModoAcceso").val()) === 2 /* modoNormal */) {
             return true;
         } else {
-            return validateUsername(1);
+            if(!verifiedNames.includes(element.value)) {
+                if(invalidNames.includes(element.value)){
+
+                    return false;
+                }else{
+                    return validateUsername(1); //Modo formulario
+                }
+
+            }else{
+                return true;
+            }
         }
     });
 
