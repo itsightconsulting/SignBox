@@ -53,5 +53,8 @@ public class Estampa extends AuditingEntity {
   private Integer pagina;
 
   @Column(name = "FLAGACTIVO")
-  private Boolean FlagActivo;
+  private Boolean flagActivo;
+
+  @Column(name = "FLAGELIMINADO")
+  private Boolean flagEliminado;
 }

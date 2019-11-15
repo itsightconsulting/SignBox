@@ -9,5 +9,4 @@ public class EstampaDTO {
     private String nombre;
     private String descripcion;
     private Integer pagina;
-    private Boolean FlagActivo;
 }

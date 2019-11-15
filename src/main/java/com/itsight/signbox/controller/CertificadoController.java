@@ -57,6 +57,7 @@ public class CertificadoController {
     @PostMapping("")
     public Certificados agregar(@ModelAttribute @Valid Certificados certificado){
         certificado.setFlagActivo(true);
+        certificado.setFlagEliminado(false);
         return certificadoService.save(certificado);
     }
 

@@ -57,7 +57,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .usernameParameter("nombreUsuario")
                 .passwordParameter("contrasena")
                 .loginProcessingUrl("/login_authentication")
-                .defaultSuccessUrl("/", true)
+                .defaultSuccessUrl("/configuracion/parametros/gestion", true)
                 //.failureUrl("/login.html?error=true")
                 .failureHandler(customAuthenticationFailureHandler())
                 .and()

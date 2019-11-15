@@ -5,6 +5,7 @@ import com.itsight.signbox.domain.dto.SecurityUserDTO;
 import com.itsight.signbox.domain.pojo.UsuariosPOJO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -121,7 +122,7 @@ public class Usuarios  extends AuditingEntity {
   private boolean flagEliminado;
 
   public void setUsuario ( Usuarios usuario){
-     this.contrasena = usuario.getContrasena();
+     this.contrasena =  new BCryptPasswordEncoder().encode(usuario.getContrasena());
      this.nombres = usuario.getNombres();
      this.paterno = usuario.getPaterno();
      this.materno = usuario.getMaterno();

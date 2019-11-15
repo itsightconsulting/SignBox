@@ -56,7 +56,9 @@ public class Aplicaciones extends AuditingEntity {
   @Column(nullable = false , name = "USUARIOLIDER")
   private String usuarioLider;
 
-  @Column(name = "FLAGACTIVO")
-  private Boolean FlagActivo;
+  @Column( nullable = false , name = "FLAGACTIVO")
+  private Boolean flagActivo;
 
+  @Column( nullable = false , name = "FLAGELIMINADO" )
+  private Boolean flagEliminado;
 }

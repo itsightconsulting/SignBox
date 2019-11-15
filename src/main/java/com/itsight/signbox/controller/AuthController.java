@@ -4,6 +4,7 @@ import com.itsight.signbox.constants.ViewConstant;
 import com.itsight.signbox.repository.UsuarioRepository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -16,9 +17,9 @@ public class AuthController {
         this.usuarioRepository = usuarioRepository;
     }
     @GetMapping(value = "/login")
-    public ModelAndView loginView( /*@RequestParam(value = "error", required = false) String error, */
+    public ModelAndView loginView(@RequestParam(value = "error", required = false) String error,
                                   Model model) {
-    /*    if (error != null) {
+        if (error != null) {
             if (error.equals("true")) {
                 model.addAttribute("error", "error");
             }
@@ -37,7 +38,7 @@ public class AuthController {
             else if(error.equals("loggedin")){
                 model.addAttribute("error", "loggedin");
             }
-        } */
+        }
         return new ModelAndView(ViewConstant.MAIN_LOGIN);
     }
 

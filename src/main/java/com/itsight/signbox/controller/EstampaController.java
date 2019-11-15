@@ -90,10 +90,7 @@ public class EstampaController {
         qEstampa.setDescripcion(item.getDescripcion());
         qEstampa.setPagina(item.getPagina());
         qEstampa.setFlagActivo(true);
-        //qEstampa.setFlagEliminado(false);
-
-        //qEstampa.setCreadoPor("José Chacón");
-        //qEstampa.setFechaCreacion(new Date());
+        qEstampa.setFlagEliminado(false);
 
         return estampaService.save(qEstampa);
     }

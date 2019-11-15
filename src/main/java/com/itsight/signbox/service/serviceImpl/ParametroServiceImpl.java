@@ -110,9 +110,9 @@ public class ParametroServiceImpl extends BaseServiceImpl<ParametroRepository> i
         return repository.findAll();
     }
 
-
     @Override
-    public Parametro obtenerParametroPorId(Integer id) {
+    public Parametro obtenerParametroPorId(Integer id)
+    {
         return repository.findById(id).orElse(null);
     }
 

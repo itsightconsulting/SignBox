@@ -103,11 +103,7 @@ public class AplicacionesController {
         qAplicaciones.setDescripcion(item.getDescripcion());
         qAplicaciones.setUsuarioLider(item.getUsuarioLider());
         qAplicaciones.setFlagActivo(true);
-
-        //qAplicaciones.setFlagEliminado(false);
-
-        //qAplicaciones. setCreadoPor("José Chacón");
-        //qAplicaciones.setFechaCreacion(new Date());
+        qAplicaciones.setFlagEliminado(false);
 
         return aplicacionesService.save(qAplicaciones);
     }

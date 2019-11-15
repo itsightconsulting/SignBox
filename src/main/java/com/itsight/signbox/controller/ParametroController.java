@@ -49,8 +49,6 @@ public class ParametroController {
     @PutMapping("/{id}")
     public Parametro actualizar(@PathVariable Integer id, @ModelAttribute @Valid ParametroDTO parametro){
         Parametro qParametro = listarParametro(id);
-        qParametro.setModificadoPor("José Chacón");
-        qParametro.setFechaModificacion(new Date());
         qParametro.setParametro(parametro);
 
         return parametroService.update(qParametro);

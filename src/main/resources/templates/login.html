@@ -107,6 +107,7 @@
                                     <span class="input-group-addon"><i class="icon-append fa fa-lock"></i></span>
                                 </div>
                             </div>
+
                             <!-- <div class="form-group" style="margin-top: 10px">
                             <a href="#" id="btnReContrasenia" class="editable editable-click">Olvidé mi contraseña</a>
                         </div>-->
@@ -152,6 +153,14 @@
     </div>
 </div>
 <script src="/js/bootbox.min.js"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+    let error = /*[[${error}]]*/ 'default';
+    console.log(error);
+
+    /*]]>*/
+</script>
 <script src="app/login.js"></script>
 <footer id="footerlogin"></footer>
 </body>

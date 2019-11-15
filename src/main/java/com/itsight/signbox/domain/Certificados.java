@@ -74,6 +74,10 @@ public class Certificados extends AuditingEntity {
   private boolean flagActivo;
 
 
+  @Column(name = "FLAGELIMINADO", nullable = false)
+  private boolean flagEliminado;
+
+
 
   public void setCertificados(Certificados certificados){
 

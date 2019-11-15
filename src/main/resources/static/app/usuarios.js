@@ -605,7 +605,7 @@ function irModificarRegistro(id) {
                 $("#txtPaterno").val(registro.paterno);
                 $("#txtEmail").val(registro.correoElectronico);
                 $("#txtDni").val(registro.dni);
-                $("#txtPass").val(registro.contrasena);
+                $("#txtPass").attr("placeholder" , "password");
 
                 $("#cboModoAcceso").val(registro.modoAccesoId);
                 $("#cboPerfil").val(registro.perfilId);
