@@ -9,33 +9,33 @@
     <meta name="_ctx" th:content="@{/}"/>
     <title>Login - SignBoxContract</title>
     <meta charset="UTF-8">
-    <link href="/css/bootstrap-datetimepicker.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet" />
-    <script type="text/javascript" src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <link rel="stylesheet" type="text/css" media="screen" href="/css/bootstrap.min.css">
-    <link href="css/font-awesome.min.css" rel='stylesheet' type='text/css'>
-    <link href="css/hover-min.css" rel='stylesheet' type='text/css'>
-    <link href="css/style.css" rel='stylesheet' type='text/css'>
-    <link href="css/smart/smartadmin-production.min.css" rel="stylesheet" />
-    <link href="css/smart/smartadmin-production-plugins.min.css" rel="stylesheet" />
-    <link href="css/smartadmin-skins.min.css" rel="stylesheet" type="text/css" media="screen">
-    <link href="css/smartadmin-rtl.min.css" rel="stylesheet" type="text/css" media="screen">
+    <link th:href="@{/css/bootstrap-datetimepicker.css}" rel="stylesheet" />
+    <link th:href="@{https://fonts.googleapis.com/css?family=Quicksand}" rel="stylesheet" />
+    <script type="text/javascript" th:src="@{http://code.jquery.com/jquery-3.2.1.min.js}"></script>
+    <link rel="stylesheet" type="text/css" media="screen" th:href="@{/css/bootstrap.min.css}">
+    <link th:href="@{css/font-awesome.min.css}" rel='stylesheet' type='text/css'>
+    <link th:href="@{css/hover-min.css}" rel='stylesheet' type='text/css'>
+    <link th:href="@{css/style.css}" rel='stylesheet' type='text/css'>
+    <link th:href="@{css/smart/smartadmin-production.min.css}" rel="stylesheet" />
+    <link th:href="@{css/smart/smartadmin-production-plugins.min.css}" rel="stylesheet" />
+    <link th:href="@{css/smartadmin-skins.min.css}" rel="stylesheet" type="text/css" media="screen">
+    <link th:href="@{css/smartadmin-rtl.min.css}" rel="stylesheet" type="text/css" media="screen">
     <!-- #FAVICONS -->
 
-    <link href="img/favicon/favicon.ico" rel="shortcut icon" type="image/x-icon">
-    <link href="img/favicon/favicon.ico" rel="icon" type="image/x-icon">
+    <link th:href="@{img/favicon/favicon.ico}" rel="shortcut icon" type="image/x-icon">
+    <link th:href="@{img/favicon/favicon.ico}" rel="icon" type="image/x-icon">
 
     <script type="text/javascript">
         var siteRoot = '<%= ResolveUrl("~/")%>';
     </script>
-    <script src="js/bootstrap/bootstrap.min.js"></script>
-    <script src="js/util.js"></script>
+    <script th:src="@{js/bootstrap/bootstrap.min.js}"></script>
+    <script th:src="@{js/util.js}"></script>
 
-    <script src="js/libs/jquery.validate.js"></script>
-    <script src="js/plugin/pace/pace.min.js"></script>
-    <script src="js/plugin/masked-input/jquery.maskedinput.min.js"></script>
-    <script src="js/app.config.js"></script>
-    <script src="js/app.min.js"></script>
+    <script th:src="@{js/libs/jquery.validate.js}"></script>
+    <script th:src="@{js/plugin/pace/pace.min.js}"></script>
+    <script th:src="@{js/plugin/masked-input/jquery.maskedinput.min.js}"></script>
+    <script th:src="@{js/app.config.js}"></script>
+    <script th:src="@{js/app.min.js}"></script>
 
     <style>
         .form-control my-error-class, .bootstrap-timepicker label.my-error-class {
@@ -161,7 +161,7 @@
 
     /*]]>*/
 </script>
-<script src="app/login.js"></script>
+<script th:src="@{app/login.js}"></script>
 <footer id="footerlogin"></footer>
 </body>
 </html>
