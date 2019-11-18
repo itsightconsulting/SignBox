@@ -3,11 +3,10 @@ package com.itsight.signbox.controller;
 import com.itsight.signbox.advice.NotFoundValidationException;
 import com.itsight.signbox.constants.ViewConstant;
 import com.itsight.signbox.domain.Persona;
+import com.itsight.signbox.domain.Usuarios;
 import com.itsight.signbox.domain.dto.PersonaDTO;
 import com.itsight.signbox.domain.pojo.PersonaPOJO;
-import com.itsight.signbox.service.AplicacionesProcedureInvoker;
-import com.itsight.signbox.service.PersonaProcedureInvoker;
-import com.itsight.signbox.service.PersonaService;
+import com.itsight.signbox.service.*;
 import com.itsight.util.Enums;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,14 +17,17 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin/credenciales")
+@RequestMapping("/seguridad/credenciales")
 public class CredencialesController {
 
     private PersonaProcedureInvoker personaProcedureInvoker;
     private PersonaService personaService;
+
+
 
     @Value("${doc.ambiente}")
     private String VariableAmbiente;
@@ -36,12 +38,14 @@ public class CredencialesController {
     @Value("${doc.longitud}")
     private String VariableLongitud;
 
+    private CredencialesService credencialesService;
+
     @Autowired
     public CredencialesController(PersonaProcedureInvoker personaProcedureInvoker,
-                                  PersonaService personaService) {
+                                  PersonaService personaService, CredencialesService credencialesService) {
         this.personaProcedureInvoker = personaProcedureInvoker;
         this.personaService = personaService;
-
+        this.credencialesService = credencialesService;
     }
 
     @GetMapping(value = "/gestion")
@@ -80,8 +84,16 @@ public class CredencialesController {
         qPersona.setHashContrasenia("");
         qPersona.setFolderBase("");
 
-
         return qPersona;
+    }
+
+    @GetMapping("enviar-credenciales/")
+    public String enviarCredenciales(@RequestParam Integer id ,  @RequestParam Integer tipo ) throws NotFoundValidationException {
+
+        Persona persona = personaService.findOne(id);
+        credencialesService.enviarCredencialesxCorreo(persona);
+
+        return "true";
     }
 /*
     @GetMapping("ObtenerPorId/{id}")

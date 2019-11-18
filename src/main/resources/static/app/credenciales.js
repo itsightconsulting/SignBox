@@ -1,5 +1,5 @@
 var $table = $('#tblRegistros');
-var controlador = _ctx + 'admin/credenciales/';
+var controlador = _ctx + 'seguridad/credenciales/';
 var validator;
 
 $(function () {
@@ -192,21 +192,18 @@ function enviarCredenciales() {
                 tipo: $("#cboTipo").val()
             };
             $.ajax({
-                type: 'POST',
-                contentType: "application/json; charset=utf-8",
-                url: controlador + 'EnviarCredenciales',
+                type: 'GET',
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                url: controlador + 'enviar-credenciales/',
                 dataType: "json",
-                data: JSON.stringify(params),
+                data: params,
                 success: function (dataObject, textStatus) {
-                    if (textStatus == "success") {
-                        bootbox.alert("Se completó con éxito la operación")
-                    }
+                    bootbox.alert("Se completó con éxito la operación")
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     bootbox.alert(xhr.responseText);
                 },
                 complete: function (data) {
-
                 }
             });
         }
