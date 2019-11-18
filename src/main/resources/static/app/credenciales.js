@@ -1,6 +1,6 @@
-var $table = $('#tblRegistros');
-var controlador = _ctx + 'seguridad/credenciales/';
-var validator;
+const $table = $('#tblRegistros');
+const controlador = _ctx + 'seguridad/credenciales/';
+let validator;
 
 $(function () {
     $("#btnBuscar").click(function () {
@@ -25,7 +25,7 @@ $(function () {
 function actualizar() {
     if ($("#form_registro").valid()) {
         $("#btnGuardar").button("loading");
-        var params = {
+        const params = {
             id: $("#hIdPersona").val(),
             telefono: $("#txtTelefono").val(),
             correo: $("#txtCorreo").val()
@@ -42,7 +42,7 @@ function actualizar() {
                 irListado();
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                var error = JSON.parse(xhr.responseText);
+                const error = JSON.parse(xhr.responseText);
                 MostrarAlerta("alertBoxTabAreas", "alert-danger", String.Format("<strong>Error!</strong> {0}", error.Message));
             },
             complete: function (data) {
@@ -56,8 +56,8 @@ function actualizar() {
 
 function listarRegistros() {
 
-    var nombre = $("#txtFiltroNombre").val();
-    var tipo = $("#cboFiltroTipo").val();
+    const nombre = $("#txtFiltroNombre").val();
+    const tipo = $("#cboFiltroTipo").val();
 
     $table.bootstrapTable('destroy');
     $table.bootstrapTable({
@@ -67,7 +67,7 @@ function listarRegistros() {
         sidePagination: 'server',
         pageSize: 20,
         responseHandler: function (res) {
-            var data = res;
+            const data = res;
             return { rows: data, total: data.length }
         }
     });
@@ -85,18 +85,10 @@ function linkFormatter(value, row, index) {
 }
 
 function opciones(value, row, index) {
-    var credenciales = "";
-    var vistaprevia = "";
-    var reseteo = "";
+    const credenciales = String.Format("<a href='javascript:modalCredenciales(" + row.personaId + ");' title='Enviar credenciales de acceso'><i class='glyphicon glyphicon-envelope'></i></a>");
+    const reseteo = String.Format("<a href='javascript:resetearPass(" + row.personaId + ");' title='Generar una contraseña temporal'><i class='glyphicon glyphicon-refresh'></i></a>");
 
-    credenciales = String.Format("<a href='javascript:modalCredenciales(" + row.personaId + ");' title='Enviar credenciales de acceso'><i class='glyphicon glyphicon-envelope'></i></a>");
-    vistaprevia = String.Format("<a href='javascript:vistaprevia(" + row.personaId + ");' title='Acceder al directorio del usuario'><i class='glyphicon glyphicon-hdd'></i></a>");
-    reseteo = String.Format("<a href='javascript:resetearPass(" + row.personaId + ");' title='Generar una contraseña temporal'><i class='glyphicon glyphicon-refresh'></i></a>");
-    return reseteo + "&nbsp;" + credenciales + "&nbsp;" + vistaprevia;
-}
-
-function vistaprevia(id) {
-    window.document.location.href = "/ecm/drive?token=" + id;
+    return reseteo + "&nbsp;" + credenciales + "&nbsp;";
 }
 
 function modalCredenciales(id) {
@@ -132,14 +124,14 @@ function irModificarRegistro(id) {
 
                 data = dataObject;
 
-                var registro = data;
+                const registro = data;
                 $("#hIdPersona").val(registro.personaId);
                 $("#txtCorreo").val(registro.correo);
                 $("#txtTelefono").val(registro.telefono);
             }
         },
         error: function (xhr, ajaxOptions, thrownError) {
-            var error = JSON.parse(xhr.responseText);
+            const error = JSON.parse(xhr.responseText);
         },
         complete: function (data) {
             irRegistro();
@@ -157,18 +149,15 @@ function resetearPass(id) {
     bootbox.setLocale("es");
     bootbox.confirm("¿Estás seguro que deseas generar una contraseña temporal de acceso al usuario?, ten presente que esta contraseña no se enviará de manera automática", function (result) {
         if (result) {
-            var params = {
-                id: id
-            };
             $.ajax({
-                type: 'POST',
-                contentType: "application/json; charset=utf-8",
-                url: controlador + 'ResetearCredenciales',
+                type: 'PUT',
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                url: controlador + 'reseteo-credenciales/' + id,
                 dataType: "json",
-                data: JSON.stringify(params),
                 success: function (dataObject, textStatus) {
+
                     if (textStatus == "success") {
-                        var result = dataObject.d;
+                        const result = dataObject.password;
                         bootbox.alert(String.Format("Se completó con éxito la operación, la contraseña generada es la siguiente: <strong>{0}</strong>", result));
                     }
                 },
@@ -187,7 +176,7 @@ function enviarCredenciales() {
     bootbox.setLocale("es");
     bootbox.confirm("¿Estás seguro que deseas re-enviar las credenciales de acceso al usuario?, ten presente que solo se enviarán si la cuenta tiene el correo y teléfono configurados", function (result) {
         if (result) {
-            var params = {
+            const params = {
                 id: $("#hIdPersona").val(),
                 tipo: $("#cboTipo").val()
             };
@@ -212,8 +201,8 @@ function enviarCredenciales() {
 
 function centerModals(parametro) {
     $("#" + parametro.id + "").each(function (i) {
-        var $clone = $(this).clone().css('display', 'block').appendTo('body');
-        var top = Math.round(($clone.height() - $clone.find('.modal-content').height()) / 2);
+        const $clone = $(this).clone().css('display', 'block').appendTo('body');
+        let  top = Math.round(($clone.height() - $clone.find('.modal-content').height()) / 2);
         top = top > 0 ? top : 0;
         $clone.remove();
         $(this).find('.modal-content').css("margin-top", top);
@@ -247,7 +236,7 @@ function validarRegistros() {
 }
 
 function IsEnteroNumber(b) {
-    var bool = false;
+    let bool = false;
     if (parseInt(b.key) >= 0) {
         bool = Number.isInteger(parseInt(b.key));
     }

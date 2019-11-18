@@ -8,17 +8,29 @@ import com.itsight.signbox.domain.dto.PersonaDTO;
 import com.itsight.signbox.domain.pojo.PersonaPOJO;
 import com.itsight.signbox.service.*;
 import com.itsight.util.Enums;
+import com.itsight.util.Enums.TipoEnvio;
+import com.itsight.util.Utilitarios;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+
+import static com.itsight.util.Enums.TipoEnvio.SMS_EMAIL;
+import static com.itsight.util.Enums.TipoEnvio.getTipoEnvioFromInt;
+import static com.itsight.util.Parseador.getDecodeBase64;
+import static com.itsight.util.Parseador.getEncodeBase64;
+import static com.itsight.util.Utilitarios.getRandomString;
 
 @RestController
 @RequestMapping("/seguridad/credenciales")
@@ -27,16 +39,15 @@ public class CredencialesController {
     private PersonaProcedureInvoker personaProcedureInvoker;
     private PersonaService personaService;
 
+    @Value("${spring.profiles.active}")
+    private String profile;
 
-
-    @Value("${doc.ambiente}")
-    private String VariableAmbiente;
 
     @Value("${doc.contrasenia.base}")
-    private String VariableContrasenia;
+    private String variableContrasenia;
 
     @Value("${doc.longitud}")
-    private String VariableLongitud;
+    private String variableLongitud;
 
     private CredencialesService credencialesService;
 
@@ -91,66 +102,53 @@ public class CredencialesController {
     public String enviarCredenciales(@RequestParam Integer id ,  @RequestParam Integer tipo ) throws NotFoundValidationException {
 
         Persona persona = personaService.findOne(id);
-        credencialesService.enviarCredencialesxCorreo(persona);
 
+        switch (getTipoEnvioFromInt(tipo))
+        {
+            case SMS_EMAIL
+                    :
+                if (!Utilitarios.isNullOrWhitespace(persona.getCorreo())) {
+                    credencialesService.enviarCredencialesxCorreo(persona);
+                }
+                if (!Utilitarios.isNullOrWhitespace(persona.getTelefono())) {
+                    credencialesService.enviarCredencialesxSMS(persona);
+                }
+                ;
+                break;
+
+            case EMAIL:
+
+                if (!Utilitarios.isNullOrWhitespace(persona.getCorreo())) {
+                    credencialesService.enviarCredencialesxCorreo(persona);
+                }
+            ; break;
+            case SMS:
+
+                if (!Utilitarios.isNullOrWhitespace(persona.getTelefono())){
+                }
+                credencialesService.enviarCredencialesxSMS(persona);
+                ;break;
+            default:
+                throw new IllegalStateException("Valor inesperado: " + tipo);
+        }
         return "true";
     }
-/*
-    @GetMapping("ObtenerPorId/{id}")
-    public String ResetearCredenciales (@PathVariable Integer id) throws NotFoundValidationException {
+
+    @PutMapping("reseteo-credenciales/{id}")
+    public Map<String, String> resetearCredenciales (@PathVariable Integer id) throws NotFoundValidationException {
 
         Persona qPersona = personaService.findOne(id);
-
-        String ambiente = VariableAmbiente;
         String contrasenia = "";
         String hashContrasenia = "";
-        if (ambiente == ViewConstant.AMBIENTE_DESARROLLO)
-        {
-            contrasenia = VariableContrasenia;
-            hashContrasenia = SignBoxContract.Security.SHAMager.ManagerSHA256(contrasenia);
-        }else{
-            contrasenia = VariableLongitud;
-            hashContrasenia = SignBoxContract.Security.SHAMager.ManagerSHA256(contrasenia);
+        if(profile.equals("development")){
+            contrasenia = variableContrasenia ;
+        }else if(profile.equals("production")){
+            contrasenia = getRandomString(Integer.parseInt(variableLongitud));
         }
+        hashContrasenia = getEncodeBase64(contrasenia);
+        qPersona.setHashContrasenia(hashContrasenia);
+        personaService.update(qPersona);
 
-        personaService.ActualizarContrasenia(id, hashContrasenia, contrasenia);
-        personaService.ActualizarFlagCambio(id);
-
-        return contrasenia;
+        return Collections.singletonMap("password", contrasenia);
     }
-
-    @GetMapping("ObtenerPorId/{id}")
-    public void EnviarCredenciales (@PathVariable Integer id, Integer tipo) throws NotFoundValidationException {
-
-        Persona qPersona = personaService.findOne(id);
-
-        EmailManager email = new  EmailManager() ;
-        SMSManager sms  = new SMSManager();
-
-        var rutaCorreo = AppSettings.Get<string>("Correo.Contrasena");
-        var cuerpoCorreo = File.ReadAllText(rutaCorreo);
-
-        switch (tipo)
-        {
-            case (int)TipoEnvio.Ambos:
-            {
-                if (!string.IsNullOrWhiteSpace(persona.Correo))
-                    email.EnviarCorreoCredenciales(cuerpoCorreo, id, string.Empty);
-
-                if (!string.IsNullOrWhiteSpace(persona.Telefono))
-                    sms.EnviarSMSCredenciales(id, id.ToString());
-            }; break;
-            case (int)TipoEnvio.Correo:
-            {
-                if (!string.IsNullOrWhiteSpace(persona.Correo))
-                    email.EnviarCorreoCredenciales(cuerpoCorreo, id, string.Empty);
-
-            }; break;
-            case (int)TipoEnvio.SMS:
-            {
-                if (!string.IsNullOrWhiteSpace(persona.Telefono))
-                    sms.EnviarSMSCredenciales(id, id.ToString());
-            };break;
-        }
-    }*/
 }

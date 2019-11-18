@@ -134,5 +134,24 @@ public class Enums {
         GLL_NOMBRE_COMPLETO
     }
 
+    public enum TipoEnvio{
+        SMS(1),
+        EMAIL(2),
+        SMS_EMAIL(3),
+        UNKNOWN(4);
+
+        final int id;
+
+        TipoEnvio(int id){this.id = id;}
+
+        public static TipoEnvio getTipoEnvioFromInt(int status) {
+            for(TipoEnvio te : values()) {
+                if(te.id == status) return te;
+            }
+            return UNKNOWN;
+        }
+
+        public final int get(){return id;}
+    }
 
 }
