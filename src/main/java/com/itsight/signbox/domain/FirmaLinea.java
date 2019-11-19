@@ -2,6 +2,9 @@ package com.itsight.signbox.domain;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.itsight.signbox.domain.pojo.LogsNotificacionesPOJO;
+import com.itsight.signbox.domain.pojo.LogsPortalPOJO;
+import com.itsight.signbox.domain.pojo.LogsTrazabilidadFirmaPOJO;
 import com.itsight.signbox.json.JsonDateSimpleDeserializer;
 import com.itsight.signbox.json.JsonDateSimpleSerializer;
 import lombok.Data;
@@ -10,6 +13,63 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
+@SqlResultSetMappings({
+         @SqlResultSetMapping(
+            name = "LogsTrazabilidadFirmaGetAll",
+            classes = {
+                  @ConstructorResult(
+                          targetClass = LogsTrazabilidadFirmaPOJO.class,
+                          columns = {
+
+                                  @ColumnResult(name = "firmaLineaId"),
+                                  @ColumnResult(name = "idTransaccion"),
+                                  @ColumnResult(name = "codigoAplicacion"),
+                                  @ColumnResult(name = "tipoArchivo"),
+                                  @ColumnResult(name = "posFirma"),
+                                  @ColumnResult(name = "alias"),
+                                  @ColumnResult(name = "fechaInicio"),
+                                  @ColumnResult(name = "fechaFin"),
+                                  @ColumnResult(name = "codigoRespuesta"),
+                                  @ColumnResult(name = "nombreArchivo"),
+                                  @ColumnResult(name = "rutaArchivo"),
+                                  @ColumnResult(name = "rutaArchivoFinal"),
+                                  @ColumnResult(name = "numeroDocumento"),
+                                  @ColumnResult(name = "numeroCuenta"),
+                                  @ColumnResult(name = "logId"),
+                                  @ColumnResult(name = "fechaEvento"),
+                                  @ColumnResult(name = "tipoEvento"),
+                                  @ColumnResult(name = "resumen"),
+                                  @ColumnResult(name = "detalle"),
+                                  @ColumnResult(name = "idRetorno"),
+                                  @ColumnResult(name = "detalleRetorno"),
+                                  @ColumnResult(name = "rows")
+                          }
+
+                  )
+          }
+),
+        @SqlResultSetMapping(
+        name = "LogsNotificacionesGetAll",
+        classes = {
+                @ConstructorResult(
+                        targetClass = LogsNotificacionesPOJO.class,
+                        columns = {
+
+                                @ColumnResult(name = "logId"),
+                                @ColumnResult(name = "numeroCuenta"),
+                                @ColumnResult(name = "fechaEvento"),
+                                @ColumnResult(name = "tipoEvento"),
+                                @ColumnResult(name = "resumen"),
+                                @ColumnResult(name = "detalle"),
+                                @ColumnResult(name = "idRetorno"),
+                                @ColumnResult(name = "detalleRetorno"),
+                                @ColumnResult(name = "descripcionRetorno"),
+                                @ColumnResult(name = "rows")
+                        }
+
+                )
+        }
+)})
 @Entity
 @Data
 public class FirmaLinea {

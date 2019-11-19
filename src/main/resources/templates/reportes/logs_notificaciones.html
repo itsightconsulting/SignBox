@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:insert="html-commons/meta :: fg-meta"></th:block>
+    <th:block th:insert="html-commons/css  :: fg-css"></th:block>
+
+    <title>SignOn</title>
+</head>
+<body>
+
+<!-- HEADER -->
+<div th:replace="html-commons/header :: fg-header"></div>
+<!-- END HEADER -->
+
+<!-- Left panel : Navigation area -->
+<!-- Note: This width of the aside area can be adjusted through LESS variables -->
+<div th:replace="html-commons/left-panel :: fg-left-panel"></div>
+
+
+<div id="main" role="main">
+    <div id="content">
+        <div>
+            <section class="content-header">
+                <style>
+                    #map {
+                        width: 100%;
+                        height: 320px;
+                    }
+
+                    .connectedSortable, .connectedSortableAreas {
+                        height: 300px;
+                        overflow: auto;
+                        width: 90%;
+                        margin-top: 8px;
+                        background-color: #fff;
+                    }
+
+                    #sortableAreas1, #sortableAreas2 {
+                        list-style-type: none;
+                        margin: 0;
+                        padding: 0 0 2.5em;
+                        margin-right: 0;
+                        margin: 0 auto;
+                        border: dotted 1px #3c8dbc;
+                    }
+
+                    #sortableAreas1 li {
+                        background: #bfbfbf;
+                    }
+
+                    #sortableAreas1 li label {
+                        color: #000;
+                        font-weight: bold;
+                    }
+
+                    #sortableAreas2 li {
+                        background: #3c8dbc;
+                    }
+
+                    #sortableAreas2 li label {
+                        color: #fff;
+                        font-weight: bold;
+                    }
+
+                    #sortableAreas2 {
+                        border: dotted 1px #3c8dbc;
+                    }
+
+                    #sortableAreas1 li, #sortableAreas2 li {
+                        padding: 10px 5px 10px 15px;
+                        font-size: 13px;
+                        height: auto;
+                        margin-bottom: 10px;
+                    }
+
+                    #sortableAreas1 li label, #sortableAreas2 li label {
+                        margin-bottom: 0;
+                    }
+
+
+                    @media (min-width: 992px) {
+
+                        .modal-lg {
+                            width: 1200px;
+                        }
+                    }
+
+                    .birthdayPicker select {
+                        width: auto;
+                        display: inline;
+                    }
+
+                    #divDepartamentos .btn-group {
+                        width: 100%;
+                    }
+
+                    #accordion {
+                        width: 100%;
+                    }
+
+                    .RegistrosHidden {
+                        display: none;
+                    }
+
+                    .cajaVacia {
+                        border: 1px solid #dd4b39;
+                        background-color: rgba(221,75,57,0.12);
+                    }
+                    /*Manejo de Archivo*/
+                    #lblMensajeArchivo, #lblMensajeArchivoActualizar, #lblMensajeArchivoCambiar {
+                        color: #FF0000 !important;
+                        font-weight: bold !important;
+                        font-size: 12px;
+                    }
+
+                    .file-drop-zone {
+                        overflow: auto;
+                        height: 295px !important;
+                    }
+
+                    .kv-file-upload, .file-upload-indicator {
+                        display: none;
+                    }
+
+                    .margin {
+                        margin-left: 10px;
+                    }
+
+                    .btn.btn-navigate, .fileinput-remove {
+                        display: none !important;
+                    }
+                </style>
+
+                <h1>Visualización de Logs de notificaciones (SMS/Correo electrónico)
+                    <small>Revisa los logs asociados a los envíos de notificaciones vía SMS y correo electrónico</small>
+                    <!--<button class="btn btn-primary btn-add" id="btnRegistroColaborador"><span class="fa fa-plus"></span>Nuevo</button>-->
+                    <button class="btn btn-primary pull-right" id="btnExportar" style="margin-left: 8px"><span class=""></span>Exportar</button>
+                </h1>
+            </section>
+
+            <div class="view_list">
+                <div class="row">
+                    <div class="col-xs-12" style="margin: 15px; padding-left: 0;">
+                        <div id="accordion" class="panel panel-default">
+                            <div class="panel-heading">Búsqueda<span class="fa fa-search"></span></div>
+                            <div style="display: none" class="panel-body">
+                                <form id="frm_busqueda">
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label>Desde la Fecha:</label>
+                                            <div class='input-group date datetimepicker' id='dtFechaInicioFiltro'>
+                                                <input type='text' class="form-control" id="txtFechaInicioFiltro" name="txtFechaInicioFiltro" maxlength="10" />
+                                                <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label>Hasta la Fecha:</label>
+                                            <div class='input-group date datetimepicker' id='dtFechaFinFiltro'>
+                                                <input type='text' class="form-control" id="txtFechaFinFiltro" name="txtFechaFinFiltro" maxlength="10" />
+                                                <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label for="txtNumeroCuenta">Número de cuenta</label>
+                                            <input type="text" id="txtNumeroCuenta" name="txtNumeroCuenta" maxlength="30" class="form-control" autocomplete="off" />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group btn_mod">
+                                            <button id="btnBuscar" type="button" class="btn btn-primary">Buscar</button>
+                                        </div>
+                                        <div class="form-group btn_mod">
+                                            <button type="button" class="btn btn-danger btn_cancel" id="btnLimpiar">Limpiar</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="nav nav-tabs v_mode">
+                            <li>Modo: </li>
+                            <li class="active"><a data-toggle="tab" href="#lista_v">Lista</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="tab-content">
+                            <div id="lista_v" class="tab-pane fade in active">
+                                <div class="table-responsive">
+                                    <table id="tblRegistros" class="table table-striped table-responsive" data-unique-id="WorkerId">
+                                        <thead>
+                                        <tr>
+                                            <th data-formatter="rowNumFormatter" data-halign="center" data-valign="middle" data-align="center" data-width="30">#</th>
+                                            <th data-field="logId" data-halign="center" data-valign="middle" data-align="center">Identificador</th>
+                                            <th data-field="numeroCuenta" data-halign="center" data-valign="middle" data-align="center">Número de cuenta</th>
+                                            <th data-field="fechaEvento" data-halign="center" data-valign="middle" data-align="center">Fecha operación</th>
+                                            <th data-field="tipoEvento" data-halign="center" data-valign="middle" data-align="center">Tipo de evento</th>
+                                            <th data-field="resumen" data-halign="center" data-valign="middle" data-align="center">Resumen</th>
+                                            <th data-field="detalle" data-halign="center" data-valign="middle" data-align="center">Detalle</th>
+                                            <th data-field="idRetorno" data-halign="center" data-valign="middle" data-align="center">Código retorno</th>
+                                            <th data-field="codigoRetorno" data-halign="center" data-valign="middle" data-align="center">Descripción retorno</th>
+                                            <th data-field="descripcionRetorno" data-halign="center" data-valign="middle" data-align="center">Detalle retorno</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<!-- PAGE FOOTER -->
+<div th:replace="html-commons/footer :: fg-footer"></div>
+
+<div th:replace="html-commons/loading :: fg-loading"></div>
+
+
+<!-- END PAGE FOOTER -->
+<!-- IMPORTS JAVASCRIPT -->
+<script th:replace="html-commons/js :: fg-js"/>
+
+<script th:src="@{/app/logs-notificaciones.js}"></script>
+<script th:src="@{/app/libs/bootstrap-table.min.js}"></script>
+
+</body>
+
+</html>
