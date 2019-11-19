@@ -83,13 +83,13 @@ function listarRegistros() {
             return {
                 archivo: $("#txtFiltroUsuario").val().trim(),
                 fechaI: '10/10/2019'  ,// ($("#txtFechaInicioFiltro").val() === "") ? null : $("#txtFechaInicioFiltro").val(),
-                fechaF: '11/11/2019', // ($("#txtFechaFinFiltro").val() === "") ? null : $("#txtFechaFinFiltro").val(),
+                fechaF: '30/11/2019', // ($("#txtFechaFinFiltro").val() === "") ? null : $("#txtFechaFinFiltro").val(),
                 transaccion:  $("#txtFiltroTransaccion").val(),
                 tipoDocumento: $("#txtFiltroTipo").val().trim(),
                 documento: $("#txtFiltroDocumento").val().trim(),
                 numeroCuenta: $("#txtNumeroCuenta").val().trim(),
-                offset: pageNumber,
-                limit: pageSize
+                offset: 0,
+                limit: 5
             }
         },
         responseHandler: function (res) {

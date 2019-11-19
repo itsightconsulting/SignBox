@@ -38,7 +38,7 @@ public class LogsServicioFirmaProcedureInvokerImpl implements LogsServicioFirmaP
         storedProcedureQuery.setParameter("u_fechaI", query.getFechaI() == "" ? null : query.getFechaI());
         storedProcedureQuery.setParameter("u_fechaF", query.getFechaF() == "" ? null : query.getFechaF()) ;
         storedProcedureQuery.setParameter("u_transaccion",  query.getTransaccion());
-        storedProcedureQuery.setParameter("u_tipo", query.getTipoDocumento() == "" ? null : query.getTipoDocumento()) ;
+        storedProcedureQuery.setParameter("u_tipo", query.getTipoDocumento().equals("0") ? null : query.getTipoDocumento()) ;
         storedProcedureQuery.setParameter("u_documento", query.getDocumento()) ;
         storedProcedureQuery.setParameter("u_cuenta", query.getNumeroCuenta()) ;
 
