@@ -26,6 +26,7 @@ public class ViewConstant {
  public static final String MAIN_LOGS_SERVICIO_FIRMA = "reportes/logs";
  public static final String MAIN_LOGS_TRAZABILIDAD_FIRMA = "reportes/logs_trazabilidad_firma";
  public static final String MAIN_LOGS_NOTIFICACIONES = "reportes/logs_notificaciones";
+ public static final String MAIN_LOGS_DETALLADO_FIRMA = "reportes/logs_detallado_firma";
 
 
 

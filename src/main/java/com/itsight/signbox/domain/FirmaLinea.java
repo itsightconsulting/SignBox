@@ -2,6 +2,7 @@ package com.itsight.signbox.domain;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.itsight.signbox.domain.pojo.LogsDetalladoFirmaPOJO;
 import com.itsight.signbox.domain.pojo.LogsNotificacionesPOJO;
 import com.itsight.signbox.domain.pojo.LogsPortalPOJO;
 import com.itsight.signbox.domain.pojo.LogsTrazabilidadFirmaPOJO;
@@ -69,7 +70,36 @@ import java.util.Date;
 
                 )
         }
-)})
+),
+
+        @SqlResultSetMapping(
+                name = "LogsDetalladoFirmaGetAll",
+                classes = {
+                        @ConstructorResult(
+                                targetClass = LogsDetalladoFirmaPOJO.class,
+                                columns = {
+                                        @ColumnResult(name = "logsFirmaId"),
+                                        @ColumnResult(name = "numeroCuenta"),
+                                        @ColumnResult(name = "idTransaccion"),
+                                        @ColumnResult(name = "tipoDocumento"),
+                                        @ColumnResult(name = "numeroDocumento"),
+                                        @ColumnResult(name = "codigoAplicacion"),
+                                        @ColumnResult(name = "certificado"),
+                                        @ColumnResult(name = "fechaEvento"),
+                                        @ColumnResult(name = "tipoEvento"),
+                                        @ColumnResult(name = "tipoFirma"),
+                                        @ColumnResult(name = "resumen"),
+                                        @ColumnResult(name = "detalle"),
+                                        @ColumnResult(name = "idRetorno"),
+                                        @ColumnResult(name = "detalleRetorno"),
+                                        @ColumnResult(name = "descripcionRetorno"),
+                                        @ColumnResult(name = "rows")
+                                }
+
+                        )
+                }
+        )
+  })
 @Entity
 @Data
 public class FirmaLinea {

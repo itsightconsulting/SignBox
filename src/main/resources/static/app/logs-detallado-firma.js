@@ -1,4 +1,4 @@
-var controlador = _ctx +  'reportes/logs/';
+var controlador = _ctx + 'reportes/logs-detallados/';
 var $table = $('#tblRegistros');
 var TEXTO_SELECCIONE = "Seleccione";
 
@@ -25,11 +25,9 @@ $(function () {
         $table.bootstrapTable('refresh');
         $(".panel-body").fadeOut();
     });
-
     $("#btnLimpiar").click(function () {
         limpiarFiltros();
     });
-
     $("#btnExportar").click(function () {
         exportarReporte();
     });
@@ -66,35 +64,37 @@ function actualizarMinFechaInicio() {
         useCurrent: false
     });
 }
-function listarRegistros() {
-
-    $table.bootstrapTable('destroy');
+function listarRegistros() {  $table.bootstrapTable('destroy');
     $table.bootstrapTable({
-        url: controlador + "Obtener",
-        method: 'POST',
+        url: controlador,
+        method: 'get',
         pagination: true,
-        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
         sidePagination: 'server',
-        queryParamsType: 'else',
         pageSize: 5,
-        queryParams: function (p) {
-            return {
-                archivo: $("#txtFiltroUsuario").val().trim(),
-                fechaI: ($("#txtFechaInicioFiltro").val() === "") ? null : $("#txtFechaInicioFiltro").val(),
-                fechaF: ($("#txtFechaFinFiltro").val() === "") ? null : $("#txtFechaFinFiltro").val(),
-                transaccion:  $("#txtFiltroTransaccion").val(),
-                tipoDocumento: $("#txtFiltroTipo").val().trim(),
-                documento: $("#txtFiltroDocumento").val().trim(),
-                numeroCuenta: $("#txtNumeroCuenta").val().trim(),
-            }
+        queryParams: (res) => {
+
+                res.fechaI = ($("#txtFechaInicioFiltro").val() === "") ? null : $("#txtFechaInicioFiltro").val(),
+                res.fechaF =  ($("#txtFechaFinFiltro").val() === "") ? null : $("#txtFechaFinFiltro").val(),
+                res.transaccion =  $("#txtFiltroTransaccion").val() == "" ? null : $("#txtFiltroTransaccion").val() ,
+                res.tipoDocumento = $("#txtFiltroTipo").val() === "0" ? null :  $("#txtFiltroTipo").val(),
+                res.documento = $("#txtFiltroDocumento").val().trim() === "" ? null :  $("#txtFiltroDocumento").val().trim()  ,
+                res.numeroCuenta = $("#txtNumeroCuenta").val().trim() === "" ? null : $("#txtNumeroCuenta").val().trim()
+
+            return res;
+        },
+        onLoadSuccess: function (data) {
+        },
+        onLoadError: function (xhr) {
+            console.log(xhr);
         },
         responseHandler: function (res) {
-            return { rows: res, total: res.length > 0 ?  res[0].rows : 0 };
+            return {rows: res, total: res.length > 0 ? res[0].rows : 0};
         }
     });
 }
+
+
 function limpiarFiltros() {
-    $("#txtFiltroUsuario").val("");
     $("#txtFiltroTipo").val("0");
     $("#txtFiltroTransaccion").val("");
     $("#txtFiltroDocumento").val("");
@@ -104,17 +104,15 @@ function limpiarFiltros() {
 }
 
 function exportarReporte() {
-    var usuario = $("#txtFiltroUsuario").val();
+    var fechaI = $("#txtFechaInicioFiltro").val();
+    var fechaF = $("#txtFechaFinFiltro").val();
     var transaccion = $("#txtFiltroTransaccion").val();
     var tipo = $("#txtFiltroTipo").val();
     var documento = $("#txtFiltroDocumento").val();
-    var fechaI = $("#txtFechaInicioFiltro").val();
-    var fechaF = $("#txtFechaFinFiltro").val();
     var cuenta = $("#txtNumeroCuenta").val();
 
-    window.location.href = controlador + "reporte-excel/?"
+    window.location.href = siteRoot + "handlers/DownloadReports.ashx"
         + "?reporte=" + reporte
-        + "&archivo=" + usuario
         + "&desde=" + fechaI
         + "&hasta=" + fechaF
         + "&tipo=" + tipo
