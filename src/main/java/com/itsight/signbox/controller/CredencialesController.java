@@ -65,7 +65,7 @@ public class CredencialesController {
     }
 
 
-    @GetMapping("listarTodo")
+    @GetMapping("")
     public ResponseEntity<List<PersonaPOJO>> listarTodo(
             @RequestParam String dni,
             @RequestParam Integer tipo,

@@ -2,7 +2,7 @@ const $table = $('#tblRegistros');
 const controlador = _ctx + 'seguridad/credenciales/';
 let validator;
 
-$(function () {
+$(function() {
     $("#btnBuscar").click(function () {
         $table.bootstrapTable('refresh');
         $(".panel-body").fadeOut();
@@ -17,7 +17,6 @@ $(function () {
         enviarCredenciales();
     });
     $("#btnGuardar").click(function () { actualizar(); });
-
     listarRegistros();
     validarRegistros();
 });
@@ -56,26 +55,34 @@ function actualizar() {
 
 function listarRegistros() {
 
-    const nombre = $("#txtFiltroNombre").val();
-    const tipo = $("#cboFiltroTipo").val();
-
+    $table.bootstrapTable('destroy');
     $table.bootstrapTable('destroy');
     $table.bootstrapTable({
-        url: controlador + 'listarTodo' + '?dni=' + nombre + '&tipo=' + tipo,
-        method: 'GET',
+        url: controlador,
+        method: 'get',
         pagination: true,
         sidePagination: 'server',
-        pageSize: 20,
+        queryParams : (res)=> {
+            res.dni =  $("#txtFiltroNombre").val() === ""  ? null :  $("#txtFiltroNombre").val() ;
+            res.tipo =  ($("#cboFiltroTipo").val() === "") ? null : $("#cboFiltroTipo").val();
+            return res;
+        },
+        pageSize: 5,
+        onLoadSuccess: function (data) {
+        },
+        onLoadError: function (xhr) {
+            console.log(xhr);
+        },
         responseHandler: function (res) {
-            const data = res;
-            return { rows: data, total: data.length }
+            return { rows: res, total: res.length > 0 ?  res[0].rows : 0 };
         }
     });
+
 }
 function limpiarFiltros() {
 
     $("#txtFiltroNombre").val("");
-    $("#cboFiltroTipo").val("");
+    $("#cboFiltroTipo").val("0");
     listarRegistros();
     $(".panel-body").fadeOut();
 }
