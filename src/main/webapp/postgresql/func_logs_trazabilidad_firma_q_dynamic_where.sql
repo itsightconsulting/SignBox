@@ -67,7 +67,7 @@ BEGIN
 							(u_cuenta IS NULL OR  FL.NUMEROCUENTA LIKE concat(concat('%', trim(u_cuenta)) , '%' ) )
 					ORDER BY FL.FIRMALINEAID asc
                 ) FLT
-            WHERE FLT.RID BETWEEN u_Offset + 1 AND u_Offset + u_Limit;
+  WHERE (u_Limit IS NULL ) or   (FLT.RID BETWEEN u_Offset + 1 AND u_Offset + u_Limit);
     OPEN cursor1;
 END;
 

@@ -103,20 +103,26 @@ function limpiarFiltros() {
     $(".panel-body").fadeOut();
 }
 
-function exportarReporte() {
-    var fechaI = $("#txtFechaInicioFiltro").val();
-    var fechaF = $("#txtFechaFinFiltro").val();
-    var transaccion = $("#txtFiltroTransaccion").val();
-    var tipo = $("#txtFiltroTipo").val();
-    var documento = $("#txtFiltroDocumento").val();
-    var cuenta = $("#txtNumeroCuenta").val();
 
-    window.location.href = siteRoot + "handlers/DownloadReports.ashx"
-        + "?reporte=" + reporte
-        + "&desde=" + fechaI
-        + "&hasta=" + fechaF
-        + "&tipo=" + tipo
-        + "&documento=" + documento
-        + "&transaccion=" + transaccion
-        + "&cuenta=" + cuenta;
+function exportarReporte() {
+
+         const fechaI = $("#txtFechaInicioFiltro").val();
+        const fechaF =   $("#txtFechaFinFiltro").val();
+        const transaccion =   $("#txtFiltroTransaccion").val();
+        const tipoDocumento =  $("#txtFiltroTipo").val() === "0" ? "" :  $("#txtFiltroTipo").val();
+        const documento =   $("#txtFiltroDocumento").val().trim() ;
+        const numeroCuenta =  $("#txtNumeroCuenta").val().trim();
+
+
+    window.location = controlador + `reporte-excel/?` +
+        `order=asc&` +
+        `offset=&` +
+        `limit=&` +
+        `transaccion=${transaccion}&` +
+        `tipoDocumento=${tipoDocumento}&` +
+        `documento=${documento}&` +
+        `numeroCuenta=${numeroCuenta}&` +
+        `fechaI=${fechaI}&` +
+        `fechaF=${fechaF}`;
+
 }

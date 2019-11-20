@@ -47,33 +47,29 @@ public class LogsTrazabilidadFirmaController {
     }
 
 
-    /*
-
     @RequestMapping(path = "/reporte-excel", method = RequestMethod.GET, produces = MediaType.APPLICATION_PDF_VALUE)
     public HttpServletResponse test(HttpServletRequest request,
                                     HttpServletResponse response, @ModelAttribute @Valid LogsTrazabilidadFirmaQueryDTO logsTrazabilidadFirmaQueryDTO ) throws IOException {
 
         try {
 
-            List<LogsTrazabilidadFirmaPOJO> lstLogsPortal = logsTrazabilidadFirmaProcedureInvoker.getLogs(logsTrazabilidadFirmaQueryDTO);
+            List<LogsTrazabilidadFirmaPOJO> lstLogsPortal = logsTrazabilidadFirmaProcedureInvoker.getLogsTrazabilidadFirma(logsTrazabilidadFirmaQueryDTO);
 
             Workbook workbook = logsTrazabilidadFirmaService.generateExcel(lstLogsPortal);
 
             response.setContentType("application/vnd.ms-excel");
             ServletOutputStream outStream = response.getOutputStream();
 
-            String fechaInicioQuery = logsTrazabilidadFirmaQueryDTO.getFechaI();
-            String fechaFinQuery = logsTrazabilidadFirmaQueryDTO.getFechaF();
+            String documentoQuery = logsTrazabilidadFirmaQueryDTO.getDocumento();
+            String transaccionQuery = logsTrazabilidadFirmaQueryDTO.getTransaccion();
+            String nroCuentaQuery = logsTrazabilidadFirmaQueryDTO.getNumeroCuenta();
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyyMMdd");
-            String fechaInicio = fechaInicioQuery == "" ? "" : LocalDate.parse(fechaInicioQuery, formatter).format(formatter2);
-            String fechaFin = fechaFinQuery == "" ? "" : LocalDate.parse(fechaFinQuery, formatter).format(formatter2);
 
-            String fn_fechaInicio = fechaInicio == "" ? "" : "_" + fechaInicio;
-            String fn_fechaFin = fechaFin == "" ? "" : "_" + fechaFin;
+            String fn_documento = documentoQuery == "" ? "" : "_documento_" + documentoQuery;
+            String fn_transaccion = transaccionQuery == "" ? "" : "_transaccion_" + transaccionQuery;
+            String fn_nroCuenta = nroCuentaQuery == "" ? "" : "_nroCuenta_" + nroCuentaQuery;
 
-            String fileName = "ReporteLogFirma_" + fn_fechaInicio + fn_fechaFin + ".xlsx";
+            String fileName = "ReporteLogTrazabilidadFirma_" + fn_documento + fn_transaccion + fn_nroCuenta   + ".xlsx";
 
             response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
             workbook.write(outStream);
@@ -84,5 +80,5 @@ public class LogsTrazabilidadFirmaController {
         }
         return response;
     }
-*/
+
 }

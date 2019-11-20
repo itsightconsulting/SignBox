@@ -63,7 +63,7 @@ public class LogsPortalController {
 
     @RequestMapping(path = "/reporte-excel", method = RequestMethod.GET, produces = MediaType.APPLICATION_PDF_VALUE)
     public HttpServletResponse  test( HttpServletRequest request,
-                     HttpServletResponse response, @ModelAttribute @Valid LogsPortalQueryDTO logsPortalQueryDTO ) throws  IOException {
+                                      HttpServletResponse response, @ModelAttribute @Valid LogsPortalQueryDTO logsPortalQueryDTO ) throws  IOException {
 
         try {
 

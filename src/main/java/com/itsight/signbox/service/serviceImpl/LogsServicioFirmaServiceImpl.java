@@ -32,7 +32,7 @@ public class LogsServicioFirmaServiceImpl  extends BaseServiceImpl<LogsServicioF
 
         Workbook workbook = new XSSFWorkbook();
         CreationHelper createHelper = workbook.getCreationHelper();
-        Sheet sheet = workbook.createSheet("Logs servicio firma");
+        Sheet sheet = workbook.createSheet("Logs Servicio Firma");
         sheet.setDefaultRowHeightInPoints(39);
 
 
@@ -68,7 +68,7 @@ public class LogsServicioFirmaServiceImpl  extends BaseServiceImpl<LogsServicioF
         titleCellStyle.setAlignment(HorizontalAlignment.CENTER);
         titleCellStyle.setFont(titleFont);
         Cell titleCell = titleRow.createCell(0);
-        titleCell.setCellValue("Reporte de logs del servicio de firma");
+        titleCell.setCellValue("Reporte de Logs del Servicio de Firma Digital");
         titleCell.setCellStyle(titleCellStyle);
 
         Row headerRow = sheet.createRow(1);
@@ -107,21 +107,21 @@ public class LogsServicioFirmaServiceImpl  extends BaseServiceImpl<LogsServicioF
             identificadorCell.setCellValue(logsPortal.getLogEjecucionId());
             identificadorCell.setCellStyle(valueCellStyle);
 
-            Cell fechaHoraCell = row.createCell(1);
-            fechaHoraCell.setCellValue(logsPortal.getIdTransaccion());
-            fechaHoraCell.setCellStyle(dateCellStyle);
+            Cell transaccionCell = row.createCell(1);
+            transaccionCell.setCellValue(logsPortal.getIdTransaccion());
+            transaccionCell.setCellStyle(dateCellStyle);
 
-            Cell accionCell = row.createCell(2);
-            accionCell.setCellValue(logsPortal.getTipoDocumento());
-            accionCell.setCellStyle(valueCellStyle);
+            Cell tipoDocumentoCell = row.createCell(2);
+            tipoDocumentoCell.setCellValue(logsPortal.getTipoDocumento());
+            tipoDocumentoCell.setCellStyle(valueCellStyle);
 
-            Cell entidadCell = row.createCell(3);
-            entidadCell.setCellValue(logsPortal.getDocumento());
-            entidadCell.setCellStyle(valueCellStyle);
+            Cell documentoCell = row.createCell(3);
+            documentoCell.setCellValue(logsPortal.getDocumento());
+            documentoCell.setCellStyle(valueCellStyle);
 
-            Cell valorAnteriorCell = row.createCell(4);
-            valorAnteriorCell.setCellValue(logsPortal.getNombreArchivo());
-            valorAnteriorCell.setCellStyle(valueCellStyle);
+            Cell nombreArchivoCell = row.createCell(4);
+            nombreArchivoCell.setCellValue(logsPortal.getNombreArchivo());
+            nombreArchivoCell.setCellStyle(valueCellStyle);
 
             Cell valorNuevoCell = row.createCell(5);
             valorNuevoCell.setCellValue(logsPortal.getTipoFirma());
@@ -133,7 +133,7 @@ public class LogsServicioFirmaServiceImpl  extends BaseServiceImpl<LogsServicioF
 
             Cell fechainicioCell = row.createCell(7);
             fechainicioCell.setCellValue(logsPortal.getFechaInicioToString());
-            fechainicioCell.setCellStyle(valueCellStyle);
+            fechainicioCell.setCellStyle(dateCellStyle);
 
             Cell fechafinCell = row.createCell(8);
             fechafinCell.setCellValue(logsPortal.getFechaFinToString());

@@ -1,5 +1,6 @@
+call func_logs_detallado_firma_q_dynamic_where (null,null,null,null,null,null,null,null)
 
-CREATE OR REPLACE PROCEDURE VQJ33260.func_logs_detallado_firma_q_dynamic_where
+    CREATE OR REPLACE PROCEDURE VQJ33260.func_logs_detallado_firma_q_dynamic_where
 (u_limit INT DEFAULT NULL,
  u_offset INT DEFAULT 0,
  u_fechaI VARCHAR(200) DEFAULT NULL,
@@ -64,6 +65,6 @@ BEGIN
                                      (u_cuenta IS NULL OR  FL.NumeroCuenta LIKE concat(concat('%', trim(u_cuenta)) , '%' ) )
                                  ORDER BY FL.FechaInicio desc
                              ) LFD
-                        WHERE LFD.RID BETWEEN u_Offset + 1 AND u_Offset + u_Limit;
-    OPEN cursor1;
+                         WHERE (u_Limit IS NULL ) or   (LFD.RID BETWEEN u_Offset + 1 AND u_Offset + u_Limit);
+                        OPEN cursor1;
 END

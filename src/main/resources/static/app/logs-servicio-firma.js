@@ -70,23 +70,21 @@ function listarRegistros() {
 
     $table.bootstrapTable('destroy');
     $table.bootstrapTable({
-        url: controlador + "Obtener",
-        method: 'POST',
+        url: controlador,
+        method: 'get',
         pagination: true,
-        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
         sidePagination: 'server',
-        queryParamsType: 'else',
         pageSize: 5,
-        queryParams: function (p) {
-            return {
-                archivo: $("#txtFiltroUsuario").val().trim(),
-                fechaI: ($("#txtFechaInicioFiltro").val() === "") ? null : $("#txtFechaInicioFiltro").val(),
-                fechaF: ($("#txtFechaFinFiltro").val() === "") ? null : $("#txtFechaFinFiltro").val(),
-                transaccion:  $("#txtFiltroTransaccion").val(),
-                tipoDocumento: $("#txtFiltroTipo").val().trim(),
-                documento: $("#txtFiltroDocumento").val().trim(),
-                numeroCuenta: $("#txtNumeroCuenta").val().trim(),
-            }
+        queryParams: (res) => {
+
+                res.archivo = $("#txtFiltroUsuario").val().trim(),
+                res.fechaI = ($("#txtFechaInicioFiltro").val() === "") ? null : $("#txtFechaInicioFiltro").val(),
+                res.fechaF = ($("#txtFechaFinFiltro").val() === "") ? null : $("#txtFechaFinFiltro").val(),
+                res.transaccion =  $("#txtFiltroTransaccion").val(),
+                res.tipoDocumento = $("#txtFiltroTipo").val().trim(),
+                res.documento = $("#txtFiltroDocumento").val().trim(),
+                res.numeroCuenta = $("#txtNumeroCuenta").val().trim()
+            return res;
         },
         responseHandler: function (res) {
             return { rows: res, total: res.length > 0 ?  res[0].rows : 0 };
@@ -103,22 +101,29 @@ function limpiarFiltros() {
     $(".panel-body").fadeOut();
 }
 
-function exportarReporte() {
-    var usuario = $("#txtFiltroUsuario").val();
-    var transaccion = $("#txtFiltroTransaccion").val();
-    var tipo = $("#txtFiltroTipo").val();
-    var documento = $("#txtFiltroDocumento").val();
-    var fechaI = $("#txtFechaInicioFiltro").val();
-    var fechaF = $("#txtFechaFinFiltro").val();
-    var cuenta = $("#txtNumeroCuenta").val();
 
-    window.location.href = controlador + "reporte-excel/?"
-        + "?reporte=" + reporte
-        + "&archivo=" + usuario
-        + "&desde=" + fechaI
-        + "&hasta=" + fechaF
-        + "&tipo=" + tipo
-        + "&documento=" + documento
-        + "&transaccion=" + transaccion
-        + "&cuenta=" + cuenta;
+
+function exportarReporte() {
+
+    var archivoQuery =  $("#txtFiltroUsuario").val();
+    var transaccionQuery = $("#txtFiltroTransaccion").val();
+    var tipoQuery = $("#txtFiltroTipo").val();
+    var documentoQuery = $("#txtFiltroDocumento").val();
+    var fInicioQuery = $("#txtFechaInicioFiltro").val();
+    var fFinQuery = $("#txtFechaFinFiltro").val();
+    var cuentaQuery = $("#txtNumeroCuenta").val();
+
+
+    window.location = controlador + `reporte-excel/?` +
+        `order=asc&` +
+        `offset=&` +
+        `limit=&` +
+        `archivo=${archivoQuery}&` +
+        `transaccion=${transaccionQuery}&` +
+        `numeroCuenta=${cuentaQuery}&` +
+        `documento=${documentoQuery}&` +
+        `tipoDocumento=${tipoQuery}&` +
+        `fechaI=${fInicioQuery}&` +
+        `fechaF=${fFinQuery}`;
+
 }

@@ -40,7 +40,7 @@ public class LogsServicioFirmaController {
         return new ModelAndView(ViewConstant.MAIN_LOGS_SERVICIO_FIRMA);
     }
 
-    @PostMapping("Obtener")
+    @GetMapping("")
     public ResponseEntity<List<LogsServicioFirmaPOJO>> Obtener(@ModelAttribute @Valid LogsServicioFirmaQueryDTO logsServicioFirmaQueryDTO){
 
         return new ResponseEntity<List<LogsServicioFirmaPOJO>>(logsServicioFirmaProcedureInvoker.getLogs(logsServicioFirmaQueryDTO), HttpStatus.OK);
@@ -82,6 +82,6 @@ public class LogsServicioFirmaController {
         }
         return response;
 
-    }
+}
 
 }

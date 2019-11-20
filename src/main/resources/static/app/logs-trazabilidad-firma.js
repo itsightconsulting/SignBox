@@ -51,14 +51,20 @@ function limpiarFiltros() {
     $(".panel-body").fadeOut();
 }
 
-function exportarReporte() {
-    var transaccion = $("#txtFiltroTransaccion").val();
-    var documento = $("#txtFiltroDocumento").val();
-    var cuenta = $("#txtNumeroCuenta").val();
 
-    window.location.href = siteRoot + "handlers/DownloadReports.ashx"
-        + "?reporte=" + reporte
-        + "&documento=" + documento
-        + "&transaccion=" + transaccion
-        + "&cuenta=" + cuenta;
+function exportarReporte() {
+
+    const transaccion =   $("#txtFiltroTransaccion").val() ;
+    const documento =  $("#txtFiltroDocumento").val();
+    const numeroCuenta =   $("#txtNumeroCuenta").val();
+
+
+    window.location = controlador + `reporte-excel/?` +
+        `order=asc&` +
+        `offset=&` +
+        `limit=&` +
+        `numeroCuenta=${numeroCuenta}&` +
+        `documento=${documento}&` +
+        `transaccion=${transaccion}`;
+
 }
