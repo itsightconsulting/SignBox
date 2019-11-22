@@ -4,6 +4,7 @@ package com.itsight.signbox.service.serviceImpl;
 import com.itsight.signbox.advice.CustomValidationException;
 import com.itsight.signbox.advice.NotFoundValidationException;
 import com.itsight.signbox.domain.LogsServicioFirma;
+import com.itsight.signbox.domain.pojo.LogsPortalPOJO;
 import com.itsight.signbox.domain.pojo.LogsServicioFirmaPOJO;
 import com.itsight.signbox.generic.BaseServiceImpl;
 import com.itsight.signbox.repository.LogsServicioFirmaRespository;
@@ -14,6 +15,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -25,16 +29,13 @@ public class LogsServicioFirmaServiceImpl  extends BaseServiceImpl<LogsServicioF
     }
 
     @Override
-    public Workbook generateExcel(List<LogsServicioFirmaPOJO> lstLogsPortal) {
+    public Workbook generateExcel(List<LogsServicioFirmaPOJO> lstLogsPortal) throws IllegalAccessException {
 
         String[] columns = {"Identificador", "ID Transacción", "Tipo documento", "Documento", "Archivo" , "Tipo de firma" , "Detalle operación" , "Fecha de inicio", "Fecha de fin", "Número de cuenta"};
-
-
         Workbook workbook = new XSSFWorkbook();
         CreationHelper createHelper = workbook.getCreationHelper();
         Sheet sheet = workbook.createSheet("Logs Servicio Firma");
         sheet.setDefaultRowHeightInPoints(39);
-
 
         //FONT
         Font headerFont = workbook.createFont();
@@ -99,49 +100,34 @@ public class LogsServicioFirmaServiceImpl  extends BaseServiceImpl<LogsServicioF
         valueCellStyle.setWrapText(true); //Set wordwrap
 
         int rowNum = 2;
-        for (LogsServicioFirmaPOJO logsPortal : lstLogsPortal) {
+        Field[] notificacionesFields = LogsServicioFirmaPOJO.class.getDeclaredFields();
+
+        for (LogsServicioFirmaPOJO logsServicio : lstLogsPortal) {
             Row row = sheet.createRow(rowNum++);
             row.setHeightInPoints(sheet.getDefaultRowHeightInPoints());
 
-            Cell identificadorCell = row.createCell(0);
-            identificadorCell.setCellValue(logsPortal.getLogEjecucionId());
-            identificadorCell.setCellStyle(valueCellStyle);
+            int index = 0;
+            for (Field field : notificacionesFields) {
+                field.setAccessible(true);
+                if (!field.getName().equals("rows")) {
+                    Object value = field.get(logsServicio);
+                    Cell cell = row.createCell(index);
 
-            Cell transaccionCell = row.createCell(1);
-            transaccionCell.setCellValue(logsPortal.getIdTransaccion());
-            transaccionCell.setCellStyle(dateCellStyle);
-
-            Cell tipoDocumentoCell = row.createCell(2);
-            tipoDocumentoCell.setCellValue(logsPortal.getTipoDocumento());
-            tipoDocumentoCell.setCellStyle(valueCellStyle);
-
-            Cell documentoCell = row.createCell(3);
-            documentoCell.setCellValue(logsPortal.getDocumento());
-            documentoCell.setCellStyle(valueCellStyle);
-
-            Cell nombreArchivoCell = row.createCell(4);
-            nombreArchivoCell.setCellValue(logsPortal.getNombreArchivo());
-            nombreArchivoCell.setCellStyle(valueCellStyle);
-
-            Cell valorNuevoCell = row.createCell(5);
-            valorNuevoCell.setCellValue(logsPortal.getTipoFirma());
-            valorNuevoCell.setCellStyle(valueCellStyle);
-
-            Cell ejecucionCell = row.createCell(6);
-            ejecucionCell.setCellValue(logsPortal.getTipoEjecucion());
-            ejecucionCell.setCellStyle(valueCellStyle);
-
-            Cell fechainicioCell = row.createCell(7);
-            fechainicioCell.setCellValue(logsPortal.getFechaInicioToString());
-            fechainicioCell.setCellStyle(dateCellStyle);
-
-            Cell fechafinCell = row.createCell(8);
-            fechafinCell.setCellValue(logsPortal.getFechaFinToString());
-            fechafinCell.setCellStyle(valueCellStyle);
-
-            Cell nrocuentaCell = row.createCell(9);
-            nrocuentaCell.setCellValue(logsPortal.getNumeroCuenta());
-            nrocuentaCell.setCellStyle(valueCellStyle);
+                    if ((value != null)) {
+                        if (field.getType().equals(Date.class)) {
+                            value = new SimpleDateFormat("dd/MM/yyy HH:mm:ss a").format(value);
+                            cell.setCellValue(value.toString());
+                            cell.setCellStyle(dateCellStyle);
+                        } else {
+                            cell.setCellValue(value.toString());
+                            cell.setCellStyle(valueCellStyle);
+                        }
+                    } else {
+                        cell.setCellValue("");
+                    }
+                    index++;
+                }
+            }
         }
 
         // Resize all columns to fit the content size

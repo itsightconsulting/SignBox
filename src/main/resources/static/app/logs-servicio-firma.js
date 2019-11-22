@@ -1,4 +1,4 @@
-var controlador = _ctx +  'reportes/logs/';
+var controlador = _ctx +  'reportes/logs-firma/';
 var $table = $('#tblRegistros');
 var TEXTO_SELECCIONE = "Seleccione";
 
@@ -16,7 +16,7 @@ $(function () {
     });
     $('#dtFechaFinFiltro').datetimepicker({
         format: 'DD/MM/YYYY', locale: 'es',
-        defaultDate: new Date(fechaAhora.getFullYear(), fechaAhora.getMonth(), fechaAhora.getDate()),
+        defaultDate: new Date(fechaAhora.getFullYear(), fechaAhora.getMonth(), fechaAhora.getDate() + 5),
         useCurrent: false
     }).on('dp.hide', function (e) {
         actualizarMinFechaInicio();

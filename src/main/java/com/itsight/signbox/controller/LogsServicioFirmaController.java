@@ -23,7 +23,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
-@RequestMapping("/reportes/logs")
+@RequestMapping("/reportes/logs-firma")
 public class LogsServicioFirmaController {
 
     private LogsServicioFirmaProcedureInvoker logsServicioFirmaProcedureInvoker;
@@ -35,7 +35,7 @@ public class LogsServicioFirmaController {
         this.logsServicioFirmaService = logsServicioFirmaService;
     }
 
-    @RequestMapping("/gestion")
+    @RequestMapping("/consulta")
     public ModelAndView principal(Model model){
         return new ModelAndView(ViewConstant.MAIN_LOGS_SERVICIO_FIRMA);
     }

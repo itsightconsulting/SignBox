@@ -49,6 +49,14 @@ function getCookie(cname) {
     return "";
 }
 
+
+function htmlStringToElement(rawHTML){
+    const elemento = document.createElement('template');
+    elemento.innerHTML = rawHTML;
+    //elemento.content.querySelector("*") for Microsoft Edge compatibility
+    return elemento.content.firstElementChild ? elemento.content.firstElementChild : elemento.content.querySelector("*");
+}
+
 /* por implementar
 
 

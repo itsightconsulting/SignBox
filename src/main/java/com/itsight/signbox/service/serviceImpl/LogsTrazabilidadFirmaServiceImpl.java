@@ -9,6 +9,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -20,7 +23,7 @@ public class LogsTrazabilidadFirmaServiceImpl implements LogsTrazabilidadFirmaSe
 
 
     @Override
-    public Workbook generateExcel(List<LogsTrazabilidadFirmaPOJO> lstTrazabilidadFirma) {
+    public Workbook generateExcel(List<LogsTrazabilidadFirmaPOJO> lstTrazabilidadFirma) throws IllegalAccessException {
 
         String[] columns = {"FirmaLineaId", "ID Transacción" , "Código aplicación","Tipo archivo" , "PosFirma" , "Certificado" , "Fecha de inicio" , "Fecha de fin" , "Código de respuesta" , "Nombre del archivo" ,"Ruta del archivo inicial", "Ruta del archivo final" , "Número documento", "Número de cuenta" , "Log Id", "Fecha del evento" , "Tipo de evento",   "Resumen" , "Detalle" , "Código retorno" , "Detalle retorno"};
 
@@ -95,100 +98,32 @@ public class LogsTrazabilidadFirmaServiceImpl implements LogsTrazabilidadFirmaSe
         valueCellStyle.setWrapText(true); //Set wordwrap
 
         int rowNum = 2;
+        Field[] logsTrazabilidadFields = LogsTrazabilidadFirmaPOJO.class.getDeclaredFields();
         for (LogsTrazabilidadFirmaPOJO logsTrazabilidad : lstTrazabilidadFirma) {
             Row row = sheet.createRow(rowNum++);
             row.setHeightInPoints(sheet.getDefaultRowHeightInPoints());
+            int index = 0;
+            for (Field field : logsTrazabilidadFields) {
+                field.setAccessible(true);
+                if (!field.getName().equals("rows")) {
+                    Object value = field.get(logsTrazabilidad);
+                    Cell cell = row.createCell(index);
 
-            Cell identificadorCell = row.createCell(0);
-            identificadorCell.setCellValue(logsTrazabilidad.getFirmaLineaId());
-            identificadorCell.setCellStyle(valueCellStyle);
-
-            Cell transaccionIdCell = row.createCell(1);
-            transaccionIdCell.setCellValue(logsTrazabilidad.getIdTransaccion());
-            transaccionIdCell.setCellStyle(valueCellStyle);
-
-//            numeroCuentaCell.setCellStyle(dateCellStyle);
-
-            Cell tipoArchivoCell = row.createCell(2);
-            tipoArchivoCell.setCellValue(logsTrazabilidad.getTipoArchivo());
-            tipoArchivoCell.setCellStyle(valueCellStyle);
-
-            Cell posFirmaCell = row.createCell(3);
-            posFirmaCell.setCellValue(logsTrazabilidad.getPosFirma());
-            posFirmaCell.setCellStyle(valueCellStyle);
-
-            Cell certificadoCell = row.createCell(4);
-            certificadoCell.setCellValue(logsTrazabilidad.getAlias());
-            certificadoCell.setCellStyle(valueCellStyle);
-
-            Cell fechaInicioCell = row.createCell(5);
-            fechaInicioCell.setCellValue(logsTrazabilidad.getFechaInicio());
-            fechaInicioCell.setCellStyle(dateCellStyle);
-
-            Cell fechaFinCell = row.createCell(6);
-            fechaFinCell.setCellValue(logsTrazabilidad.getFechaFin());
-            fechaFinCell.setCellStyle(dateCellStyle);
-
-
-            Cell codigoRespuestaCell = row.createCell(7);
-            codigoRespuestaCell.setCellValue(logsTrazabilidad.getCodigoRespuesta());
-            codigoRespuestaCell.setCellStyle(valueCellStyle);
-
-            Cell nombreArchivoCell = row.createCell(8);
-            nombreArchivoCell.setCellValue(logsTrazabilidad.getNombreArchivo());
-            nombreArchivoCell.setCellStyle(valueCellStyle);
-
-
-            Cell rutaArchivoCell = row.createCell(9);
-            rutaArchivoCell.setCellValue(logsTrazabilidad.getRutaArchivo());
-            rutaArchivoCell.setCellStyle(valueCellStyle);
-
-
-
-            Cell rutaArchivoFinalCell = row.createCell(10);
-            rutaArchivoFinalCell.setCellValue(logsTrazabilidad.getRutaArchivoFinal());
-            rutaArchivoFinalCell.setCellStyle(valueCellStyle);
-
-
-
-            Cell nroDocumentoCell = row.createCell(11);
-            nroDocumentoCell.setCellValue(logsTrazabilidad.getNumeroDocumento());
-            nroDocumentoCell.setCellStyle(valueCellStyle);
-
-            Cell nroCuentaCell = row.createCell(12);
-            nroCuentaCell.setCellValue(logsTrazabilidad.getNumeroCuenta());
-            nroCuentaCell.setCellStyle(valueCellStyle);
-
-
-            Cell logIdCell = row.createCell(13);
-            logIdCell.setCellValue(logsTrazabilidad.getLogId());
-            logIdCell.setCellStyle(valueCellStyle);
-
-            Cell fechaEventoCell = row.createCell(14);
-            fechaEventoCell.setCellValue(logsTrazabilidad.getFechaEvento());
-            fechaEventoCell.setCellStyle(valueCellStyle);
-
-            Cell tipoEventoCell = row.createCell(15);
-            tipoEventoCell.setCellValue(logsTrazabilidad.getTipoEvento());
-            tipoEventoCell.setCellStyle(valueCellStyle);
-
-            Cell resumenCell = row.createCell(16);
-            resumenCell.setCellValue(logsTrazabilidad.getResumen());
-            resumenCell.setCellStyle(valueCellStyle);
-
-            Cell detalleCell = row.createCell(17);
-            detalleCell.setCellValue(logsTrazabilidad.getDetalle());
-            detalleCell.setCellStyle(valueCellStyle);
-
-            Cell idRetornoCell = row.createCell(18);
-            idRetornoCell.setCellValue(logsTrazabilidad.getIdRetorno());
-            idRetornoCell.setCellStyle(valueCellStyle);
-
-
-            Cell detalleRetornoCell = row.createCell(19);
-            detalleRetornoCell.setCellValue(logsTrazabilidad.getDetalleRetorno());
-            detalleRetornoCell.setCellStyle(valueCellStyle);
-
+                    if ((value != null)) {
+                        if (field.getType().equals(Date.class)) {
+                            value = new SimpleDateFormat("dd/MM/yyy HH:mm:ss a").format(value);
+                            cell.setCellValue(value.toString());
+                            cell.setCellStyle(dateCellStyle);
+                        }else {
+                            cell.setCellValue(value.toString());
+                            cell.setCellStyle(valueCellStyle);
+                        }
+                    } else {
+                        cell.setCellValue("");
+                    }
+                    index++;
+                }
+            }
         }
 
         // Resize all columns to fit the content size

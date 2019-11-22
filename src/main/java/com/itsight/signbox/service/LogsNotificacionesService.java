@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface LogsNotificacionesService {
 
-    Workbook generateExcel(List<LogsNotificacionesPOJO> lstLogsPortal);
+    Workbook generateExcel(List<LogsNotificacionesPOJO> lstLogsPortal) throws IllegalAccessException, InstantiationException;
 }

@@ -10,6 +10,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -21,10 +24,9 @@ public class LogsNotificacionesServiceImpl implements LogsNotificacionesService 
 
 
     @Override
-    public Workbook generateExcel(List<LogsNotificacionesPOJO> lstLogsNotificaciones) {
+    public Workbook generateExcel(List<LogsNotificacionesPOJO> lstLogsNotificaciones) throws IllegalAccessException, InstantiationException {
 
-        String[] columns = {"Identificador", "Número de cuenta", "Fecha operación", "Tipo de evento", "Resumen" , "Detalle" , "Código retorno" , "Descripción retorno" , "Detalle retorno"};
-
+        String[] columns = {"Identificador", "Número de cuenta", "Fecha operación", "Tipo de evento", "Resumen", "Detalle", "Código retorno", "Descripción retorno", "Detalle retorno"};
 
         Workbook workbook = new XSSFWorkbook();
         CreationHelper createHelper = workbook.getCreationHelper();
@@ -95,71 +97,61 @@ public class LogsNotificacionesServiceImpl implements LogsNotificacionesService 
         valueCellStyle.setWrapText(true); //Set wordwrap
 
         int rowNum = 2;
+
+        Field[] notificacionesFields = LogsNotificacionesPOJO.class.getDeclaredFields();
+
         for (LogsNotificacionesPOJO logsNotificaciones : lstLogsNotificaciones) {
             Row row = sheet.createRow(rowNum++);
             row.setHeightInPoints(sheet.getDefaultRowHeightInPoints());
 
-            Cell identificadorCell = row.createCell(0);
-            identificadorCell.setCellValue(logsNotificaciones.getLogId());
-            identificadorCell.setCellStyle(valueCellStyle);
+            int index = 0;
+            for (Field field : notificacionesFields) {
+                field.setAccessible(true);
+                if (!field.getName().equals("rows")) {
+                    Object value = field.get(logsNotificaciones);
+                    Cell cell = row.createCell(index);
 
-            Cell numeroCuentaCell = row.createCell(1);
-            numeroCuentaCell.setCellValue(logsNotificaciones.getNumeroCuenta());
-            numeroCuentaCell.setCellStyle(valueCellStyle);
+                    if ((value != null)) {
+                        if (field.getType().equals(Date.class)) {
+                            value = new SimpleDateFormat("dd/MM/yyy HH:mm:ss a").format(value);
+                            cell.setCellValue(value.toString());
+                            cell.setCellStyle(dateCellStyle);
+                        }else {
+                            cell.setCellValue(value.toString());
+                            cell.setCellStyle(valueCellStyle);
+                        }
+                    } else {
+                        cell.setCellValue("");
+                    }
 
-//            numeroCuentaCell.setCellStyle(dateCellStyle);
-
-            Cell fechaOperacion = row.createCell(2);
-            fechaOperacion.setCellValue(logsNotificaciones.getFechaEvento());
-            fechaOperacion.setCellStyle(dateCellStyle);
-
-            Cell tipoEventoCell = row.createCell(3);
-            tipoEventoCell.setCellValue(logsNotificaciones.getTipoEvento());
-            tipoEventoCell.setCellStyle(valueCellStyle);
-
-            Cell resumenCell = row.createCell(4);
-            resumenCell.setCellValue(logsNotificaciones.getResumen());
-            resumenCell.setCellStyle(valueCellStyle);
-
-            Cell detalleCell = row.createCell(5);
-            detalleCell.setCellValue(logsNotificaciones.getDetalle());
-            detalleCell.setCellStyle(valueCellStyle);
-
-
-            Cell codigoRetornoCell = row.createCell(6);
-            codigoRetornoCell.setCellValue(logsNotificaciones.getIdRetorno());
-            codigoRetornoCell.setCellStyle(valueCellStyle);
-
-
-            Cell descripcionRetorno = row.createCell(7);
-            descripcionRetorno.setCellValue(logsNotificaciones.getDescripcionRetorno());
-            descripcionRetorno.setCellStyle(valueCellStyle);
-
-            Cell detalleRetorno = row.createCell(8);
-            detalleRetorno.setCellValue(logsNotificaciones.getDetalleRetorno());
-            detalleRetorno.setCellStyle(valueCellStyle);
-
-        }
-
-        // Resize all columns to fit the content size
-        for (int i = 0; i < columns.length; i++) {
-
-            switch (i) {
-                case 0:
-                case 6:
-                case 7:
-                    sheet.setColumnWidth(i, 19 * 256);
-                    break;
-                default:
-                    sheet.setColumnWidth(i, 25 * 256);
-                    break;
+                    index++;
+                }
             }
-            //  sheet.autoSizeColumn(i);
 
         }
 
-        return workbook;
 
 
+            // Resize all columns to fit the content size
+            for (int i = 0; i < columns.length; i++) {
+
+                switch (i) {
+                    case 0:
+                    case 6:
+                    case 7:
+                        sheet.setColumnWidth(i, 19 * 256);
+                        break;
+                    default:
+                        sheet.setColumnWidth(i, 25 * 256);
+                        break;
+                }
+                //  sheet.autoSizeColumn(i);
+
+            }
+
+            return workbook;
+
+        }
     }
-}
+
+

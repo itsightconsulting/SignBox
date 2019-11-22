@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.ServletOutputStream;
 import javax.transaction.Transactional;
+import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -111,16 +114,14 @@ public class LogsPortalServiceImpl extends BaseServiceImpl<LogsPortalRepository>
 
 
     @Override
-    public Workbook generateExcel(List<LogsPortalPOJO> lstLogsPortal) {
+    public Workbook generateExcel(List<LogsPortalPOJO> lstLogsPortal) throws IllegalAccessException {
 
         String[] columns = {"Identificador", "Fecha y hora", "Acción", "Entidad", "Valor Anterior" , "Valor Nuevo" , "Id asociado" , "Campo"};
-
 
         Workbook workbook = new XSSFWorkbook();
         CreationHelper createHelper = workbook.getCreationHelper();
         Sheet sheet = workbook.createSheet("Logs del portal");
         sheet.setDefaultRowHeightInPoints(39);
-
 
         //FONT
         Font headerFont = workbook.createFont();
@@ -185,44 +186,38 @@ public class LogsPortalServiceImpl extends BaseServiceImpl<LogsPortalRepository>
         valueCellStyle.setWrapText(true); //Set wordwrap
 
         int rowNum = 2;
+
+        Field[] logsPortalFields = LogsPortalPOJO.class.getDeclaredFields();
+
         for (LogsPortalPOJO logsPortal : lstLogsPortal) {
             Row row = sheet.createRow(rowNum++);
             row.setHeightInPoints(sheet.getDefaultRowHeightInPoints());
 
-            Cell identificadorCell = row.createCell(0);
-            identificadorCell.setCellValue(logsPortal.getIdentificador());
-            identificadorCell.setCellStyle(valueCellStyle);
+            int index = 0;
+            for (Field field : logsPortalFields) {
+                field.setAccessible(true);
+                if (!field.getName().equals("rows") && !field.getName().equals("identificador") && !field.getName().equals("usuario")) {
+                    Object value = field.get(logsPortal);
+                    Cell cell = row.createCell(index);
 
-            Cell fechaHoraCell = row.createCell(1);
-            fechaHoraCell.setCellValue(logsPortal.getFechaHora());
-            fechaHoraCell.setCellStyle(dateCellStyle);
+                        if ((value != null)) {
+                            if (field.getType().equals(Date.class)) {
+                                value = new SimpleDateFormat("dd/MM/yyy HH:mm:ss a").format(value);
+                                cell.setCellValue(value.toString());
+                                cell.setCellStyle(dateCellStyle);
+                            }else {
+                                cell.setCellValue(value.toString());
+                                cell.setCellStyle(valueCellStyle);
+                            }
+                        } else {
+                            cell.setCellValue("");
+                        }
 
-            Cell accionCell = row.createCell(2);
-            accionCell.setCellValue(logsPortal.getAccion());
-            accionCell.setCellStyle(valueCellStyle);
-
-            Cell entidadCell = row.createCell(3);
-            entidadCell.setCellValue(logsPortal.getEntidad());
-            entidadCell.setCellStyle(valueCellStyle);
-
-            Cell valorAnteriorCell = row.createCell(4);
-            valorAnteriorCell.setCellValue(logsPortal.getValorAnterior());
-            valorAnteriorCell.setCellStyle(valueCellStyle);
-
-            Cell valorNuevoCell = row.createCell(5);
-            valorNuevoCell.setCellValue(logsPortal.getValorNuevo());
-            valorNuevoCell.setCellStyle(valueCellStyle);
-
-            Cell asociadoCell = row.createCell(6);
-            asociadoCell.setCellValue(logsPortal.getIdAsociado());
-            asociadoCell.setCellStyle(valueCellStyle);
-
-            Cell campoCell = row.createCell(7);
-            campoCell.setCellValue(logsPortal.getCampo());
-            campoCell.setCellStyle(valueCellStyle);
+                    index++;
+                }
+            }
 
         }
-
         // Resize all columns to fit the content size
         for (int i = 0; i < columns.length; i++) {
 
@@ -237,9 +232,7 @@ public class LogsPortalServiceImpl extends BaseServiceImpl<LogsPortalRepository>
                     break;
             }
             //  sheet.autoSizeColumn(i);
-
         }
-
         return workbook;
     }
 }

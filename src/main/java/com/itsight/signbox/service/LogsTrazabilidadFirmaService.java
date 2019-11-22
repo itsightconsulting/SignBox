@@ -12,6 +12,6 @@ import java.util.List;
 
 public interface LogsTrazabilidadFirmaService  {
 
-    Workbook generateExcel(List<LogsTrazabilidadFirmaPOJO> list);
+    Workbook generateExcel(List<LogsTrazabilidadFirmaPOJO> list) throws IllegalAccessException;
 
 }

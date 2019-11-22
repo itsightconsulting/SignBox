@@ -29,13 +29,12 @@ public class LogsDetalladoFirmaPOJO implements Serializable {
     private Date fechaEvento;
 
     private String tipoEvento;
-    private String tipoArchivo;
     private String tipoFirma;
     private String resumen;
     private String detalle;
     private Integer idRetorno;
-    private String detalleRetorno;
     private String descripcionRetorno;
+    private String detalleRetorno;
     private Integer rows;
 
 

@@ -48,7 +48,7 @@ public class LogsPortalController {
         this.logsPortalProcedureInvoker = logsPortalProcedureInvoker;
     }
 
-    @RequestMapping("/gestion")
+    @RequestMapping("/consulta")
     public ModelAndView principal(Model model){
         return new ModelAndView(ViewConstant.MAIN_LOGS_ADMIN);
     }

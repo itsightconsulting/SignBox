@@ -10,6 +10,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -21,7 +24,7 @@ public class LogsDetalladoFirmaServiceImpl implements LogsDetalladoFirmaService 
 
 
     @Override
-    public Workbook generateExcel(List<LogsDetalladoFirmaPOJO> lstDetalladoFirma) {
+    public Workbook generateExcel(List<LogsDetalladoFirmaPOJO> lstDetalladoFirma) throws IllegalAccessException {
 
         String[] columns = {"Identificador", "Número de cuenta", "ID Transacción" , "Tipo documento" , "Documento" , "Código aplicación" , "Código certificado" , "Fecha operación" , "Tipo de evento", "Tipo de firma" ,  "Resumen" , "Detalle" , "Código retorno" , "Descripción retorno" , "Detalle retorno"};
 
@@ -96,78 +99,34 @@ public class LogsDetalladoFirmaServiceImpl implements LogsDetalladoFirmaService 
         valueCellStyle.setWrapText(true); //Set wordwrap
 
         int rowNum = 2;
+        Field[] logsDetalladoFields = LogsDetalladoFirmaPOJO.class.getDeclaredFields();
         for (LogsDetalladoFirmaPOJO logsDetallado : lstDetalladoFirma) {
             Row row = sheet.createRow(rowNum++);
             row.setHeightInPoints(sheet.getDefaultRowHeightInPoints());
 
-            Cell identificadorCell = row.createCell(0);
-            identificadorCell.setCellValue(logsDetallado.getLogsFirmaId());
-            identificadorCell.setCellStyle(valueCellStyle);
+            int index = 0;
+            for (Field field : logsDetalladoFields) {
+                field.setAccessible(true);
+                if (!field.getName().equals("rows")) {
+                    Object value = field.get(logsDetallado);
+                    Cell cell = row.createCell(index);
 
-            Cell numeroCuentaCell = row.createCell(1);
-            numeroCuentaCell.setCellValue(logsDetallado.getNumeroCuenta());
-            numeroCuentaCell.setCellStyle(valueCellStyle);
+                    if ((value != null)) {
+                        if (field.getType().equals(Date.class)) {
+                            value = new SimpleDateFormat("dd/MM/yyy HH:mm:ss a").format(value);
+                            cell.setCellValue(value.toString());
+                            cell.setCellStyle(dateCellStyle);
+                        }else {
+                            cell.setCellValue(value.toString());
+                            cell.setCellStyle(valueCellStyle);
+                        }
+                    } else {
+                        cell.setCellValue("");
+                    }
 
-//            numeroCuentaCell.setCellStyle(dateCellStyle);
-
-            Cell transaccionIdCell = row.createCell(2);
-            transaccionIdCell.setCellValue(logsDetallado.getIdTransaccion());
-            transaccionIdCell.setCellStyle(valueCellStyle);
-
-            Cell tipoDocumentoCell = row.createCell(3);
-            tipoDocumentoCell.setCellValue(logsDetallado.getTipoDocumento());
-            tipoDocumentoCell.setCellStyle(valueCellStyle);
-
-            Cell numeroDocumentoCell = row.createCell(4);
-            numeroDocumentoCell.setCellValue(logsDetallado.getNumeroDocumento());
-            numeroDocumentoCell.setCellStyle(valueCellStyle);
-
-            Cell codigoAplicacionCell = row.createCell(5);
-            codigoAplicacionCell.setCellValue(logsDetallado.getCodigoAplicacion());
-            codigoAplicacionCell.setCellStyle(valueCellStyle);
-
-            Cell certificadoCell = row.createCell(6);
-            certificadoCell.setCellValue(logsDetallado.getCertificado());
-            certificadoCell.setCellStyle(valueCellStyle);
-
-
-            Cell fechaEventoCell = row.createCell(7);
-            fechaEventoCell.setCellValue(logsDetallado.getFechaEvento());
-            fechaEventoCell.setCellStyle(dateCellStyle);
-
-            Cell codigoAplicacion = row.createCell(8);
-            codigoAplicacion.setCellValue(logsDetallado.getTipoEvento());
-            codigoAplicacion.setCellStyle(valueCellStyle);
-
-
-            Cell tipoFirmaCell = row.createCell(9);
-            tipoFirmaCell.setCellValue(logsDetallado.getTipoFirma());
-            tipoFirmaCell.setCellStyle(valueCellStyle);
-
-
-
-            Cell resumenCell = row.createCell(10);
-            resumenCell.setCellValue(logsDetallado.getResumen());
-            resumenCell.setCellStyle(valueCellStyle);
-
-
-
-            Cell detalleCell = row.createCell(11);
-            detalleCell.setCellValue(logsDetallado.getDetalle());
-            detalleCell.setCellStyle(valueCellStyle);
-
-            Cell idRetornoCell = row.createCell(12);
-            idRetornoCell.setCellValue(logsDetallado.getIdRetorno());
-            idRetornoCell.setCellStyle(valueCellStyle);
-
-
-            Cell descripcionRetornoCell = row.createCell(13);
-            descripcionRetornoCell.setCellValue(logsDetallado.getDescripcionRetorno());
-            descripcionRetornoCell.setCellStyle(valueCellStyle);
-
-            Cell detalleRetornoCell = row.createCell(14);
-            detalleRetornoCell.setCellValue(logsDetallado.getDetalleRetorno());
-            detalleRetornoCell.setCellStyle(valueCellStyle);
+                    index++;
+                }
+            }
 
         }
 

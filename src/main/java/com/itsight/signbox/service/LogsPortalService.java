@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface LogsPortalService extends BaseService<LogsPortal, Integer> {
 
-    Workbook generateExcel(List<LogsPortalPOJO> list);
+    Workbook generateExcel(List<LogsPortalPOJO> list) throws IllegalAccessException;
 }

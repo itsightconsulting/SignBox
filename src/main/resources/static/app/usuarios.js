@@ -486,8 +486,8 @@ function validarRegistros() {
         ignore: ".ignore",
         errorClass: "my-error-class",
         validClass: "my-valid-class",
-        onkeyup: function(element) { $(element).valid(); },
-        onfocusout: false,
+        onkeyup: false,
+        onfocusout:  function(element) { $(element).valid(); },
         rules: {
             txtNombres: {
                 required: true,

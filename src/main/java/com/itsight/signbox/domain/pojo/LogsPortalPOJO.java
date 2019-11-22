@@ -17,28 +17,28 @@ public class LogsPortalPOJO implements Serializable {
 
   private Integer id;
 
-  private String identificador;
-
-  private String accion;
-
-  private String entidad;
-
-  private String idAsociado;
-
-  private String campo;
-
-  private String valorAnterior;
-
-  private String valorNuevo;
-
-  private String usuario;
-
   @Temporal(TemporalType.TIMESTAMP)
   @JsonSerialize(using = JsonDateSimpleSerializer.class)
   @JsonDeserialize(using = JsonDateSimpleDeserializer.class)
-  private Date fechaHora;
+   private Date fechaHora;
 
-  private Integer rows;
+   private String identificador;
+
+   private String accion;
+
+   private String entidad;
+
+   private String valorAnterior;
+
+   private String valorNuevo;
+
+   private String idAsociado;
+
+   private String campo;
+
+   private String usuario;
+
+   private Integer rows;
 
   public LogsPortalPOJO(Integer id, String identificador, String accion, String entidad, String idAsociado, String campo, String valorAnterior, String valorNuevo, String usuario, Date fechaHora, Integer rows) {
      this.id = id;
