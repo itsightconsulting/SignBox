@@ -38,7 +38,7 @@ WITH RETURN FOR
              WHERE ((u_entidad IS NULL) OR  LOWER(L.ENTIDAD) LIKE LOWER(concat(concat('%', u_entidad) , '%' ) )) AND
                    ( (u_fechaInicio IS NULL ) OR L.FECHAHORA > to_date(u_fechaInicio, 'DD/MM/YYYY') )  AND
                    ( (u_fechaFin IS NULL) OR  L.FECHAHORA < to_date(u_fechaFin, 'DD/MM/YYYY'))
-             ORDER BY L.LOGSID DESC
+             ORDER BY L.FECHAHORA DESC , LOGSID ASC
          ) LG
     WHERE (u_Limit IS NULL ) or   (LG.LID BETWEEN u_Offset + 1 AND u_Offset + u_Limit);
   OPEN cursor1;
@@ -46,3 +46,4 @@ END;
 
 
 
+select * from logs

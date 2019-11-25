@@ -1,4 +1,5 @@
-$(function () {
+$(function() {
+  //  $("#btnLogin").click(function () { LoginUser(); });
     $("#txtPass").keypress(function (e) {
         if (e.which == 13) {
             LoginUser();
@@ -8,7 +9,6 @@ $(function () {
     $("#txtUsuario").keypress(function (e) {
         if (e.which == 13) {
             $("#txtPass").focus();
-
         }
     });
 
@@ -17,7 +17,6 @@ $(function () {
     }
     validarRegistros();
 });
-
 
 function mostrarMensajeErrorLogin(error){
 

@@ -28,7 +28,9 @@ $(function () {
         var myForm = document.getElementById("form_registro");
         clearValidation(myForm);
         limpiarRegistro();
+        $("#hId").val("");
         $("#txtTitleForm").html("Nuevo Usuario");
+        $('label[for="txtPass"] span').html("(*)")
         validatorUpdate = true;
         validarUsuarioAD = false;
 
@@ -234,7 +236,6 @@ function addUsuario() {
         usuario.nombreUsuario = parseInt($("#cboModoAcceso").val()) == 2 ? $("#txtUserName").val() : $("#txtUserAD").val(); //Modo por Formulario
         usuario.dni = $("#txtDni").val();
 
-        debugger;
 
         $.ajax({
             type: usuarioId === null ? 'POST' : 'PUT',
@@ -327,10 +328,7 @@ function validateUsername(modoAccesoId) {
                 debugger
                 if (data != null) {
                     rpta = data.isUsernameValid;
-
-
                     if(rpta === true){
-
                         if(verifiedNames){
                             verifiedNames.push(params.username);
                         }
@@ -427,7 +425,8 @@ function validarRegistros() {
 
     $.validator.addMethod("validPassFormat", function (value, element) {
 
-        if (parseInt($("#cboModoAcceso").val()) === 1 /*Modo Active Directory */) {
+        if (parseInt($("#cboModoAcceso").val()) === 1  /*Modo Active Directory */ ||
+            ($("#txtPass").val() == "" && $("#hId").val() !== "")) {
             return true;
         } else {
             var regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
@@ -438,11 +437,10 @@ function validarRegistros() {
     $.validator.addMethod('requiredPass', function (val, element) {
         if (!validatorUpdate) return true;
 
-        if (parseInt($("#cboModoAcceso").val())  === 1 /*Modo Active Directory */) {
+        if (parseInt($("#cboModoAcceso").val())  === 1 /*Modo Active Directory */ ||
+            ($("#txtPass").val() == "" && $("#hId").val() !== "") ) {
             return true;
-        } else {
-            return $("#txtPass").val() != "";
-        }
+        } else return ($("#txtPass").val() != "" )
     });
 
     //
@@ -458,6 +456,9 @@ function validarRegistros() {
             return $("#txtUserAD").val() != "";
         }
     });
+
+
+
 
     $.validator.addMethod('validExisttxtUserAD', function (val, element) {
         if (!validatorUpdate) return true;
@@ -620,6 +621,7 @@ function irModificarRegistro(id) {
     validatorUpdate = false;
     validarUsuarioAD = false;
     $("#txtTitleForm").html("Editar Usuario");
+    $('label[for="txtPass"] span').html("");
     validator.resetForm();
     $("#divActiveD").fadeOut();
     $("#divNormal").fadeOut();
@@ -659,7 +661,6 @@ function irModificarRegistro(id) {
                 $("#txtPaterno").val(registro.paterno);
                 $("#txtEmail").val(registro.correoElectronico);
                 $("#txtDni").val(registro.dni);
-                $("#txtPass").attr("placeholder" , "password");
 
                 $("#cboModoAcceso").val(registro.modoAccesoId);
                 $("#cboPerfil").val(registro.perfilId);

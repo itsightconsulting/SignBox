@@ -28,6 +28,11 @@ public class ViewConstant {
  public static final String MAIN_LOGS_NOTIFICACIONES = "reportes/logs_notificaciones";
  public static final String MAIN_LOGS_DETALLADO_FIRMA = "reportes/logs_detallado_firma";
 
+ //MAIN CLIENTES
+
+  public static final String MAIN_CLIENTES_LOGIN = "clientes/login";
+
+
 
 
 }

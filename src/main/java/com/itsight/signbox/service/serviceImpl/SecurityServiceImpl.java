@@ -26,16 +26,15 @@ public class SecurityServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
+      //  String comodin = username.split();
         // TODO Auto-generated method stub
        SecurityUserDTO user = usuarioRepository.findByNombreUsuario(username);
         if (user != null) {
             return buildUser(user, buildAuthorities(
                     user.getRol()));
-
         }
      //   LOGGER.info("> UsernameException | (?): " + username.toUpperCase());
         throw new UsernameNotFoundException("UsernameNotFoundException | (?): " + username.toUpperCase());
-
     }
 
     private User buildUser(SecurityUserDTO securityUser, Set<GrantedAuthority> lstRole) {
