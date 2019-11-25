@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.event.InteractiveAuthenticationSuccessEvent;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,8 @@ import javax.servlet.http.HttpSession;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.itsight.util.Enums.Galletas.GLL_NOMBRE_COMPLETO;
 import static com.itsight.util.Utilitarios.createCookie;
@@ -59,6 +62,13 @@ public class LoginListener implements ApplicationListener<InteractiveAuthenticat
                 response.addCookie(createCookie(GLL_NOMBRE_COMPLETO.name(), new String(Base64.getEncoder().encode(fullName.getBytes()))));
 
             }
+
+            Authentication authentication2 = SecurityContextHolder.getContext().getAuthentication();
+
+            Set<String> roles = ((org.springframework.security.core.Authentication) authentication).getAuthorities().stream()
+                    .map(r -> r.getAuthority()).collect(Collectors.toSet());
+
+
         } catch (Exception e){
             e.printStackTrace();
         }

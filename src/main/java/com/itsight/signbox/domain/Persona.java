@@ -67,8 +67,14 @@ public class Persona extends AuditingEntity {
   @Column(nullable = false , name = "CORREO")
   private String correo;
 
-  @Column(name = "FLAGCAMBIO")
-  private Boolean flagCambio;
+  @Column(name = "FLAGACTIVO", nullable = false)
+  private boolean flagActivo;
+
+  @Column(name = "FLAGELIMINADO", nullable = false)
+  private boolean flagEliminado;
+
+  @Column(name = "FLAGCAMBIO", nullable = false)
+  private boolean flagCambio;
 
 
 }

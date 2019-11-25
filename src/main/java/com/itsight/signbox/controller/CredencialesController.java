@@ -145,7 +145,7 @@ public class CredencialesController {
         }else if(profile.equals("production")){
             contrasenia = getRandomString(Integer.parseInt(variableLongitud));
         }
-        hashContrasenia = getEncodeBase64(contrasenia);
+        hashContrasenia = new BCryptPasswordEncoder().encode(contrasenia);
         qPersona.setHashContrasenia(hashContrasenia);
         personaService.update(qPersona);
 

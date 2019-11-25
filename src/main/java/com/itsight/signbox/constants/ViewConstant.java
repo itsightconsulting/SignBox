@@ -30,7 +30,8 @@ public class ViewConstant {
 
  //MAIN CLIENTES
 
-  public static final String MAIN_CLIENTES_LOGIN = "clientes/login";
+  public static final String MAIN_CLIENTES_LOGIN = "cliente/login";
+ public static final String MAIN_CLIENTES_INICIO = "cliente/index";
 
 
 

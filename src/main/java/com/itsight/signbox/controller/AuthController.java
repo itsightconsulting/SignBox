@@ -17,7 +17,7 @@ public class AuthController {
     public AuthController(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
     }
-    @GetMapping(value = "/login")
+    @GetMapping(value = "/portalAdminLogin")
     public ModelAndView loginView(@RequestParam(value = "error", required = false) String error,
                                   Model model) {
         if (error != null) {
@@ -43,7 +43,7 @@ public class AuthController {
         return new ModelAndView(ViewConstant.MAIN_LOGIN);
     }
 
-    @GetMapping(value = "/login_cliente")
+    @GetMapping(value = "/clienteLogin")
     public ModelAndView loginClientesView(@RequestParam(value = "error", required = false) String error,
                                   Model model) {
 

@@ -21,71 +21,131 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableGlobalMethodSecurity(
         prePostEnabled = true,
         securedEnabled = true)
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class SecurityConfiguration  {
 
-        @Autowired
-        @Qualifier("securityServiceImpl")
-        private UserDetailsService securityService;
 
-/*
-        @Override
-        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-                auth.inMemoryAuthentication()
-                        .withUser("user")
-                        .password(encoder().encode("password"))
-                        .roles("ADMINISTRATOR");
+        @Configuration
+        @Order(1)
+        public static class DefaultConfigurationAdapter extends WebSecurityConfigurerAdapter {
+
+                @Autowired
+                @Qualifier("securityServiceImpl")
+                private UserDetailsService securityService;
+
+            public DefaultConfigurationAdapter() {
+                super();
+            }
+
+            /*
+                                    @Override
+                                    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+                                            auth.inMemoryAuthentication()
+                                                    .withUser("user")
+                                                    .password(encoder().encode("password"))
+                                                    .roles("ADMINISTRATOR");
+                                    }
+
+                            */
+                @Autowired
+                public void configure(AuthenticationManagerBuilder auth) throws Exception {
+                        auth.userDetailsService(securityService).passwordEncoder(new BCryptPasswordEncoder());
+                }
+
+
+                @Bean
+                public PasswordEncoder encoder() {
+                        return new BCryptPasswordEncoder();
+                }
+
+                @Override
+                protected void configure(HttpSecurity http) throws Exception {
+
+                        http.antMatcher("/portalAdmin/**").authorizeRequests().anyRequest().hasAnyRole("ADMINISTRATOR")
+                            .and()
+                                .exceptionHandling()
+                                .accessDeniedPage("/403")
+                                .and()
+                                .formLogin()
+                                .loginPage("/portalAdminLogin")
+                                .usernameParameter("nombreUsuario")
+                                .passwordParameter("contrasena")
+                                .loginProcessingUrl("/portalAdmin/postLogin")
+                                .defaultSuccessUrl("/portalAdmin/parametros/gestion")
+                                .failureUrl("/login?error")
+                                .and().logout().logoutUrl("/portalAdmin/logout").logoutSuccessUrl("/amLogoutSuccessful")
+                                .deleteCookies("JSESSIONID")
+                                .and().csrf().disable();
+
+                }
+
+
+                @Bean
+                public CustomAuthenticationFailureHandler customAuthenticationFailureHandler() {
+                        return new CustomAuthenticationFailureHandler();
+                }
+
         }
 
-*/
-        @Autowired
-        public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-                auth.userDetailsService(securityService).passwordEncoder(new BCryptPasswordEncoder());
-        }
+        @Configuration
+        @Order(2)
+        public static class ClientConfigurationAdapter extends WebSecurityConfigurerAdapter {
+
+                @Autowired
+                @Qualifier("clientSecurityServiceImpl")
+                private UserDetailsService clientSecurityService;
 
 
-        @Bean
-        public PasswordEncoder encoder() {
-                return new BCryptPasswordEncoder();
-        }
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-                http
-                        .csrf().disable()
-                        .authorizeRequests()
-                        .antMatchers("/configuracion/**/").hasRole("ADMINISTRATOR")
-                        .antMatchers("/seguridad/credenciales/**").hasAnyRole("ADMINISTRATOR", "OPERATOR")
-                        .antMatchers("/seguridad/**").hasRole("ADMINISTRATOR")
-                        .antMatchers("/reportes/**/").hasAnyRole("ADMINISTRATOR", "AUDITOR")
-                        .antMatchers(
-                                "/css/**",
-                                "/js/**",
-                                "/img/**",
-                                "/fonts/**",
-                                "/sound/**",
-                                "/app/**",
-                                "/login*"
-                        ).permitAll()
-                        .anyRequest().authenticated()
-                        .and()
-                        .formLogin()
-                        .loginPage("/login")
-                        .usernameParameter("nombreUsuario")
-                        .passwordParameter("contrasena")
-                        .loginProcessingUrl("/login_authentication")
-                        .defaultSuccessUrl("/configuracion/parametros/gestion", true)
-                        //.failureUrl("/login.html?error=true")
-                        .failureHandler(customAuthenticationFailureHandler())
-                        .and()
-                        .logout()
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login").permitAll()
-                        .deleteCookies("SESSION");
-        }
 
+            public ClientConfigurationAdapter() {
+                super();
+            }
+                /*
+                        @Override
+                        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+                                auth.inMemoryAuthentication()
+                                        .withUser("user")
+                                        .password(encoder().encode("password"))
+                                        .roles("ADMINISTRATOR");
+                        }
 
-        @Bean
-        public CustomAuthenticationFailureHandler customAuthenticationFailureHandler() {
-            return new CustomAuthenticationFailureHandler();
+                */
+                @Autowired
+                public void configure(AuthenticationManagerBuilder auth) throws Exception {
+                        auth.userDetailsService(clientSecurityService).passwordEncoder(new BCryptPasswordEncoder());
+                }
+
+                @Bean
+                public PasswordEncoder encoderClient() {
+                        return new BCryptPasswordEncoder();
+                }
+
+                @Override
+                protected void configure(HttpSecurity http) throws Exception {
+
+                        http
+                                //.authorizeRequests().antMatchers("/am/**").access("hasRole('ROLE_AM')")
+                                .antMatcher("/cliente/**").authorizeRequests().anyRequest().hasRole("CLIENT")
+                                .and()
+                                .exceptionHandling()
+                                .accessDeniedPage("/403")
+                                .and()
+                                .formLogin()
+                                .loginPage("/clienteLogin")
+                                .usernameParameter("nombreUsuario")
+                                .passwordParameter("contrasena")
+                                .loginProcessingUrl("/cliente/postLogin")
+                                .defaultSuccessUrl("/cliente/index")
+                                .failureUrl("/login?error")
+                                .and().logout().logoutUrl("/cliente/logout").logoutSuccessUrl("/amLogoutSuccessful")
+                                .deleteCookies("JSESSIONID")
+                                .and().csrf().disable();
+                }
+
+                @Bean
+                public CustomAuthenticationFailureHandler customClientAuthenticationFailureHandler() {
+                        return new CustomAuthenticationFailureHandler();
+                }
+
         }
 
 

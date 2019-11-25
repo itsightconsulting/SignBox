@@ -6,6 +6,7 @@ import com.itsight.signbox.domain.Persona;
 import com.itsight.signbox.generic.BaseServiceImpl;
 import com.itsight.signbox.repository.PersonaRepository;
 import com.itsight.signbox.service.PersonaService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -112,7 +113,7 @@ public class PersonaServiceImpl extends BaseServiceImpl<PersonaRepository> imple
         Persona qPersona = findOne(id);
 
         if (qPersona.getPersonaId() != 0){
-            qPersona.setHashContrasenia(pass);
+            qPersona.setHashContrasenia(new BCryptPasswordEncoder().encode(pass));
             qPersona.setGuid(guid);
             qPersona.setFlagCambio(true);
 
