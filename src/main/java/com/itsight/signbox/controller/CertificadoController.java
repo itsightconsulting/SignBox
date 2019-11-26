@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/configuracion/certificados")
+@RequestMapping("/portalAdmin/configuracion/certificados")
 public class CertificadoController {
 
     private CertificadoService certificadoService;

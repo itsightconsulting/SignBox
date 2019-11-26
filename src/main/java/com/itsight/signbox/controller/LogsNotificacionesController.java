@@ -25,7 +25,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
-@RequestMapping("/reportes/logs-notificaciones")
+@RequestMapping("/portalAdmin/reportes/logs-notificaciones")
 public class LogsNotificacionesController {
 
 

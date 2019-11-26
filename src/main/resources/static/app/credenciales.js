@@ -1,5 +1,5 @@
 const $table = $('#tblRegistros');
-const controlador = _ctx + 'seguridad/credenciales/';
+const controlador = _ctx + 'portalAdmin/seguridad/credenciales/';
 let validator;
 
 $(function() {

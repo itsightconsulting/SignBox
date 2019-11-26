@@ -20,7 +20,6 @@ public class ClienteController {
 
     private CertificadoProcedureInvoker certificadoProcedureInvoker;
 
-
     public ClienteController(CertificadoService certificadoService, CertificadoProcedureInvoker certificadoProcedureInvoker) {
         this.certificadoService = certificadoService;
         this.certificadoProcedureInvoker = certificadoProcedureInvoker;
@@ -28,14 +27,7 @@ public class ClienteController {
 
     @RequestMapping("/index")
     public ModelAndView principal(Model model){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        Set<String> roles = ((org.springframework.security.core.Authentication) authentication).getAuthorities().stream()
-                .map(r -> r.getAuthority()).collect(Collectors.toSet());
-
-
         return new ModelAndView(ViewConstant.MAIN_CLIENTES_INICIO);
     }
-
 
 }

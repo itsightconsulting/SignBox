@@ -1,4 +1,4 @@
-var controlador = _ctx + 'reportes/logs-detallados/';
+var controlador = _ctx + 'portalAdmin/reportes/logs-detallados/';
 var $table = $('#tblRegistros');
 var TEXTO_SELECCIONE = "Seleccione";
 

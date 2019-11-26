@@ -18,7 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/configuracion/ambientes")
+@RequestMapping("/portalAdmin/configuracion/ambientes")
 public class AmbienteController {
 
     private AmbientesService ambientesService;

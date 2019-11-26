@@ -1,6 +1,7 @@
 package com.itsight.signbox.configuration;
 
-import com.itsight.signbox.component.CustomAuthenticationFailureHandler;
+import com.itsight.signbox.component.CustomClientAuthenticationFailureHandler;
+import com.itsight.signbox.component.CustomPortalAdminAuthenticationFailureHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -60,8 +61,21 @@ public class SecurityConfiguration  {
                 @Override
                 protected void configure(HttpSecurity http) throws Exception {
 
-                        http.antMatcher("/portalAdmin/**").authorizeRequests().anyRequest().hasAnyRole("ADMINISTRATOR")
-                            .and()
+                        http.antMatcher("/portalAdmin/**").authorizeRequests()
+                                .antMatchers("/portalAdmin/configuracion/**/").hasRole("ADMINISTRATOR")
+                                .antMatchers("/portalAdmin/seguridad/credenciales/**").hasAnyRole("ADMINISTRATOR", "OPERATOR")
+                                .antMatchers("/portalAdmin/seguridad/**").hasRole("ADMINISTRATOR")
+                                .antMatchers("/portalAdmin/reportes/**/").hasAnyRole("ADMINISTRATOR", "AUDITOR")
+                                .antMatchers(
+                                        "/css/**",
+                                        "/js/**",
+                                        "/img/**",
+                                        "/fonts/**",
+                                        "/sound/**",
+                                        "/app/**",
+                                        "/portalAdminLogin"
+                                ).permitAll()
+                                .and()
                                 .exceptionHandling()
                                 .accessDeniedPage("/403")
                                 .and()
@@ -70,18 +84,18 @@ public class SecurityConfiguration  {
                                 .usernameParameter("nombreUsuario")
                                 .passwordParameter("contrasena")
                                 .loginProcessingUrl("/portalAdmin/postLogin")
-                                .defaultSuccessUrl("/portalAdmin/parametros/gestion")
-                                .failureUrl("/login?error")
-                                .and().logout().logoutUrl("/portalAdmin/logout").logoutSuccessUrl("/amLogoutSuccessful")
-                                .deleteCookies("JSESSIONID")
+                                .defaultSuccessUrl("/portalAdmin/configuracion/parametros/gestion")
+                                .failureHandler(customAuthenticationFailureHandler())
+                                .and().logout().logoutUrl("/portalAdmin/logout").logoutSuccessUrl("/portalAdminLogin")
+                                .deleteCookies("SESSION")
                                 .and().csrf().disable();
 
                 }
 
 
                 @Bean
-                public CustomAuthenticationFailureHandler customAuthenticationFailureHandler() {
-                        return new CustomAuthenticationFailureHandler();
+                public CustomPortalAdminAuthenticationFailureHandler customAuthenticationFailureHandler() {
+                        return new CustomPortalAdminAuthenticationFailureHandler();
                 }
 
         }
@@ -124,7 +138,17 @@ public class SecurityConfiguration  {
 
                         http
                                 //.authorizeRequests().antMatchers("/am/**").access("hasRole('ROLE_AM')")
-                                .antMatcher("/cliente/**").authorizeRequests().anyRequest().hasRole("CLIENT")
+                                .antMatcher("/cliente/**").authorizeRequests()
+                                .antMatchers(
+                                        "/css/**",
+                                        "/js/**",
+                                        "/img/**",
+                                        "/fonts/**",
+                                        "/sound/**",
+                                        "/app/**",
+                                        "/clienteLogin"
+                                ).permitAll()
+                                .anyRequest().hasRole("CLIENT")
                                 .and()
                                 .exceptionHandling()
                                 .accessDeniedPage("/403")
@@ -135,15 +159,15 @@ public class SecurityConfiguration  {
                                 .passwordParameter("contrasena")
                                 .loginProcessingUrl("/cliente/postLogin")
                                 .defaultSuccessUrl("/cliente/index")
-                                .failureUrl("/login?error")
-                                .and().logout().logoutUrl("/cliente/logout").logoutSuccessUrl("/amLogoutSuccessful")
-                                .deleteCookies("JSESSIONID")
+                                .failureHandler(customClientAuthenticationFailureHandler())
+                                .and().logout().logoutUrl("/cliente/logout").logoutSuccessUrl("/clienteLogin")
+                                .deleteCookies("SESSION")
                                 .and().csrf().disable();
                 }
 
                 @Bean
-                public CustomAuthenticationFailureHandler customClientAuthenticationFailureHandler() {
-                        return new CustomAuthenticationFailureHandler();
+                public CustomClientAuthenticationFailureHandler customClientAuthenticationFailureHandler() {
+                        return new CustomClientAuthenticationFailureHandler();
                 }
 
         }

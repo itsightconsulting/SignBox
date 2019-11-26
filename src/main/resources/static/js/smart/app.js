@@ -107,7 +107,7 @@ var calc_navbar_height = function() {
 			var smartActions = {
 			    
 			    // LOGOUT MSG 
-			    userLogout: function($this){
+			    portalAdminLogout: function($this){
 			
 					// ask verification
 					$.SmartMessageBox({
@@ -117,18 +117,22 @@ var calc_navbar_height = function() {
 			
 					}, function(ButtonPressed) {
 						if (ButtonPressed == "Si") {
-							$.ajax({
-								url: _ctx + "logout",
-								type: "POST",
-								success: function (e) {
-									document.cookie = "GLL_NOMBRE_COMPLETO=; path=/;";
-									window.location = _ctx + "login";
-								},
-								error: function (err) {
-									exception(err)
-								}
-							});
+							document.cookie = "GLL_NOMBRE_COMPLETO=; path=/;";
+							window.location = _ctx + "portalAdmin/logout";
+						}
+					});
+				},
+				clientLogout: function($this){
 
+					// ask verification
+					$.SmartMessageBox({
+						title: "<i class='fa fa-sign-out txt-color-orangeDark'></i><span class='txt-color-orangeDark'><strong>" + " Cerrar sesión" + "</strong></span>",
+						content: "¿Estás seguro que deseas cerrar la sesión?",
+						buttons : '[No][Si]'
+					}, function(ButtonPressed) {
+						if (ButtonPressed == "Si") {
+							document.cookie = "GLL_NOMBRE_COMPLETO=; path=/;";
+							window.location = _ctx + "cliente/logout";
 						}
 					});
 				},

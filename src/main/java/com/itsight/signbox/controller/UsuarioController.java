@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @RestController
-@RequestMapping("/seguridad/usuarios")
+@RequestMapping("/portalAdmin/seguridad/usuarios")
 public class UsuarioController {
 
     private UsuarioService usuarioService;

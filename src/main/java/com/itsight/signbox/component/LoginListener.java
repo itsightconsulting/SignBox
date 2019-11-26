@@ -48,25 +48,29 @@ public class LoginListener implements ApplicationListener<InteractiveAuthenticat
             Integer id = Integer.parseInt(usernameAndId[1]);
             SecurityUserDTO currentUser;
             session.setAttribute("id", id);
-
-            currentUser = usuarioService.getForCookieById(id);
-
-
-            //Fixing authentication object
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(username, login.getAuthentication().getCredentials(), SecurityContextHolder.getContext().getAuthentication().getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            //Generando cookies
-            if(currentUser != null){
-                String fullName = currentUser.getNombres() + " " + currentUser.getApellidos();
-                response.addCookie(createCookie(GLL_NOMBRE_COMPLETO.name(), new String(Base64.getEncoder().encode(fullName.getBytes()))));
+            Set<String> roles = ((org.springframework.security.core.Authentication) authentication).getAuthorities().stream()
+                    .map(r -> r.getAuthority()).collect(Collectors.toSet());
 
+
+            if(roles.contains("ROLE_CLIENT")){
+                response.addCookie(createCookie(GLL_NOMBRE_COMPLETO.name(), new String(Base64.getEncoder().encode(username.getBytes()))));
+            }else{
+                currentUser = usuarioService.getForCookieById(id);
+                //Generando cookies
+                if(currentUser != null){
+                    String fullName = currentUser.getNombres() + " " + currentUser.getApellidos();
+                    response.addCookie(createCookie(GLL_NOMBRE_COMPLETO.name(), new String(Base64.getEncoder().encode(fullName.getBytes()))));
+                }
             }
+
+
+
 
             Authentication authentication2 = SecurityContextHolder.getContext().getAuthentication();
 
-            Set<String> roles = ((org.springframework.security.core.Authentication) authentication).getAuthorities().stream()
-                    .map(r -> r.getAuthority()).collect(Collectors.toSet());
 
 
         } catch (Exception e){

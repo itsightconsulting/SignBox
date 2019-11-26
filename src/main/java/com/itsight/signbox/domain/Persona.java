@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.constraints.NotBlank;
 
+
 @SqlResultSetMapping(
         name = "PersonaGetAll",
         classes = {

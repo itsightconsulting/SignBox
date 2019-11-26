@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/reportes/logs-portal")
+@RequestMapping("/portalAdmin/reportes/logs-portal")
 public class LogsPortalController {
 
     private LogsPortalService logsPortalService;
