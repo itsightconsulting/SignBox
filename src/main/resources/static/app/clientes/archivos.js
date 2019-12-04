@@ -48,7 +48,6 @@ function descargarArchivo(path, filename){
         data: {path : path , filename : filename},
         success: function (dataObject, textStatus) {
 
-            debugger
             if(dataObject === -4){
                 window.location = controlador + `descarga/?` +
                     `path=${path}&`+
