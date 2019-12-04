@@ -158,7 +158,7 @@ public class SecurityConfiguration  {
                                 .usernameParameter("nombreUsuario")
                                 .passwordParameter("contrasena")
                                 .loginProcessingUrl("/cliente/postLogin")
-                                .defaultSuccessUrl("/cliente/index")
+                                .defaultSuccessUrl("/cliente/archivos/consulta")
                                 .failureHandler(customClientAuthenticationFailureHandler())
                                 .and().logout().logoutUrl("/cliente/logout").logoutSuccessUrl("/clienteLogin")
                                 .deleteCookies("SESSION")

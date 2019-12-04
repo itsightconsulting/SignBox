@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:insert="html-commons/meta :: fg-meta"></th:block>
+    <th:block th:insert="html-commons/css  :: fg-css"></th:block>
+
+    <title>SignOn</title>
+</head>
+<body>
+
+<!-- HEADER -->
+<div th:replace="html-commons/header :: fg-header"></div>
+<!-- END HEADER -->
+
+<!-- Left panel : Navigation area -->
+<!-- Note: This width of the aside area can be adjusted through LESS variables -->
+<div th:replace="html-commons/left-panel :: fg-left-panel"></div>
+
+
+<div id="main" role="main">
+    <div id="content">
+        <div>
+            <section class="content-header">
+                <h1>Consulta de archivos
+                    <small>Permite descargar sus archivos asignados.</small>
+                </h1>
+            </section>
+
+            <div class="view_list">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="tab-content">
+                            <div id="lista_v" class="tab-pane fade in active">
+                                <div class="table-responsive">
+                                    <table id="tblArchivos" class="table table-striped table-responsive">
+                                        <thead>
+                                        <tr>
+                                            <th data-field="negocio">Negocio</th>
+                                            <th data-field="numeroCuenta">Nro de cuenta</th>
+                                            <th data-field="nombreArchivo">Nombre de archivo</th>
+                                            <th data-formatter="opciones" data-width="30" data-halign="center" data-valign="middle" data-align="center">Descarga</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="view_register" style="display:none">
+                <div class="content_register">
+                    <a href="#" class="close_register btn_register_hide" ><i class="fa fa-close"></i></a>
+                    <label ID="hIdCom" style="display:none"> </label>
+                    <h3>Editar parámetro</h3>
+                    <div class="form_register">
+                        <form id="form_registro">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="txtParam">Parámetro: <span>(*)</span></label>
+                                    <input type="text" readonly="readonly" class="form-control" id="txtParam" name="txtParam" maxlength="40" />
+                                    <input type="hidden" value="0" id="hId" name="hId" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="txtDescription">Descripción: <span>(*)</span></label>
+                                    <textarea id="txtDescription" name="description" class="form-control" rows="5"></textarea>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="txtValue">Valor: <span>(*)</span></label>
+                                    <textarea id="txtValue" name="value" class="form-control" rows="5"></textarea>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                    <div class="button_group">
+                        <button type="button" class="btn btn-default btn_register_hide" id="btnCancelar">Cancelar</button>
+                        <button type="button" class="btn btn-primary" id="btnGuardar">Guardar</button>
+                    </div>
+                    <br /><br /><br /><br /><br /><br /><br />
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<!-- PAGE FOOTER -->
+<div th:replace="html-commons/footer :: fg-footer"></div>
+
+<div th:replace="html-commons/loading :: fg-loading"></div>
+
+
+<!-- END PAGE FOOTER -->
+<!-- IMPORTS JAVASCRIPT -->
+<script th:replace="html-commons/js :: fg-js"/>
+
+<script th:src="@{/app/clientes/archivos.js}"></script>
+<script th:src="@{/app/libs/bootstrap-table.min.js}"></script>
+
+</body>
+</html>

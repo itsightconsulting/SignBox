@@ -2,10 +2,7 @@ package com.itsight.signbox.domain;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.itsight.signbox.domain.pojo.LogsDetalladoFirmaPOJO;
-import com.itsight.signbox.domain.pojo.LogsNotificacionesPOJO;
-import com.itsight.signbox.domain.pojo.LogsPortalPOJO;
-import com.itsight.signbox.domain.pojo.LogsTrazabilidadFirmaPOJO;
+import com.itsight.signbox.domain.pojo.*;
 import com.itsight.signbox.json.JsonDateSimpleDeserializer;
 import com.itsight.signbox.json.JsonDateSimpleSerializer;
 import lombok.Data;
@@ -97,8 +94,25 @@ import java.util.Date;
                                 }
 
                         )
-                }
-        )
+                })
+
+        ,
+                @SqlResultSetMapping(
+                        name = "ArchivosGetAll",
+                        classes = {
+                                @ConstructorResult(
+                                        targetClass = ArchivoPOJO.class,
+                                        columns = {
+                                                @ColumnResult(name = "rutaArchivoFinal"),
+                                                @ColumnResult(name = "nombreArchivo"),
+                                                @ColumnResult(name = "negocio"),
+                                                @ColumnResult(name = "numeroCuenta"),
+                                                @ColumnResult(name = "rows")
+                                        }
+
+                                )
+                        }
+                )
   })
 @Entity
 @Data

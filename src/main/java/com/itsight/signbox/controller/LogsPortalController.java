@@ -61,8 +61,8 @@ public class LogsPortalController {
     }
 
 
-    @RequestMapping(path = "/reporte-excel", method = RequestMethod.GET, produces = MediaType.APPLICATION_PDF_VALUE)
-    public HttpServletResponse  test( HttpServletRequest request,
+    @RequestMapping(path = "/reporte-excel", method = RequestMethod.GET)
+    public HttpServletResponse  exportarReporte( HttpServletRequest request,
                                       HttpServletResponse response, @ModelAttribute @Valid LogsPortalQueryDTO logsPortalQueryDTO ) throws  IOException {
 
         try {
