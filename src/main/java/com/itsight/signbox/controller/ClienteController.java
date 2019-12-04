@@ -2,39 +2,27 @@ package com.itsight.signbox.controller;
 
 import com.itsight.signbox.advice.NotFoundValidationException;
 import com.itsight.signbox.constants.ViewConstant;
-import com.itsight.signbox.domain.Persona;
 import com.itsight.signbox.domain.pojo.ArchivoPOJO;
-import com.itsight.signbox.domain.pojo.LogsPortalPOJO;
 import com.itsight.signbox.domain.query.ArchivoQueryDTO;
-import com.itsight.signbox.domain.query.LogsPortalQueryDTO;
-import com.itsight.signbox.service.CertificadoProcedureInvoker;
-import com.itsight.signbox.service.CertificadoService;
 import com.itsight.signbox.service.ClienteProcedureInvoker;
 import com.itsight.signbox.service.PersonaService;
+import com.itsight.util.Enums;
 import com.jcraft.jsch.*;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.*;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.stream.Collectors;
+import java.util.Vector;
+
+import static com.itsight.util.Enums.ResponseCode.*;
 
 @RestController
 @RequestMapping("/cliente")
@@ -65,20 +53,51 @@ public class ClienteController {
         return new ResponseEntity<List<ArchivoPOJO>>(clienteProcedureInvoker.getArchivosByClienteNumDoc(archivoQueryDTO), HttpStatus.OK);
     }
 
-    @RequestMapping(path = "/archivos/test", method = RequestMethod.GET, produces = MediaType.APPLICATION_PDF_VALUE)
-    public void  exportarReporte(HttpServletResponse response, @RequestParam String path ,
+    @GetMapping(value = "/archivos/validar-descarga")
+    public @ResponseBody
+    String verificaExistencia( @RequestParam String path ,
+                      @RequestParam String filename) throws JSchException {
+
+      String fullPath = path + filename;
+        if (!fullPath.isEmpty() || fullPath != null) {
+            ChannelSftp channelSftp =  channelSftp = setupJsch();
+            channelSftp.connect();
+            SftpATTRS attrs = null;
+           try {
+               attrs = channelSftp.stat(fullPath);
+               if(attrs != null) {
+                   return GENERIC_SUCCESS.get();
+               } else {
+                   return EX_GENERIC.get();
+               }
+           } catch (SftpException e) {
+               if (e.id == ChannelSftp.SSH_FX_NO_SUCH_FILE) {
+                   return NOT_FOUND_MATCHES.get();
+               } else {
+                   return EX_GENERIC.get();
+               }
+           } finally {
+               channelSftp.exit();
+           }
+       }
+        else{
+             return ILLEGAL_ARGUMENT_EXCEPTION.get();
+        }
+    }
+
+
+
+
+    @RequestMapping(path = "/archivos/descarga", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public void  descargarArchivo(HttpServletResponse response, @RequestParam String path ,
                                                  @RequestParam String filename) throws IOException, SftpException, JSchException {
-
-           response.setContentType("application/pdf;charset=UTF-8");
-           response.setHeader("Content-Disposition", "attachment; filename=\" "+ filename + "\"");
-
-      //     File testFile = new File(localDir + filename);
+        response.setContentType("application/pdf;charset=UTF-8");
+        response.setHeader("Content-Disposition", "attachment; filename=\" "+ filename + "\"");
         ChannelSftp channelSftp = setupJsch();
         channelSftp.connect();
         String remoteFile = path + filename;
         try {
-            channelSftp.get(remoteFile, response.getOutputStream());
-
+           channelSftp.get(remoteFile, response.getOutputStream());
         } catch (SftpException e) {
             System.out.println("No se pudo descargar el fichero");
         }
@@ -86,28 +105,7 @@ public class ClienteController {
         response.getOutputStream().close();
         response.flushBuffer();
 
-       /* try {
-             inputStream = downloadTest(path, filename);
-        }finally{
-
-           InputStream finalInputStream = inputStream;
-            return outputStream -> {
-                int nRead;
-                byte[] data = new byte[1024];
-                while ((nRead = finalInputStream.read(data, 0, data.length)) != -1) {
-                    outputStream.write(data, 0, nRead);
-                }
-                finalInputStream.close();
-            };
-        }
-
-*/
-
      }
-
-
-
-
 
     private ChannelSftp setupJsch() throws JSchException {
         JSch jsch = new JSch();

@@ -3,40 +3,7 @@ var $table = $('#tblArchivos');
 var TEXTO_SELECCIONE = "Seleccione";
 
 $(function () {
-
     listarRegistros();
-    /*
-    var fechaAhora = new Date();
-    var mesAtras = new Date();
-    mesAtras.setDate(mesAtras.getDate() - 30);
-
-    $('#dtFechaInicioFiltro').datetimepicker({
-        format: 'DD/MM/YYYY', locale: 'es',
-        defaultDate: mesAtras,
-        useCurrent: false
-    }).on('dp.hide', function (e) {
-        actualizarMaxFechaFin();
-    });
-    $('#dtFechaFinFiltro').datetimepicker({
-        format: 'DD/MM/YYYY', locale: 'es',
-        defaultDate: new Date(fechaAhora.getFullYear(), fechaAhora.getMonth(), fechaAhora.getDate()),
-        useCurrent: false
-    }).on('dp.hide', function (e) {
-        actualizarMinFechaInicio();
-    });
-    $("#btnBuscar").click(function () {
-        $table.bootstrapTable('refresh');
-        $(".panel-body").fadeOut();
-    });
-    $("#btnLimpiar").click(function () {
-        limpiarFiltros();
-    });
-    $("#btnExportar").click(function () {
-        exportarReporte();
-    });
-
-    */
-
 })
 
 function listarRegistros() {
@@ -71,11 +38,44 @@ function opciones(value, row, index) {
     return descarga + "&nbsp;";
 }
 
-
 function descargarArchivo(path, filename){
-    window.location = controlador + `test/?` +
-        `path=${path}&`+
-        `filename=${filename}`;
+
+    $.ajax({
+        type: 'GET',
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        url: controlador + 'validar-descarga/',
+        dataType: "json",
+        data: {path : path , filename : filename},
+        success: function (dataObject, textStatus) {
+
+            debugger
+            if(dataObject === -4){
+                window.location = controlador + `descarga/?` +
+                    `path=${path}&`+
+                    `filename=${filename}`;
+            }else{
+                let mensajeError;
+                switch(dataObject) {
+                    case -9 :
+                        mensajeError = "Ha sucedido un error al momento de descargar el archivo";
+                        break;
+                    case -12 :  mensajeError = "No se encuentra el archivo en nuestra base de datos";
+                        break;
+                    default : null;
+                        break;
+                }
+                bootbox.alert({
+                    message:mensajeError
+                });
+            }
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+
+        },
+        complete: function (data) {
+        }
+    });
+
 }
 
 
