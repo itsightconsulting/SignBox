@@ -84,7 +84,7 @@ public class SecurityConfiguration  {
                                 .usernameParameter("nombreUsuario")
                                 .passwordParameter("contrasena")
                                 .loginProcessingUrl("/portalAdmin/postLogin")
-                                .defaultSuccessUrl("/portalAdmin/configuracion/parametros/gestion")
+                                .defaultSuccessUrl("/portalAdmin/default")
                                 .failureHandler(customAuthenticationFailureHandler())
                                 .and().logout().logoutUrl("/portalAdmin/logout").logoutSuccessUrl("/portalAdminLogin")
                                 .deleteCookies("SESSION")
