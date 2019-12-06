@@ -5,6 +5,7 @@ import com.itsight.signbox.constants.ViewConstant;
 import com.itsight.signbox.domain.pojo.ArchivoPOJO;
 import com.itsight.signbox.domain.query.ArchivoQueryDTO;
 import com.itsight.signbox.service.ClienteProcedureInvoker;
+import com.itsight.signbox.service.ParametroService;
 import com.itsight.signbox.service.PersonaService;
 import com.itsight.util.Enums;
 import com.jcraft.jsch.*;
@@ -30,14 +31,18 @@ public class ClienteController {
 
     private ClienteProcedureInvoker clienteProcedureInvoker;
     private PersonaService personaService;
-    private String remoteHost = "fepelab.cen.biz";
-    private String username = "conalvias";
-    private String password = "TESTCONA#2016";
+    private String keyRemoteHost = "SFTP_SERVIDOR";
+    private String keyUsername = "SFTP_USUARIO";
+    private String keyPassword = "SFTP_CONTRASENIA";
+    private String keyPuerto = "SFTP_PUERTO";
     private String localDir = "src/main/resources/downloaded_files/";
+    private ParametroService parametroService;
 
-    public ClienteController(ClienteProcedureInvoker clienteProcedureInvoker, PersonaService personaService) {
+    public ClienteController(ClienteProcedureInvoker clienteProcedureInvoker, PersonaService personaService,
+                             ParametroService parametroService) {
         this.clienteProcedureInvoker = clienteProcedureInvoker;
         this.personaService = personaService;
+        this.parametroService = parametroService;
     }
 
     @RequestMapping("/archivos/consulta")
@@ -111,7 +116,13 @@ public class ClienteController {
         JSch jsch = new JSch();
         String khPath = System.getProperty("user.home") + "/.ssh/known_hosts";
         jsch.setKnownHosts(khPath);
-        Session jschSession = jsch.getSession(username, remoteHost, 22);
+
+        String username = parametroService.findByNombre(keyUsername).get(0).getValor();
+        String remoteHost = parametroService.findByNombre(keyRemoteHost).get(0).getValor();
+        String password = parametroService.findByNombre(keyPassword).get(0).getValor();
+        String port = parametroService.findByNombre(keyPuerto).get(0).getValor();
+
+        Session jschSession = jsch.getSession(username, remoteHost, Integer.parseInt(port));
         jschSession.setPassword(password);
         jschSession.connect();
         return (ChannelSftp) jschSession.openChannel("sftp");

@@ -122,7 +122,7 @@ var calc_navbar_height = function() {
 						}
 					});
 				},
-				clientLogout: function($this){
+				clienteLogout: function($this){
 
 					// ask verification
 					$.SmartMessageBox({
@@ -258,15 +258,25 @@ var calc_navbar_height = function() {
 			   
 			};
 				
-			$.root_.on('click', '[data-action="userLogout"]', function(e) {
+			$.root_.on('click', '[data-action="portalAdminLogout"]', function(e) {
 				var $this = $(this);
-				smartActions.userLogout($this);
+				smartActions.portalAdminLogout($this);
 				e.preventDefault();
 				
 				//clear memory reference
 				$this = null;
 				
-			}); 
+			});
+
+			$.root_.on('click', '[data-action="clienteLogout"]', function(e) {
+				var $this = $(this);
+				smartActions.clienteLogout($this);
+				e.preventDefault();
+
+				//clear memory reference
+				$this = null;
+
+			});
 
 			/*
 			 * BUTTON ACTIONS 

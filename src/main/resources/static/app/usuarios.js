@@ -325,7 +325,6 @@ function validateUsername(modoAccesoId) {
             if (textStatus == "success") {
 
                 var data = dataObject;
-                debugger
                 if (data != null) {
                     rpta = data.isUsernameValid;
                     if(rpta === true){

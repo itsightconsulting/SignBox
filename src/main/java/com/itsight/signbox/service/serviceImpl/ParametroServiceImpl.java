@@ -57,7 +57,7 @@ public class ParametroServiceImpl extends BaseServiceImpl<ParametroRepository> i
 
     @Override
     public List<Parametro> findByNombre(String nombre) {
-        return null;
+        return repository.findByNombre(nombre);
     }
 
     @Override
