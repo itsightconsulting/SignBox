@@ -41,9 +41,7 @@ public class LoginListener implements ApplicationListener<InteractiveAuthenticat
         try {
             //For cookies
             HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getResponse();
-
             String[] usernameAndId = StringUtils.split(login.getAuthentication().getName(), "|");
-
             String username = usernameAndId[0];
             Integer id = Integer.parseInt(usernameAndId[1]);
             SecurityUserDTO currentUser;
@@ -54,25 +52,12 @@ public class LoginListener implements ApplicationListener<InteractiveAuthenticat
             Set<String> roles = ((org.springframework.security.core.Authentication) authentication).getAuthorities().stream()
                     .map(r -> r.getAuthority()).collect(Collectors.toSet());
 
-
-            if(roles.contains("ROLE_CLIENT")){
-                response.addCookie(createCookie(GLL_NOMBRE_COMPLETO.name(), new String(Base64.getEncoder().encode(username.getBytes()))));
-            }else{
-                currentUser = usuarioService.getForCookieById(id);
-                //Generando cookies
-                if(currentUser != null){
-                    String fullName = currentUser.getNombres() + " " + currentUser.getApellidos();
-                    response.addCookie(createCookie(GLL_NOMBRE_COMPLETO.name(), new String(Base64.getEncoder().encode(fullName.getBytes()))));
-                }
+            currentUser = usuarioService.getForCookieById(id);
+            //Generando cookies
+             if(currentUser != null){
+                String fullName = currentUser.getNombres() + " " + currentUser.getApellidos();
+                response.addCookie(createCookie(GLL_NOMBRE_COMPLETO.name(), new String(Base64.getEncoder().encode(fullName.getBytes()))));
             }
-
-
-
-
-            Authentication authentication2 = SecurityContextHolder.getContext().getAuthentication();
-
-
-
         } catch (Exception e){
             e.printStackTrace();
         }

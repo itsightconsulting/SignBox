@@ -107,7 +107,7 @@ var calc_navbar_height = function() {
 			var smartActions = {
 			    
 			    // LOGOUT MSG 
-			    portalAdminLogout: function($this){
+			    logout: function($this){
 			
 					// ask verification
 					$.SmartMessageBox({
@@ -118,25 +118,11 @@ var calc_navbar_height = function() {
 					}, function(ButtonPressed) {
 						if (ButtonPressed == "Si") {
 							document.cookie = "GLL_NOMBRE_COMPLETO=; path=/;";
-							window.location = _ctx + "portalAdmin/logout";
+							window.location = _ctx + "logout";
 						}
 					});
 				},
-				clienteLogout: function($this){
 
-					// ask verification
-					$.SmartMessageBox({
-						title: "<i class='fa fa-sign-out txt-color-orangeDark'></i><span class='txt-color-orangeDark'><strong>" + " Cerrar sesión" + "</strong></span>",
-						content: "¿Estás seguro que deseas cerrar la sesión?",
-						buttons : '[No][Si]'
-					}, function(ButtonPressed) {
-						if (ButtonPressed == "Si") {
-							document.cookie = "GLL_NOMBRE_COMPLETO=; path=/;";
-							window.location = _ctx + "cliente/logout";
-						}
-					});
-				},
-		
 				// RESET WIDGETS
 			    resetWidgets: function($this){
 					
@@ -258,26 +244,15 @@ var calc_navbar_height = function() {
 			   
 			};
 				
-			$.root_.on('click', '[data-action="portalAdminLogout"]', function(e) {
+			$.root_.on('click', '[data-action="logout"]', function(e) {
 				var $this = $(this);
-				smartActions.portalAdminLogout($this);
+				smartActions.logout($this);
 				e.preventDefault();
 				
 				//clear memory reference
 				$this = null;
 				
 			});
-
-			$.root_.on('click', '[data-action="clienteLogout"]', function(e) {
-				var $this = $(this);
-				smartActions.clienteLogout($this);
-				e.preventDefault();
-
-				//clear memory reference
-				$this = null;
-
-			});
-
 			/*
 			 * BUTTON ACTIONS 
 			 */		
@@ -285,7 +260,6 @@ var calc_navbar_height = function() {
 				var $this = $(this);
 				smartActions.resetWidgets($this);
 				e.preventDefault();
-				
 				//clear memory reference
 				$this = null;
 			});
@@ -313,10 +287,8 @@ var calc_navbar_height = function() {
 				smartActions.toggleShortcut();
 				e.preventDefault();
 			}); 
-					
 		};
 		/* ~ END: SMART ACTIONS */
-		
 		/*
 		 * ACTIVATE NAVIGATION
 		 * Description: Activation will fail if top navigation is on

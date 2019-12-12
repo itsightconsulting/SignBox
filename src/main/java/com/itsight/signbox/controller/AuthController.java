@@ -17,7 +17,7 @@ public class AuthController {
     public AuthController(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
     }
-    @GetMapping(value = "/portalAdminLogin")
+    @GetMapping(value = "/login")
     public ModelAndView loginView(@RequestParam(value = "error", required = false) String error,
                                   Model model) {
         if (error != null) {
@@ -43,42 +43,9 @@ public class AuthController {
         return new ModelAndView(ViewConstant.MAIN_LOGIN);
     }
 
-    @GetMapping(value = "/clienteLogin")
-    public ModelAndView loginClientesView(@RequestParam(value = "error", required = false) String error,
-                                  Model model) {
-
-
-    //    SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-        if (error != null) {
-            if (error.equals("true")) {
-                model.addAttribute("error", "error");
-            }
-            else if(error.equals("session-expired")){
-                model.addAttribute("error", "expired");
-            }
-
-            else if(error.equals("disabled")){
-                model.addAttribute("error", "disabled");
-            }
-
-            else if(error.equals("checkout")){
-                model.addAttribute("error", "checkout");
-            }
-
-            else if(error.equals("loggedin")){
-                model.addAttribute("error", "loggedin");
-            }
-        }
-        return new ModelAndView(ViewConstant.MAIN_CLIENTES_LOGIN);
-    }
-
-
-
-    @GetMapping(value = "")
-    public ModelAndView index(Model model)
+    @GetMapping(value = "/403")
+    public ModelAndView privilegiosInsuficientes()
     {
-
-
-        return new ModelAndView(ViewConstant.MAIN_INICIO);
+        return new ModelAndView(ViewConstant.ERROR_403);
     }
 }

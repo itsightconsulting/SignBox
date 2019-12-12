@@ -1,4 +1,4 @@
-var controlador = _ctx + 'portalAdmin/reportes/logs-trazabilidad-firma/';
+var controlador = _ctx + 'reportes/logs-trazabilidad-firma/';
 var $table = $('#tblRegistros');
 var TEXTO_SELECCIONE = "Seleccione";
 

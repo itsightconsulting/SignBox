@@ -95,24 +95,6 @@ import java.util.Date;
 
                         )
                 })
-
-        ,
-                @SqlResultSetMapping(
-                        name = "ArchivosGetAll",
-                        classes = {
-                                @ConstructorResult(
-                                        targetClass = ArchivoPOJO.class,
-                                        columns = {
-                                                @ColumnResult(name = "rutaArchivoFinal"),
-                                                @ColumnResult(name = "nombreArchivo"),
-                                                @ColumnResult(name = "negocio"),
-                                                @ColumnResult(name = "numeroCuenta"),
-                                                @ColumnResult(name = "rows")
-                                        }
-
-                                )
-                        }
-                )
   })
 @Entity
 @Data
@@ -257,6 +239,5 @@ public class FirmaLinea {
   @NotBlank
   @Column(nullable = false , name = "NUMEROCUENTA")
   private String numeroCuenta;
-
 
 }

@@ -1,4 +1,4 @@
-const controlador =  _ctx + 'portalAdmin/seguridad/usuarios/';
+const controlador =  _ctx + 'seguridad/usuarios/';
 const $table = $('#tblRegistros');
 const TEXTO_SELECCIONE = "Seleccione";
 const TEXTO_TODOS = "Todos";

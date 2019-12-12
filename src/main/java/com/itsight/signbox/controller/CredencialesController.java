@@ -33,7 +33,7 @@ import static com.itsight.util.Parseador.getEncodeBase64;
 import static com.itsight.util.Utilitarios.getRandomString;
 
 @RestController
-@RequestMapping("/portalAdmin/seguridad/credenciales")
+@RequestMapping("/seguridad/credenciales")
 public class CredencialesController {
 
     private PersonaProcedureInvoker personaProcedureInvoker;

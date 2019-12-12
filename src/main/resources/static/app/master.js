@@ -1,4 +1,4 @@
-//var controller = siteRoot + 'portalAdmin/configuracion/default.aspx/';
+//var controller = siteRoot + 'configuracion/default.aspx/';
 
 $(function () {
    // SetDataInfo();

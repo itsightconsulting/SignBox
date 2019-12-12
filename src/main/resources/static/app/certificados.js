@@ -1,5 +1,5 @@
 var $table = $('#tblRegistros');
-var controlador = _ctx + 'portalAdmin/configuracion/certificados/';
+var controlador = _ctx + 'configuracion/certificados/';
 var validator;
 var validatorUser;
 var editarUser = false;

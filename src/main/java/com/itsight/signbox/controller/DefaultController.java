@@ -9,18 +9,17 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class DefaultController {
-    @RequestMapping("/portalAdmin/default")
+    @RequestMapping("/default")
     public String defaultAfterLogin(HttpServletRequest request) {
 
-
         if (request.isUserInRole("ROLE_ADMINISTRATOR")) {
-            return "redirect:/portalAdmin/configuracion/parametros/gestion";
+            return "redirect:/configuracion/parametros/gestion";
         }
         if (request.isUserInRole("ROLE_OPERATOR")) {
-            return "redirect:/portalAdmin/seguridad/credenciales/gestion";
+            return "redirect:/seguridad/credenciales/gestion";
         }
         else if (request.isUserInRole("ROLE_AUDITOR")) {
-            return "redirect:/portalAdmin/reportes/logs-portal/consulta";
+            return "redirect:/reportes/logs-portal/consulta";
         }
         return "redirect:/";
     }

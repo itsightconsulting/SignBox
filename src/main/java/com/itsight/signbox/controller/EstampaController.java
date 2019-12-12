@@ -18,7 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/portalAdmin/configuracion/estampas")
+@RequestMapping("/configuracion/estampas")
 public class EstampaController {
 
     private EstampaService estampaService;

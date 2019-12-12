@@ -23,7 +23,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
-@RequestMapping("/portalAdmin/reportes/logs-firma")
+@RequestMapping("/reportes/logs-firma")
 public class LogsServicioFirmaController {
 
     private LogsServicioFirmaProcedureInvoker logsServicioFirmaProcedureInvoker;

@@ -1,12 +1,10 @@
 package com.itsight.signbox.configuration;
 
-import com.itsight.signbox.component.CustomClientAuthenticationFailureHandler;
-import com.itsight.signbox.component.CustomPortalAdminAuthenticationFailureHandler;
+import com.itsight.signbox.component.CustomAuthenticationFailureHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -22,155 +20,64 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableGlobalMethodSecurity(
         prePostEnabled = true,
         securedEnabled = true)
-public class SecurityConfiguration  {
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter   {
+
+    @Autowired
+    @Qualifier("securityServiceImpl")
+    private UserDetailsService securityService;
+
+    @Autowired
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+            auth.userDetailsService(securityService).passwordEncoder(new BCryptPasswordEncoder());
+    }
+
+    @Bean
+    public PasswordEncoder encoder() {
+            return new BCryptPasswordEncoder();
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
 
 
-        @Configuration
-        @Order(1)
-        public static class DefaultConfigurationAdapter extends WebSecurityConfigurerAdapter {
+        http.authorizeRequests()
+                .antMatchers("/configuracion/**/").hasRole("ADMINISTRATOR")
+                .antMatchers("/seguridad/credenciales/**").hasAnyRole("ADMINISTRATOR", "OPERATOR")
+                .antMatchers("/seguridad/**").hasRole("ADMINISTRATOR")
+                .antMatchers("/reportes/**/").hasAnyRole("ADMINISTRATOR", "AUDITOR")
+                .antMatchers(
+                        "/css/**",
+                        "/js/**",
+                        "/img/**",
+                        "/fonts/**",
+                        "/sound/**",
+                        "/app/**",
+                        "/login/**"
+                ).permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .exceptionHandling()
+                .accessDeniedPage("/403")
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .usernameParameter("nombreUsuario")
+                .passwordParameter("contrasena")
+                .loginProcessingUrl("/postLogin")
+                .defaultSuccessUrl("/default")
+                .failureHandler(customAuthenticationFailureHandler())
+                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/login")
+                .deleteCookies("SESSION")
+                .and().csrf().disable();
 
-                @Autowired
-                @Qualifier("securityServiceImpl")
-                private UserDetailsService securityService;
+    }
 
-            public DefaultConfigurationAdapter() {
-                super();
-            }
-
-            /*
-                                    @Override
-                                    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-                                            auth.inMemoryAuthentication()
-                                                    .withUser("user")
-                                                    .password(encoder().encode("password"))
-                                                    .roles("ADMINISTRATOR");
-                                    }
-
-                            */
-                @Autowired
-                public void configure(AuthenticationManagerBuilder auth) throws Exception {
-                        auth.userDetailsService(securityService).passwordEncoder(new BCryptPasswordEncoder());
-                }
-
-
-                @Bean
-                public PasswordEncoder encoder() {
-                        return new BCryptPasswordEncoder();
-                }
-
-                @Override
-                protected void configure(HttpSecurity http) throws Exception {
-
-                        http.antMatcher("/portalAdmin/**").authorizeRequests()
-                                .antMatchers("/portalAdmin/configuracion/**/").hasRole("ADMINISTRATOR")
-                                .antMatchers("/portalAdmin/seguridad/credenciales/**").hasAnyRole("ADMINISTRATOR", "OPERATOR")
-                                .antMatchers("/portalAdmin/seguridad/**").hasRole("ADMINISTRATOR")
-                                .antMatchers("/portalAdmin/reportes/**/").hasAnyRole("ADMINISTRATOR", "AUDITOR")
-                                .antMatchers(
-                                        "/css/**",
-                                        "/js/**",
-                                        "/img/**",
-                                        "/fonts/**",
-                                        "/sound/**",
-                                        "/app/**",
-                                        "/portalAdminLogin"
-                                ).permitAll()
-                                .and()
-                                .exceptionHandling()
-                                .accessDeniedPage("/403")
-                                .and()
-                                .formLogin()
-                                .loginPage("/portalAdminLogin")
-                                .usernameParameter("nombreUsuario")
-                                .passwordParameter("contrasena")
-                                .loginProcessingUrl("/portalAdmin/postLogin")
-                                .defaultSuccessUrl("/portalAdmin/default")
-                                .failureHandler(customAuthenticationFailureHandler())
-                                .and().logout().logoutUrl("/portalAdmin/logout").logoutSuccessUrl("/portalAdminLogin")
-                                .deleteCookies("SESSION")
-                                .and().csrf().disable();
-
-                }
+    @Bean
+    public CustomAuthenticationFailureHandler customAuthenticationFailureHandler() {
+            return new CustomAuthenticationFailureHandler();
+    }
 
 
-                @Bean
-                public CustomPortalAdminAuthenticationFailureHandler customAuthenticationFailureHandler() {
-                        return new CustomPortalAdminAuthenticationFailureHandler();
-                }
-
-        }
-
-        @Configuration
-        @Order(2)
-        public static class ClientConfigurationAdapter extends WebSecurityConfigurerAdapter {
-
-                @Autowired
-                @Qualifier("clientSecurityServiceImpl")
-                private UserDetailsService clientSecurityService;
-
-
-
-            public ClientConfigurationAdapter() {
-                super();
-            }
-                /*
-                        @Override
-                        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-                                auth.inMemoryAuthentication()
-                                        .withUser("user")
-                                        .password(encoder().encode("password"))
-                                        .roles("ADMINISTRATOR");
-                        }
-
-                */
-                @Autowired
-                public void configure(AuthenticationManagerBuilder auth) throws Exception {
-                        auth.userDetailsService(clientSecurityService).passwordEncoder(new BCryptPasswordEncoder());
-                }
-
-                @Bean
-                public PasswordEncoder encoderClient() {
-                        return new BCryptPasswordEncoder();
-                }
-
-                @Override
-                protected void configure(HttpSecurity http) throws Exception {
-
-                        http
-                                //.authorizeRequests().antMatchers("/am/**").access("hasRole('ROLE_AM')")
-                                .antMatcher("/cliente/**").authorizeRequests()
-                                .antMatchers(
-                                        "/css/**",
-                                        "/js/**",
-                                        "/img/**",
-                                        "/fonts/**",
-                                        "/sound/**",
-                                        "/app/**",
-                                        "/clienteLogin"
-                                ).permitAll()
-                                .anyRequest().hasRole("CLIENT")
-                                .and()
-                                .exceptionHandling()
-                                .accessDeniedPage("/403")
-                                .and()
-                                .formLogin()
-                                .loginPage("/clienteLogin")
-                                .usernameParameter("nombreUsuario")
-                                .passwordParameter("contrasena")
-                                .loginProcessingUrl("/cliente/postLogin")
-                                .defaultSuccessUrl("/cliente/archivos/consulta")
-                                .failureHandler(customClientAuthenticationFailureHandler())
-                                .and().logout().logoutUrl("/cliente/logout").logoutSuccessUrl("/clienteLogin")
-                                .deleteCookies("SESSION")
-                                .and().csrf().disable();
-                }
-
-                @Bean
-                public CustomClientAuthenticationFailureHandler customClientAuthenticationFailureHandler() {
-                        return new CustomClientAuthenticationFailureHandler();
-                }
-
-        }
 
 
 }

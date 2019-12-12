@@ -28,10 +28,9 @@ public class ViewConstant {
  public static final String MAIN_LOGS_NOTIFICACIONES = "reportes/logs_notificaciones";
  public static final String MAIN_LOGS_DETALLADO_FIRMA = "reportes/logs_detallado_firma";
 
- //MAIN CLIENTES
+//ERROR PAGES
+public static final String ERROR_403 = "error/403";
 
-  public static final String MAIN_CLIENTES_LOGIN = "cliente/login";
- public static final String MAIN_CLIENTES_ARCHIVOS = "cliente/archivos";
 
 
 
