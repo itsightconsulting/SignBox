@@ -1,19 +1,15 @@
-<header id="header" th:fragment="fg-header">
+<header id="cp_header" th:fragment="fg-header">
     <div id="logo-group">
 
-        <!-- PLACE YOUR LOGO HERE -->
         <span id="logo">
-                <a href="javascript:void(0)" class="logo">
-                    <span class="logo-lg"><b>SignBox</b></span>
+                 <a class="logo">
+                   <img class="logo-cp" th:src="@{/img/images/logo_cp.png}">
                 </a>
-            </span>
+             </span>
         <!-- END LOGO PLACEHOLDER -->
     </div>
-
-
-
     <!-- pulled right: nav area -->
-    <div class="pull-right">
+    <div class="header-options">
         <!-- projects dropdown -->
         <div class="project-context hidden-xs">
             <span class="label">Bienvenido(a):</span>
@@ -26,7 +22,6 @@
             <span><a href="javascript:void(0);" data-action="toggleMenu" title="Collapse Menu"><i class="fa fa-reorder"></i></a></span>
         </div>
         <!-- end collapse menu -->
-
         <!-- #MOBILE -->
         <!-- Top menu profile link : this shows only when top menu is active -->
         <ul id="mobile-profile-img" class="header-dropdown-list hidden-xs padding-5">

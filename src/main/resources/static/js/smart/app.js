@@ -179,6 +179,7 @@ var calc_navbar_height = function() {
 					if (!$.root_.hasClass("menu-on-top")){
 						$.root_.toggleClass("minified");
 						$.root_.removeClass("hidden-menu");
+						$('#left-panel .logo-cp').toggleClass('hidden');
 						$('html').removeClass("hidden-menu-mobile-lock");
 						$this.effect("highlight", {}, 500);
 					}

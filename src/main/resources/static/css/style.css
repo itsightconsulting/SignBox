@@ -1021,7 +1021,6 @@ nav ul li a {
     background-color: transparent !important;
     -webkit-box-shadow: 0 0 0 1px rgba(24,28,33,0.1) inset !important;
     box-shadow: 0 0 0 1px rgba(24,28,33,0.1) inset !important;
-    color: #4E5155 !important
 }
 
 .icon-button {
@@ -1039,3 +1038,202 @@ nav ul li a {
         color: gray;
         opacity: 0.35
     }
+#cp_header {
+    margin: 0;
+    height: 71px;
+    border-bottom: 1px solid #eee !important;
+    overflow: hidden;
+    padding: 0 30px;
+    border-width: 0;
+    min-height: 28px;
+    background-image: url(/img/bg_header.jpg);
+}
+
+#logo img.logo-cp {
+    width: 150px;
+    height: auto;
+    padding-top: 15px;
+    padding-left: 3px;
+}
+
+.modulo-title{
+    font-family: 'Bebas Neue', cursive;
+    font-size: 50px;
+    color: #ffb612;
+    letter-spacing: 0.5px;
+}
+
+.box1{
+    background: url(/img/footer_right.png) repeat-x;
+    display: block;
+    width: 60%;
+    position: absolute;
+    height: 120px;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    font-size: 12px;
+}
+
+.box2{
+    display: block;
+    position: absolute;
+    height: 120px;
+    right: 0;
+    top: 0;
+    width: 50%;
+}
+
+.bg_box2{
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 500px;
+    background: url(/img/footer_left.png) repeat-x;
+    overflow: hidden;
+}
+
+section.footer-content {
+    background: url(/img/footer_center.png) no-repeat;
+    color: #FFFFFF;
+    margin: 0 auto;
+    padding: 80px 0 20px;
+    position: relative;
+    max-width: 1000px;
+    z-index: 5;
+    top: 0;
+    min-height: 120px;
+}
+
+.cp-footer{
+    position: relative;
+}
+
+
+#extr-page #main_login {
+    padding-top: 112px;
+    padding-bottom: 60px;
+    background: #ffffff;
+
+}
+
+#btnLogin{
+    background-color: #6b6a69;
+    border-color: #6b6a69;
+}
+#btnLogin:hover {
+    background-color: #00549F!important;
+    color: #fff;
+}
+
+.input-group-addon{
+    color : #FFB612;
+}
+
+.minifyme,
+.minifyme:hover{
+    background : #FFB612;
+}
+
+.minifyme{
+    color: #00549F!important;
+}
+
+#consultaArchivos{
+    padding: 30px;
+    padding-bottom: 52px;
+    min-height: 476px;
+    position: relative;
+}
+
+h1{
+    font-family: 'Bebas Neue', cursive!important;
+    font-size: 30px!important;
+    color: #ffb612!important;
+    letter-spacing: 0.5px!important;
+}
+
+h1 small {
+    font-size: 16px!important;
+}
+
+.btn{
+    font-family: "Open Sans",Arial,Helvetica,sans-serif;
+}
+
+.view_list .btn.btn-primary{
+    background-color : #00549F!important;
+    border-color : #00549F!important;
+
+}
+
+.view_list .btn.btn-primary:hover {
+    color: #fff;
+    background-color: #00549F;
+    border-color: #00549F;
+}
+
+.cp-link, #cp_header span a {
+    color: #ffb612!important;
+}
+
+
+.header-options{
+    float: right!important;
+    padding-top:10px;
+}
+
+.header-options div span{
+    color: white!important;
+}
+
+aside{
+   background: #00549F;
+}
+
+#left-panel {
+    padding-top: 0!important;
+}
+
+#logo-left-panel{
+    display: flex;
+    padding-bottom: 50px;
+}
+
+.hidden{
+    visibility: hidden;
+}
+
+#left-panel #logo {
+    display: inline-block;
+    width: 175px;
+    margin-top: 13px;
+    text-align: end;
+}
+
+@media only screen and (max-width: 679px) and (min-width: 0)
+{
+    #hide-menu>:first-child>a, .btn-header a {
+        border: none!important;
+        background: none!important;
+        -webkit-box-shadow: none!important;
+        box-shadow: none!important;
+        outline: none!important;
+    }
+
+    #hide-menu>:first-child>a, .btn-header a:hover {
+        border: none!important;
+        background: none!important;
+        -webkit-box-shadow: none!important;
+        box-shadow: none!important;
+        outline: none!important;
+    }
+
+    #hide-menu i {
+        color: #ffb612;
+    }
+    #hide-menu>:first-child>a {
+        width: 20px!important;
+    }
+}

@@ -7,7 +7,7 @@
     <!-- default header name is X-CSRF-TOKEN -->
  <!-- <meta name="_csrf_header" th:attr="content=${_csrf.headerName}"/> -->
     <meta name="_ctx" th:content="@{/}"/>
-    <title>Login - SignBoxContract</title>
+    <title>Login - Portal de Administración Caja Piura</title>
     <meta charset="UTF-8">
     <link th:href="@{/css/bootstrap-datetimepicker.css}" rel="stylesheet" />
     <link th:href="@{https://fonts.googleapis.com/css?family=Quicksand}" rel="stylesheet" />
@@ -20,10 +20,14 @@
     <link th:href="@{css/smart/smartadmin-production-plugins.min.css}" rel="stylesheet" />
     <link th:href="@{css/smartadmin-skins.min.css}" rel="stylesheet" type="text/css" media="screen">
     <link th:href="@{css/smartadmin-rtl.min.css}" rel="stylesheet" type="text/css" media="screen">
-    <!-- #FAVICONS -->
 
-    <link th:href="@{img/favicon/favicon.ico}" rel="shortcut icon" type="image/x-icon">
-    <link th:href="@{img/favicon/favicon.ico}" rel="icon" type="image/x-icon">
+    <!-- FAVICONS -->
+    <link rel="icon" href="/img/cp_icon.png" type="image/png">
+
+    <!-- #FONT -->
+    <link href="https://fonts.googleapis.com/css?family=Bebas+Neue|Roboto&display=swap" rel="stylesheet">
+
+
 
     <script type="text/javascript">
         var siteRoot = '<%= ResolveUrl("~/")%>';
@@ -71,20 +75,18 @@
 
 <body class="animated fadeInDown">
 
-<header id="header">
+<header id="cp_header">
     <div id="logo-group">
-             <span id="logo">
-                 <a href="login.aspx" class="logo">
-                    <!--<img width="80" height="50"  src="img/images/logo.png" />-->
-                    <img style="margin-top:-20px" src="img/images/logo.png" />
+               <span id="logo">
+                 <a class="logo">
+                   <img class="logo-cp" src="img/images/logo_cp.png">
                 </a>
              </span>
-
     </div>
 
 </header>
 
-<div id="main" role="main">
+<div id="main_login" role="main">
     <!-- MAIN CONTENT -->
     <div id="content" class="container">
 
@@ -122,22 +124,20 @@
                 <div class="space_form text-center">
                     <div class="column mcb-column one column_column  column-margin-">
                         <div class="column_attr" style="">
-                            <h2 style="margin: 0;"><strong>SignBox - Administración</strong></h2>
+                            <h2 style="margin: 0;"><p class="modulo-title"> Módulo Administración</p></h2>
                         </div>
                     </div>
-                    <div class="column mcb-column one column_divider ">
-                        <hr class="no_line" style="margin: 0 auto 20px;">
-                    </div>
+
                     <div class="column mcb-column one column_column  column-margin-">
                         <div class="column_attr align_justify" style="">
                             <div class="list_item lists_2 clearfix">
                                 <div class="list_left list_image">
                                     <div class="row">
                                         <div>
-                                            <h1><small>Portal de administración</small></h1> <br />
+                                            <h1><small>Portal de administración
+                                            </small></h1> <br />
                                             <div style="text-align:center;">
                                                 Consola de configuración y administración del servicio de firma digital SignBoxContract.
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -152,6 +152,10 @@
         </div>
     </div>
 </div>
+</div>
+
+<div th:replace="html-commons/footer :: fg-footer"></div>
+
 <script src="/js/bootbox.min.js"></script>
 <script th:inline="javascript">
     /*<![CDATA[*/
@@ -162,6 +166,5 @@
     /*]]>*/
 </script>
 <script th:src="@{app/login.js}"></script>
-<footer id="footerlogin"></footer>
 </body>
 </html>

@@ -26,14 +26,24 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter   {
     @Qualifier("securityServiceImpl")
     private UserDetailsService securityService;
 
+    /*
     @Autowired
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
             auth.userDetailsService(securityService).passwordEncoder(new BCryptPasswordEncoder());
     }
+    */
 
     @Bean
     public PasswordEncoder encoder() {
-            return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder();
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        auth.inMemoryAuthentication().withUser("admin")
+                .password(bCryptPasswordEncoder.encode("Lima2018"))
+                .authorities("WRITE_PRIVILEGES", "READ_PRIVILEGES").roles("ADMINISTRATOR");
     }
 
     @Override

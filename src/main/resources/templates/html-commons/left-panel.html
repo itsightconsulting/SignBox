@@ -1,11 +1,14 @@
 <aside id="left-panel" th:fragment="fg-left-panel">
-
+    <div id="logo-left-panel">
+               <span id="logo">
+                 <a class="logo">
+                   <img class="logo-cp" src="/img/images/logo_cp.png">
+                </a>
+             </span>
+    </div>
     <nav>
-
         <!--Administracion-->
-
       <th:block sec:authorize="hasRole('ADMINISTRATOR')">
-
         <ul>
             <li>
                 <a href="#" title="Gestiona la configuración de la aplicación"><i class="fa fa-gears"></i><span class="menu-item-parent">Configuración</span><b class="collapse-sign"><em class="fa fa-minus-square-o"></em></b></a>
